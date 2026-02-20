@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Modern Navbar */
+        .modern-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 44, 191, 0.2);
+        }
+        
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-logo img {
+            height: 45px;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        
+        .navbar-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .navbar-link:hover {
+            color: #9d4edd;
+        }
+        
+        .navbar-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .balance-display {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .btn-modern {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid #7b2cbf;
+            color: #7b2cbf;
+            background: transparent;
+            cursor: pointer;
+        }
+        
+        .btn-modern:hover {
+            background: #7b2cbf;
+            color: #fff;
+        }
+        
+        /* Profile Container */
+        .profile-wrapper {
+            min-height: 100vh;
+            padding-top: 100px;
+            padding-bottom: 4rem;
+        }
+        
+        .profile-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Profile Header - S2G Esports Style */
+        .profile-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        .profile-banner {
+            height: 250px;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd, #ff006e);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&h=250&fit=crop') center/cover;
+            opacity: 0.25;
+        }
+        
+        .esports-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 2px solid #7b2cbf;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .profile-main {
+            padding: 0 3rem 3rem 3rem;
+            position: relative;
+            margin-top: -80px;
+        }
+        
+        .profile-top {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar-large {
+            width: 160px;
+            height: 160px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            border: 6px solid #1a1a2e;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            flex-shrink: 0;
+        }
+        
+        .profile-info {
+            flex: 1;
+            padding-bottom: 1rem;
+        }
+        
+        .profile-username {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .profile-email {
+            color: #888;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .profile-badge {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .badge-verified {
+            background: rgba(6, 255, 165, 0.15);
+            color: #06ffa5;
+            border: 2px solid #06ffa5;
+        }
+        
+        .badge-member {
+            background: rgba(157, 78, 221, 0.15);
+            color: #9d4edd;
+            border: 2px solid #9d4edd;
+        }
+        
+        .badge-vip {
+            background: rgba(255, 215, 0, 0.15);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+        
+        /* Stats Grid - 4 Columns */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: #7b2cbf;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(123, 44, 191, 0.4);
+        }
+        
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-btn {
+            padding: 1.5rem;
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 16px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border-color: #9d4edd;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(123, 44, 191, 0.4);
+        }
+        
+        .action-btn i {
+            font-size: 1.5rem;
+        }
+        
+        /* Content Grid - 2 Columns */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .content-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(123, 44, 191, 0.2);
+        }
+        
+        .content-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .refresh-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(123, 44, 191, 0.2);
+            border: 1px solid #7b2cbf;
+            border-radius: 8px;
+            color: #9d4edd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            background: #7b2cbf;
+            color: #fff;
+        }
+        
+        /* Transaction Item - Ultra Modern */
+        .transaction-item {
+            background: rgba(10, 10, 15, 0.6);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            transition: all 0.3s;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .transaction-item:hover {
+            border-color: #7b2cbf;
+            background: rgba(123, 44, 191, 0.1);
+            transform: translateX(10px);
+        }
+        
+        .transaction-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .transaction-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+        
+        .transaction-icon.deposit {
+            background: rgba(6, 255, 165, 0.15);
+            color: #06ffa5;
+        }
+        
+        .transaction-icon.withdraw {
+            background: rgba(255, 0, 110, 0.15);
+            color: #ff006e;
+        }
+        
+        .transaction-details h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .transaction-details p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+        
+        .transaction-right {
+            text-align: right;
+        }
+        
+        .transaction-amount {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        
+        .status-completed {
+            background: rgba(6, 255, 165, 0.15);
+            color: #06ffa5;
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.15);
+            color: #FFC107;
+        }
+        
+        .status-rejected {
+            background: rgba(255, 0, 110, 0.15);
+            color: #ff006e;
+        }
+        
+        /* Order Item */
+        .order-item {
+            background: rgba(10, 10, 15, 0.6);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .order-item:hover {
+            border-color: #7b2cbf;
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .order-id {
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-date {
+            color: #888;
+        }
+        
+        .order-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+        }
+        
+        .empty-state p {
+            font-size: 1.2rem;
+        }
+        
+        /* Live Update Indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(6, 255, 165, 0.15);
+            border: 1px solid #06ffa5;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #06ffa5;
+            font-weight: 700;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #06ffa5;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-username {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Navbar -->
+    <nav class="modern-navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="/">
+                    <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="S2G Game">
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <a href="/" class="navbar-link">Ana Sayfa</a>
+                <a href="/products" class="navbar-link">Ürünler</a>
+                <a href="/profile" class="navbar-link" style="color: #9d4edd;">Profilim</a>
+            </div>
+            <div class="navbar-actions">
+                <div class="balance-display">
+                    <i class="fas fa-wallet"></i> {{ user.balance }}₺
+                </div>
+                <a href="/logout" class="btn-modern">Çıkış</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-banner">
+                    <div class="esports-badge">
+                        <i class="fas fa-trophy"></i>
+                        S2G ESPORTS
+                    </div>
+                </div>
+                <div class="profile-main">
+                    <div class="profile-top">
+                        <div class="profile-avatar-large">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="profile-username">
+                                {{ user.username }}
+                                {% if user.is_verified %}
+                                    <i class="fas fa-check-circle" style="color: #06ffa5; font-size: 2rem;"></i>
+                                {% endif %}
+                            </h1>
+                            <div class="profile-email">{{ user.email }}</div>
+                            <div class="profile-badges">
+                                {% if user.is_verified %}
+                                    <span class="profile-badge badge-verified">
+                                        <i class="fas fa-shield-alt"></i> Doğrulanmış Hesap
+                                    </span>
+                                    <span class="profile-badge badge-vip">
+                                        <i class="fas fa-crown"></i> VIP Üye
+                                    </span>
+                                {% endif %}
+                                <span class="profile-badge badge-member">
+                                    <i class="fas fa-calendar"></i> Üye: {{ user.created_at.strftime('%d.%m.%Y') }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-value">{{ user.balance }}₺</div>
+                    <div class="stat-label">Bakiye</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-value">{{ orders|length }}</div>
+                    <div class="stat-label">Toplam Sipariş</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="stat-value">{{ transactions|length }}</div>
+                    <div class="stat-label">İşlem Sayısı</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value">{% if user.is_verified %}VIP{% else %}Standart{% endif %}</div>
+                    <div class="stat-label">Üyelik Tipi</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="/deposit" class="action-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Bakiye Yükle
+                </a>
+                <a href="/withdraw" class="action-btn">
+                    <i class="fas fa-minus-circle"></i>
+                    Bakiye Çek
+                </a>
+                {% if not user.is_verified %}
+                <a href="/verify" class="action-btn">
+                    <i class="fas fa-id-card"></i>
+                    Kimlik Doğrula
+                </a>
+                {% endif %}
+                <a href="/products" class="action-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    Alışverişe Başla
+                </a>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Transactions -->
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">
+                            <i class="fas fa-exchange-alt"></i> İşlemlerim
+                        </h2>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <span class="live-indicator">
+                                <span class="live-dot"></span>
+                                CANLI
+                            </span>
+                            <button class="refresh-btn" onclick="refreshTransactions()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="transactions-list">
+                        {% if transactions %}
+                            {% for transaction in transactions[:5] %}
+                            <div class="transaction-item">
+                                <div class="transaction-left">
+                                    <div class="transaction-icon {{ transaction.type }}">
+                                        <i class="fas fa-{{ 'arrow-up' if transaction.type == 'deposit' else 'arrow-down' }}"></i>
+                                    </div>
+                                    <div class="transaction-details">
+                                        <h4>{{ 'Bakiye Yükleme' if transaction.type == 'deposit' else 'Bakiye Çekme' }}</h4>
+                                        <p>{{ transaction.created_at.strftime('%d.%m.%Y %H:%M') }} • {{ transaction.method }}</p>
+                                    </div>
+                                </div>
+                                <div class="transaction-right">
+                                    <div class="transaction-amount" style="color: {{ '#06ffa5' if transaction.type == 'deposit' else '#ff006e' }};">
+                                        {{ '+' if transaction.type == 'deposit' else '-' }}{{ transaction.amount }}₺
+                                    </div>
+                                    <span class="status-badge status-{{ transaction.status }}">
+                                        {{ 'Onaylandı' if transaction.status == 'completed' else 'Bekliyor' if transaction.status == 'pending' else 'Reddedildi' }}
+                                    </span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Henüz işlem bulunmuyor</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Orders -->
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">
+                            <i class="fas fa-shopping-bag"></i> Siparişlerim
+                        </h2>
+                        <button class="refresh-btn" onclick="refreshOrders()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div id="orders-list">
+                        {% if orders %}
+                            {% for order in orders[:5] %}
+                            <div class="order-item">
+                                <div class="order-header">
+                                    <span class="order-id">Sipariş #{{ order.id }}</span>
+                                    <span class="status-badge status-{{ order.status }}">
+                                        {{ 'Tamamlandı' if order.status == 'completed' else 'Bekliyor' }}
+                                    </span>
+                                </div>
+                                <div class="order-footer">
+                                    <span class="order-date">{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                    <span class="order-price">{{ order.price }}₺</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>Henüz sipariş bulunmuyor</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-refresh transactions every 10 seconds
+        function refreshTransactions() {
+            const btn = event.target.closest('.refresh-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        }
+        
+        function refreshOrders() {
+            const btn = event.target.closest('.refresh-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        }
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            console.log('Auto-refreshing data...');
+            // In production, use AJAX to refresh without page reload
+        }, 30000);
+    </script>
+</body>
+</html>

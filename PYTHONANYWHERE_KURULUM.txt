@@ -1,0 +1,128 @@
+╔═══════════════════════════════════════════════════════════════╗
+║     PYTHONANYWHERE DEPLOYMENT - SORUN GİDERME               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📅 Tarih: 20 Şubat 2026
+🚀 Platform: PythonAnywhere
+⚠️ Durum: WSGI dosyası doğru ama site yüklenmiyor
+
+═══════════════════════════════════════════════════════════════
+
+🔍 SORUN ANALİZİ
+═══════════════════════════════════════════════════════════════
+
+✅ WSGI dosyası doğru: /var/www/kraldiyar_pythonanywhere_com_wsgi.py
+✅ app.py import ediliyor: python3 -c "from app import app; print('OK')" → OK
+✅ Dosya yolları doğru: /home/kraldiyar/s2g-game
+❌ Site hala "Hello from Flask!" gösteriyor
+
+SORUN: PythonAnywhere WSGI dosyasını okumuyormuş gibi davranıyor.
+
+═══════════════════════════════════════════════════════════════
+
+💡 ÇÖZÜM: RENDER.COM KULLAN (ÜCRETSİZ + KOLAY)
+═══════════════════════════════════════════════════════════════
+
+PythonAnywhere yerine Render.com kullanalım:
+✅ Tamamen ücretsiz
+✅ GitHub gerekmez (direkt dosya yükle)
+✅ Kendi domain bağlanır
+✅ Otomatik SSL
+✅ Uyumaz (always-on)
+
+═══════════════════════════════════════════════════════════════
+
+📝 RENDER.COM KURULUM ADIMLARI
+═══════════════════════════════════════════════════════════════
+
+ADIM 1: RENDER.COM'A KAYIT OL
+─────────────────────────────────────────────────────────────
+
+1. https://render.com adresine git
+2. "Get Started for Free" tıkla
+3. Email ile kayıt ol (GitHub gerekmez!)
+4. Email'ini onayla
+
+ADIM 2: WEB SERVICE OLUŞTUR
+─────────────────────────────────────────────────────────────
+
+1. Dashboard'da "New +" butonuna tıkla
+2. "Web Service" seç
+3. "Build and deploy from a Git repository" ATLA
+4. "Deploy an existing image from a registry" ATLA
+5. En altta "Or, deploy from a public Git repository" ATLA
+6. "Deploy without Git" seçeneğini bul
+
+VEYA DAHA KOLAY:
+
+1. Dashboard'da "New +" → "Web Service"
+2. "Public Git Repository" kısmına: https://github.com/render-examples/flask-hello-world
+3. Sonra ayarları değiştireceğiz
+
+ADIM 3: AYARLARI YAP
+─────────────────────────────────────────────────────────────
+
+Name: s2g-game
+Region: Frankfurt (en yakın)
+Branch: main (varsayılan)
+Runtime: Python 3
+Build Command: pip install -r requirements.txt
+Start Command: gunicorn app:app
+
+ADIM 4: DEPLOY ET
+─────────────────────────────────────────────────────────────
+
+1. "Create Web Service" tıkla
+2. 2-3 dakika bekle
+3. Site canlı olacak!
+
+ADIM 5: KENDI DOMAIN'İNİ BAĞLA
+─────────────────────────────────────────────────────────────
+
+1. Render Dashboard'da "Settings" → "Custom Domain"
+2. s2ggame.com ekle
+3. Render bir CNAME kaydı verecek
+4. Wix DNS ayarlarına git ve CNAME ekle
+5. 5-10 dakika bekle
+6. https://s2ggame.com CANLI! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+🎯 PYTHONANYWHERE ALTERNATİF ÇÖZÜM
+═══════════════════════════════════════════════════════════════
+
+Eğer PythonAnywhere'de devam etmek istersen:
+
+1. PythonAnywhere Dashboard → Account
+2. "Upgrade to a paid account" kontrol et
+3. Free tier'da bazı kısıtlamalar olabilir
+
+VEYA:
+
+1. Web sekmesinde "Force HTTPS" kapalı mı kontrol et
+2. "Virtualenv" boş olmalı
+3. Static files mapping'i kontrol et
+
+═══════════════════════════════════════════════════════════════
+
+📞 ÖNERİM
+═══════════════════════════════════════════════════════════════
+
+Render.com kullan çünkü:
+✅ Daha kolay
+✅ Daha güvenilir
+✅ GitHub gerekmez
+✅ Ücretsiz ve sınırsız
+✅ Kendi domain'ini bağlayabilirsin
+
+PythonAnywhere free tier'ında bazı garip sorunlar var.
+
+═══════════════════════════════════════════════════════════════
+
+Ne yapmak istersin?
+1. Render.com'a geç (önerilir)
+2. PythonAnywhere'de devam et (zor)
+
+Söyle, sana yardımcı olayım!
+
+═══════════════════════════════════════════════════════════════

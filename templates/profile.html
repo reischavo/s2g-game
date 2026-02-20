@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 4px solid rgba(255,255,255,0.2);
+        }
+        
+        .profile-info h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .profile-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .balance-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--success);
+            margin: 1rem 0;
+        }
+        
+        .balance-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .section {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .transaction-item {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .transaction-icon.deposit {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success);
+        }
+        
+        .transaction-icon.withdraw {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent);
+        }
+        
+        .order-item {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .verify-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .verify-badge.verified {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success);
+        }
+        
+        .verify-badge.not-verified {
+            background: rgba(255, 190, 11, 0.2);
+            color: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="S2G Game" style="height: 40px;">
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/products" class="nav-link">Ürünler</a>
+                <a href="/profile" class="nav-link active">Profilim</a>
+            </div>
+            <div class="nav-actions">
+                <span class="user-info">{{ user.balance }}₺</span>
+                <a href="/logout" class="btn btn-outline btn-sm">Çıkış</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <p>{{ user.email }}</p>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <i class="fas fa-calendar"></i>
+                        <span>Üyelik: {{ user.created_at.strftime('%d.%m.%Y') }}</span>
+                    </div>
+                    <div class="profile-stat">
+                        {% if user.is_verified %}
+                            <span class="verify-badge verified">
+                                <i class="fas fa-check-circle"></i> Doğrulanmış
+                            </span>
+                        {% else %}
+                            <span class="verify-badge not-verified">
+                                <i class="fas fa-exclamation-circle"></i> Doğrulanmamış
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <h2><i class="fas fa-wallet"></i> Bakiyem</h2>
+            <div class="balance-amount">{{ user.balance }}₺</div>
+            <div class="balance-actions">
+                <a href="/deposit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Bakiye Yükle
+                </a>
+                <a href="/withdraw" class="btn btn-outline">
+                    <i class="fas fa-minus"></i> Bakiye Çek
+                </a>
+                {% if not user.is_verified %}
+                <a href="/verify" class="btn btn-outline">
+                    <i class="fas fa-id-card"></i> Kimlik Doğrula
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Transactions -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-exchange-alt"></i> Son İşlemler</h2>
+            {% if transactions %}
+                {% for transaction in transactions %}
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon {{ transaction.type }}">
+                            <i class="fas fa-{{ 'arrow-up' if transaction.type == 'deposit' else 'arrow-down' }}"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600;">
+                                {{ 'Bakiye Yükleme' if transaction.type == 'deposit' else 'Bakiye Çekme' }}
+                            </div>
+                            <div style="color: #888; font-size: 0.9rem;">
+                                {{ transaction.created_at.strftime('%d.%m.%Y %H:%M') }} - {{ transaction.method }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: {{ 'var(--success)' if transaction.type == 'deposit' else 'var(--accent)' }};">
+                            {{ '+' if transaction.type == 'deposit' else '-' }}{{ transaction.amount }}₺
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="badge badge-{{ 'success' if transaction.status == 'completed' else 'warning' if transaction.status == 'pending' else 'danger' }}">
+                                {{ 'Tamamlandı' if transaction.status == 'completed' else 'Bekliyor' if transaction.status == 'pending' else 'Reddedildi' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: #888; padding: 2rem;">Henüz işlem bulunmuyor</p>
+            {% endif %}
+        </div>
+
+        <!-- Orders -->
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-shopping-bag"></i> Siparişlerim</h2>
+            {% if orders %}
+                {% for order in orders %}
+                <div class="order-item">
+                    <div>
+                        <div style="font-weight: 600;">Sipariş #{{ order.id }}</div>
+                        <div style="color: #888; font-size: 0.9rem;">
+                            {{ order.created_at.strftime('%d.%m.%Y %H:%M') }}
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.2rem; font-weight: bold;">{{ order.price }}₺</div>
+                        <span class="badge badge-{{ 'success' if order.status == 'completed' else 'warning' }}">
+                            {{ 'Tamamlandı' if order.status == 'completed' else 'Bekliyor' }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: #888; padding: 2rem;">Henüz sipariş bulunmuyor</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 S2G Game. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

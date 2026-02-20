@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - S2G Game | Ultra Modern Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background Particles */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bg-gradient {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.2;
+            animation: float 25s ease-in-out infinite;
+        }
+        
+        .bg-gradient-1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #7b2cbf, transparent);
+            top: -250px;
+            left: -250px;
+        }
+        
+        .bg-gradient-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #ff006e, transparent);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: 8s;
+        }
+        
+        .bg-gradient-3 {
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, #9d4edd, transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: 16s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(120px, -120px) scale(1.15); }
+            66% { transform: translate(-120px, 120px) scale(0.85); }
+        }
+        
+        /* Navbar */
+        .modern-navbar {
+            background: rgba(10, 10, 15, 0.98);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(123, 44, 191, 0.3);
+            padding: 1.25rem 3rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .navbar-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .navbar-link:hover {
+            color: #9d4edd;
+        }
+        
+        /* Profile Container */
+        .profile-wrapper {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .profile-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem;
+        }
+        
+        /* Profile Header - ULTRA MODERN */
+        .profile-header {
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.3), rgba(157, 78, 221, 0.3));
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(123, 44, 191, 0.4);
+            border-radius: 24px;
+            padding: 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(123, 44, 191, 0.3);
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 4s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .profile-banner {
+            height: 200px;
+            background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #ff006e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(10, 10, 15, 0.9), transparent);
+        }
+        
+        .profile-banner-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1), transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.1), transparent 50%);
+            animation: patternMove 20s linear infinite;
+        }
+        
+        @keyframes patternMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100px); }
+        }
+        
+        .profile-content-wrapper {
+            padding: 0 3rem 3rem;
+            position: relative;
+            margin-top: -80px;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: flex-end;
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar-wrapper {
+            position: relative;
+        }
+        
+        .profile-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #ff006e, #7b2cbf);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 900;
+            border: 6px solid rgba(10, 10, 15, 0.9);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: avatarShine 3s ease-in-out infinite;
+        }
+        
+        @keyframes avatarShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .profile-level-badge {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #F5A623, #F7B731);
+            border-radius: 50%;
+            border: 4px solid rgba(10, 10, 15, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #000;
+            box-shadow: 0 10px 30px rgba(245, 166, 35, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .profile-details {
+            flex: 1;
+        }
+        
+        .profile-details h1 {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+            color: #000;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(6, 255, 165, 0.4);
+        }
+        
+        .profile-meta {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            color: #ccc;
+            background: rgba(26, 26, 46, 0.6);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            border: 1px solid rgba(123, 44, 191, 0.3);
+        }
+        
+        .meta-item i {
+            color: #9d4edd;
+            font-size: 1.2rem;
+        }
+        
+        /* Stats Grid - ULTRA MODERN */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7b2cbf, #ff006e);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: #7b2cbf;
+            box-shadow: 0 25px 60px rgba(123, 44, 191, 0.4);
+            background: rgba(123, 44, 191, 0.15);
+        }
+        
+        .stat-card-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(123, 44, 191, 0.3), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .stat-card:hover .stat-card-glow {
+            opacity: 1;
+            animation: glowRotate 3s linear infinite;
+        }
+        
+        @keyframes glowRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: inherit;
+            border-radius: 18px;
+            filter: blur(10px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+        }
+        
+        .stat-icon.pink {
+            background: linear-gradient(135deg, #ff006e, #ff4d8f);
+        }
+        
+        .stat-icon.green {
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+        }
+        
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #F5A623, #F7B731);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .stat-change {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: #06ffa5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-change.negative {
+            color: #ff006e;
+        }
+        
+        /* Quick Actions - ULTRA MODERN */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .action-btn {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(123, 44, 191, 0.4), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .action-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.3), rgba(157, 78, 221, 0.3));
+            border-color: #9d4edd;
+            box-shadow: 0 20px 50px rgba(123, 44, 191, 0.5);
+        }
+        
+        .action-btn i {
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover i {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .action-btn span {
+            font-weight: 700;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .content-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.2);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        /* Orders List */
+        .order-item {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .order-item:hover {
+            border-color: #7b2cbf;
+            transform: translateX(5px);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .order-title {
+            font-weight: 700;
+            color: #9d4edd;
+        }
+        
+        .order-price {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #06ffa5;
+        }
+        
+        .order-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        /* Transactions */
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .transaction-icon.deposit {
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+        }
+        
+        .transaction-icon.withdraw {
+            background: linear-gradient(135deg, #ff006e, #ff4d8f);
+        }
+        
+        .transaction-amount {
+            font-weight: 900;
+        }
+        
+        .transaction-amount.positive {
+            color: #06ffa5;
+        }
+        
+        .transaction-amount.negative {
+            color: #ff006e;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .status-badge.pending {
+            background: rgba(245, 166, 35, 0.2);
+            color: #F5A623;
+        }
+        
+        .status-badge.completed {
+            background: rgba(6, 255, 165, 0.2);
+            color: #06ffa5;
+        }
+        
+        .status-badge.rejected {
+            background: rgba(255, 0, 110, 0.2);
+            color: #ff006e;
+        }
+        
+        @media (max-width: 1024px) {
+            .stats-grid, .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+        <div class="bg-gradient bg-gradient-3"></div>
+    </div>
+    
+    <!-- Navbar -->
+    <nav class="modern-navbar">
+        <div class="navbar-container">
+            <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                <img src="{{ url_for('static', filename='images/sitelogo.png') }}" alt="S2G Game" style="height: 45px;">
+                <span class="logo-text">S2G GAME</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="/" class="navbar-link">Ana Sayfa</a>
+                <a href="/products" class="navbar-link">Ürünler</a>
+                <a href="/sell" class="navbar-link">İlan Ver</a>
+                <a href="/support" class="navbar-link">Destek</a>
+                <a href="/profile" class="navbar-link" style="color: #9d4edd;">Profilim</a>
+                <a href="/logout" class="navbar-link">Çıkış</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Profile Content -->
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <!-- Profile Header - ULTRA MODERN -->
+            <div class="profile-header">
+                <div class="profile-banner">
+                    <div class="profile-banner-pattern"></div>
+                </div>
+                <div class="profile-content-wrapper">
+                    <div class="profile-info">
+                        <div class="profile-avatar-wrapper">
+                            <div class="profile-avatar">
+                                {{ user.username[0].upper() }}
+                            </div>
+                            <div class="profile-level-badge">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="profile-details">
+                            <h1>
+                                {{ user.username }}
+                                {% if user.is_verified %}
+                                <span class="verified-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                    Doğrulanmış
+                                </span>
+                                {% endif %}
+                            </h1>
+                            <div class="profile-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>{{ user.email }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Üyelik: {{ user.created_at.strftime('%d.%m.%Y') }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-shield-check"></i>
+                                    <span>{% if user.is_verified %}VIP Üye{% else %}Standart Üye{% endif %}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Grid - ULTRA MODERN -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-glow"></div>
+                    <div class="stat-icon purple">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-value">{{ "%.2f"|format(user.balance) }}₺</div>
+                    <div class="stat-label">Bakiye</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Aktif</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-glow"></div>
+                    <div class="stat-icon pink">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-value">{{ orders|length }}</div>
+                    <div class="stat-label">Satın Alımlar</div>
+                    <div class="stat-change">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Tamamlandı</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-glow"></div>
+                    <div class="stat-icon green">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stat-value">{{ user.products|length if user.products else 0 }}</div>
+                    <div class="stat-label">İlanlarım</div>
+                    <div class="stat-change">
+                        <i class="fas fa-eye"></i>
+                        <span>Aktif</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card-glow"></div>
+                    <div class="stat-icon orange">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value">{% if user.is_verified %}VIP{% else %}Üye{% endif %}</div>
+                    <div class="stat-label">Üyelik Durumu</div>
+                    <div class="stat-change">
+                        <i class="fas fa-crown"></i>
+                        <span>{% if user.is_verified %}Premium{% else %}Standart{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="/deposit" class="action-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Bakiye Yükle</span>
+                </a>
+                <a href="/withdraw" class="action-btn">
+                    <i class="fas fa-minus-circle"></i>
+                    <span>Bakiye Çek</span>
+                </a>
+                <a href="/sell" class="action-btn">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>İlan Ver</span>
+                </a>
+                <a href="/support" class="action-btn">
+                    <i class="fas fa-headset"></i>
+                    <span>Canlı Destek</span>
+                </a>
+            </div>
+            
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Orders -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-shopping-cart"></i> Son Satın Alımlar
+                        </h2>
+                        <a href="/my-orders" style="color: #9d4edd; text-decoration: none;">Tümünü Gör</a>
+                    </div>
+                    
+                    {% if orders %}
+                        {% for order in orders[:5] %}
+                        <div class="order-item">
+                            <div class="order-header">
+                                <span class="order-title">Sipariş #{{ order.id }}</span>
+                                <span class="order-price">{{ order.price }}₺</span>
+                            </div>
+                            <div class="order-meta">
+                                <span><i class="fas fa-calendar"></i> {{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                <span><i class="fas fa-check-circle"></i> Tamamlandı</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="text-align: center; color: #666; padding: 2rem;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                            Henüz satın alım yapmadınız
+                        </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Transactions -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-exchange-alt"></i> İşlemler
+                        </h2>
+                    </div>
+                    
+                    {% if transactions %}
+                        {% for transaction in transactions[:5] %}
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon {{ transaction.type }}">
+                                    <i class="fas fa-{{ 'arrow-up' if transaction.type == 'deposit' else 'arrow-down' }}"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600;">{{ 'Bakiye Yükleme' if transaction.type == 'deposit' else 'Bakiye Çekme' }}</div>
+                                    <div style="font-size: 0.85rem; color: #888;">{{ transaction.created_at.strftime('%d.%m.%Y') }}</div>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="transaction-amount {{ 'positive' if transaction.type == 'deposit' else 'negative' }}">
+                                    {{ '+' if transaction.type == 'deposit' else '-' }}{{ transaction.amount }}₺
+                                </div>
+                                <span class="status-badge {{ transaction.status }}">{{ transaction.status }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="text-align: center; color: #666; padding: 2rem;">
+                            <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                            Henüz işlem yok
+                        </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Bekleyen Teslimatlar -->
+                {% if pending_deliveries %}
+                <div class="content-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1)); border: 2px solid rgba(255, 193, 7, 0.3);">
+                    <div class="card-header">
+                        <h2 class="card-title" style="color: #ffc107;">
+                            <i class="fas fa-shipping-fast"></i> Bekleyen Teslimatlar
+                        </h2>
+                        <span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600;">
+                            {{ pending_deliveries|length }} Sipariş
+                        </span>
+                    </div>
+                    
+                    <div style="display: grid; gap: 1.5rem; margin-top: 1.5rem;">
+                        {% for order, product in pending_deliveries %}
+                        <div style="background: rgba(10, 10, 15, 0.6); border: 2px solid rgba(255, 193, 7, 0.3); border-radius: 16px; padding: 1.5rem; display: flex; gap: 1.5rem; align-items: center;">
+                            <div style="width: 80px; height: 80px; border-radius: 12px; background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2)); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                {% if product.image_url %}
+                                <img src="{{ product.image_url }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                                {% else %}
+                                <i class="fas fa-gamepad" style="font-size: 2rem; color: #ffc107; opacity: 0.5;"></i>
+                                {% endif %}
+                            </div>
+                            
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 0.3rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
+                                        {{ product.game }}
+                                    </span>
+                                    <span style="color: #888; font-size: 0.9rem;">
+                                        Sipariş #{{ order.id }}
+                                    </span>
+                                </div>
+                                <h3 style="font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;">
+                                    {{ product.title }}
+                                </h3>
+                                <div style="color: #888; font-size: 0.85rem;">
+                                    <i class="fas fa-clock"></i> {{ order.created_at.strftime('%d.%m.%Y %H:%M') }}
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #ffc107, #ff9800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.75rem;">
+                                    {{ order.price }}₺
+                                </div>
+                                <a href="/seller/delivery/{{ order.id }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #ffc107, #ff9800); color: #000; border-radius: 12px; text-decoration: none; font-weight: 700; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Teslim Et
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- İlanlarım - ULTRA MODERN -->
+                <div class="content-card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-tags"></i> İlanlarım
+                        </h2>
+                        <a href="/sell" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #7b2cbf, #9d4edd); color: #fff; text-decoration: none; border-radius: 12px; font-weight: 600; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-plus"></i> Yeni İlan
+                        </a>
+                    </div>
+                    
+                    {% if user.products and user.products|length > 0 %}
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                            {% for product in user.products %}
+                            <div class="product-listing-card" style="background: rgba(26, 26, 46, 0.6); border: 2px solid {{ 'rgba(255, 0, 110, 0.5)' if product.is_sold else 'rgba(123, 44, 191, 0.3)' }}; border-radius: 16px; overflow: hidden; transition: all 0.3s; position: relative;">
+                                <!-- Satıldı Badge -->
+                                {% if product.is_sold %}
+                                <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10; background: linear-gradient(135deg, #ff006e, #ff4d8f); color: #fff; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(255, 0, 110, 0.4);">
+                                    <i class="fas fa-check-circle"></i> SATILDI
+                                </div>
+                                {% else %}
+                                <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10; background: linear-gradient(135deg, #06ffa5, #00d9ff); color: #000; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(6, 255, 165, 0.4);">
+                                    <i class="fas fa-check-circle"></i> AKTİF
+                                </div>
+                                {% endif %}
+                                
+                                <!-- Product Image -->
+                                <div style="height: 180px; background: linear-gradient(135deg, rgba(123, 44, 191, 0.2), rgba(157, 78, 221, 0.2)); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; {{ 'opacity: 0.5; filter: grayscale(100%);' if product.is_sold else '' }}">
+                                    {% if product.image_url %}
+                                    <img src="{{ product.image_url }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    {% else %}
+                                    <i class="fas fa-gamepad" style="font-size: 4rem; color: #7b2cbf; opacity: 0.3;"></i>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Product Info -->
+                                <div style="padding: 1.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                        <span style="background: rgba(123, 44, 191, 0.2); color: #9d4edd; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
+                                            {{ product.game }}
+                                        </span>
+                                        <span style="color: #666; font-size: 0.85rem;">
+                                            <i class="fas fa-eye"></i> {{ product.views }}
+                                        </span>
+                                    </div>
+                                    
+                                    <h3 style="margin: 0 0 0.75rem 0; color: #fff; font-size: 1.1rem; font-weight: 700; line-height: 1.4; {{ 'opacity: 0.6;' if product.is_sold else '' }}">
+                                        {{ product.title[:50] }}{% if product.title|length > 50 %}...{% endif %}
+                                    </h3>
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <div style="font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #7b2cbf, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                                            {{ product.price }}₺
+                                        </div>
+                                        <div style="color: #888; font-size: 0.85rem;">
+                                            <i class="fas fa-calendar"></i> {{ product.created_at.strftime('%d.%m.%Y') }}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Actions -->
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="/product/{{ product.id }}" style="flex: 1; padding: 0.75rem; background: rgba(123, 44, 191, 0.2); border: 2px solid rgba(123, 44, 191, 0.5); border-radius: 10px; color: #9d4edd; text-decoration: none; text-align: center; font-weight: 600; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                            <i class="fas fa-eye"></i> Görüntüle
+                                        </a>
+                                        {% if not product.is_sold %}
+                                        <button onclick="markAsSold({{ product.id }})" style="flex: 1; padding: 0.75rem; background: rgba(255, 0, 110, 0.2); border: 2px solid rgba(255, 0, 110, 0.5); border-radius: 10px; color: #ff006e; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                            <i class="fas fa-check"></i> Satıldı İşaretle
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div style="text-align: center; padding: 4rem 2rem; color: #666;">
+                            <i class="fas fa-tags" style="font-size: 4rem; margin-bottom: 1.5rem; display: block; color: #7b2cbf; opacity: 0.3;"></i>
+                            <h3 style="color: #fff; margin-bottom: 1rem;">Henüz İlanınız Yok</h3>
+                            <p style="margin-bottom: 2rem; color: #888;">İlk ilanınızı vererek satışa başlayın!</p>
+                            <a href="/sell" style="padding: 1rem 2rem; background: linear-gradient(135deg, #7b2cbf, #9d4edd); color: #fff; text-decoration: none; border-radius: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.75rem; transition: all 0.3s;">
+                                <i class="fas fa-plus-circle"></i> İlan Ver
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // İlanı satıldı olarak işaretle
+        async function markAsSold(productId) {
+            if (!confirm('Bu ilanı satıldı olarak işaretlemek istediğinize emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/mark-sold/${productId}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ İlan satıldı olarak işaretlendi!');
+                    window.location.reload();
+                } else {
+                    alert('❌ Hata: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Bir hata oluştu!');
+            }
+        }
+    </script>
+    
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
+    <!-- Live Chat Widget -->
+    <script src="{{ url_for('static', filename='js/livechat.js') }}"></script>
+</body>
+</html>

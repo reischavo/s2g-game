@@ -1,0 +1,88 @@
+========================================
+⚠️ LOGO GÖRÜNMÜYOR - ÇÖZÜM
+========================================
+
+🔴 SORUN: İmgyukle.com hotlinking engelliyor (403 Forbidden)
+
+✅ ÇÖZÜM: Görseli manuel olarak indir ve yükle
+
+📌 ADIM ADIM TALİMAT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ GÖRSELI İNDİR:
+   • https://imgyukle.com/i/SRvgDs adresine git
+   • Sağ tık > "Resmi Farklı Kaydet"
+   • Dosya adı: logo.png veya logo.jpg
+
+2️⃣ GÖRSELI YÜKLE:
+   • İndirdiğin görseli şu klasöre kopyala:
+     s2g-game/static/images/logo.png
+
+3️⃣ TARAYICIYI YENİLE:
+   • Ctrl + F5 (hard refresh)
+   • Logo görünecek!
+
+========================================
+🔥 ALTERNATİF ÇÖZÜM: IMGUR KULLAN
+========================================
+
+Eğer manuel yükleme istemiyorsan:
+
+1️⃣ https://imgur.com/upload adresine git
+2️⃣ Görseli yükle
+3️⃣ "Copy Link" butonuna tıkla (direkt link)
+4️⃣ Bana linki ver, ben güncellerim
+
+Örnek Imgur linki:
+https://i.imgur.com/ABC123.png
+
+========================================
+📁 DOSYA YAPISI
+========================================
+
+s2g-game/
+├── static/
+│   ├── images/
+│   │   ├── logo.png  ← Buraya kopyala
+│   │   └── products/
+│   ├── css/
+│   └── js/
+└── templates/
+
+========================================
+🎯 LOGO BOYUTU
+========================================
+
+Önerilen boyutlar:
+• Genişlik: 200-400px
+• Yükseklik: 50-100px
+• Format: PNG (şeffaf arka plan)
+• Dosya boyutu: Max 500KB
+
+========================================
+✅ LOGO YÜKLENDIKTEN SONRA
+========================================
+
+Logo otomatik olarak şu sayfalarda görünecek:
+• Ana Sayfa
+• Ürünler
+• Profil
+• İlan Ver
+• Destek
+• Giriş
+• Kayıt
+
+========================================
+💡 HIZLI ÇÖZÜM
+========================================
+
+Eğer hemen test etmek istiyorsan:
+
+1. Herhangi bir logo görseli bul
+2. static/images/logo.png olarak kaydet
+3. Tarayıcıyı yenile (Ctrl + F5)
+
+Veya bana başka bir görsel linki ver,
+ben güncellerim!
+
+========================================

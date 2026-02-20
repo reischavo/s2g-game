@@ -1,0 +1,68 @@
+╔════════════════════════════════════════════════════════════╗
+║    HOSTS DOSYASI İLE HEMEN TEST ETME (GEÇİCİ ÇÖZÜM)      ║
+╚════════════════════════════════════════════════════════════╝
+
+Nameserver yayılmasını beklemeden siteyi test edebilirsiniz.
+
+ADIM 1: NOTEPAD'İ YÖNETİCİ OLARAK AÇIN
+═══════════════════════════════════════════════════════════
+
+1. Başlat menüsünde "notepad" yazın
+2. Notepad'e SAĞ tıklayın
+3. "Yönetici olarak çalıştır" seçin
+
+
+ADIM 2: HOSTS DOSYASINI AÇIN
+═══════════════════════════════════════════════════════════
+
+1. Notepad'de: File → Open
+2. Şu yolu kopyalayıp yapıştırın:
+   C:\Windows\System32\drivers\etc\hosts
+3. Sağ altta "Text Documents" yerine "All Files" seçin
+4. hosts dosyasını açın
+
+
+ADIM 3: ŞUNU DOSYANIN SONUNA EKLEYİN
+═══════════════════════════════════════════════════════════
+
+127.0.0.1 s2ggame.com
+127.0.0.1 www.s2ggame.com
+
+
+ADIM 4: KAYDET VE KAPAT
+═══════════════════════════════════════════════════════════
+
+File → Save
+
+
+ADIM 5: TEST EDİN
+═══════════════════════════════════════════════════════════
+
+Tarayıcıda:
+http://s2ggame.com:8000
+http://www.s2ggame.com:8000
+
+(Port 8000 eklemeyi unutmayın!)
+
+
+⚠️  ÖNEMLİ:
+═══════════════════════════════════════════════════════════
+
+Bu GEÇİCİ bir çözümdür. Nameserver yayılınca:
+
+1. Hosts dosyasını tekrar açın
+2. Eklediğiniz 2 satırı SİLİN
+3. Kaydedin
+
+Yoksa sadece sizin bilgisayarınızda çalışır!
+
+
+📝 VEYA SADECE BEKLEYIN:
+═══════════════════════════════════════════════════════════
+
+Nameserver yayılması 1-24 saat sürebilir.
+Cloudflare'de "Check nameservers now" butonuna basın.
+
+Yayılınca otomatik olarak çalışacak:
+https://s2ggame.com
+https://www.s2ggame.com

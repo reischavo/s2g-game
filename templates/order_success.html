@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✅ Sipariş Alındı - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bg-gradient {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            animation: float 35s ease-in-out infinite;
+        }
+        
+        .bg-gradient-1 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, #06ffa5, transparent);
+            top: -300px;
+            left: -300px;
+        }
+        
+        .bg-gradient-2 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #7b2cbf, transparent);
+            bottom: -250px;
+            right: -250px;
+            animation-delay: 12s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+        
+        .success-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .success-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(10, 10, 15, 0.95));
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(6, 255, 165, 0.3);
+            border-radius: 32px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(6, 255, 165, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Success Header */
+        .success-header {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .success-icon-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        
+        .success-icon {
+            width: 140px;
+            height: 140px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: #7b2cbf;
+            animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .success-icon::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0) rotate(-180deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+        
+        .success-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .success-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Content */
+        .success-content {
+            padding: 3rem;
+        }
+        
+        /* Order Info Card */
+        .order-info-card {
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.1), rgba(157, 78, 221, 0.1));
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .order-info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .order-number {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .order-number-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .order-number-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .detail-item {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .detail-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(123, 44, 191, 0.5);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.2);
+        }
+        
+        .detail-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .detail-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .detail-value.highlight {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2));
+            border: 2px solid rgba(255, 193, 7, 0.5);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            margin: 2rem auto;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffc107;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-badge {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 193, 7, 0.6);
+            }
+        }
+        
+        .status-badge i {
+            font-size: 1.5rem;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Delivery Timeline */
+        .delivery-timeline {
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .timeline-steps {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .timeline-step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            position: relative;
+        }
+        
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 50px;
+            width: 2px;
+            height: calc(100% + 1.5rem);
+            background: linear-gradient(180deg, rgba(123, 44, 191, 0.5), transparent);
+        }
+        
+        .timeline-step:last-child::before {
+            display: none;
+        }
+        
+        .step-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-icon.active {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(123, 44, 191, 0.6);
+            animation: pulse-step 2s ease-in-out infinite;
+        }
+        
+        .step-icon.completed {
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+            color: #000;
+        }
+        
+        .step-icon.pending {
+            background: rgba(123, 44, 191, 0.2);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            color: #666;
+        }
+        
+        @keyframes pulse-step {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-title.active {
+            color: #9d4edd;
+        }
+        
+        .step-title.completed {
+            color: #06ffa5;
+        }
+        
+        .step-description {
+            font-size: 0.9rem;
+            color: #888;
+            line-height: 1.6;
+        }
+        
+        .step-time {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-time.active {
+            color: #9d4edd;
+            font-weight: 600;
+        }
+        
+        /* Product Card */
+        .product-card {
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .product-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.2), rgba(157, 78, 221, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+        
+        .product-image i {
+            font-size: 4rem;
+            color: #7b2cbf;
+            opacity: 0.3;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-game {
+            display: inline-block;
+            background: rgba(123, 44, 191, 0.2);
+            color: #9d4edd;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .product-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-meta {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.1), rgba(157, 78, 221, 0.1));
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #9d4edd;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .info-list {
+            list-style: none;
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .info-list li {
+            padding: 1rem 1.5rem;
+            background: rgba(10, 10, 15, 0.6);
+            border-radius: 12px;
+            padding-left: 3rem;
+            position: relative;
+            color: #ccc;
+            transition: all 0.3s;
+        }
+        
+        .info-list li:hover {
+            background: rgba(123, 44, 191, 0.1);
+            color: #fff;
+            transform: translateX(10px);
+        }
+        
+        .info-list li::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-list li::after {
+            content: '✓';
+            position: absolute;
+            left: 1.4rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+        
+        /* Button Group */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .btn {
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(123, 44, 191, 0.6);
+        }
+        
+        .btn-secondary {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-5px);
+            border-color: rgba(123, 44, 191, 0.6);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.3);
+        }
+        
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #06ffa5;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(var(--drift, 0px)) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .success-title {
+                font-size: 2rem;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .success-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+    </div>
+    
+    <div class="success-container">
+        <div class="success-card">
+            <!-- Success Header -->
+            <div class="success-header">
+                <div class="success-icon-wrapper">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <h1 class="success-title">Sipariş Alındı!</h1>
+                <p class="success-subtitle">Ödemeniz başarıyla tamamlandı</p>
+                
+                <!-- Status Badge -->
+                <div class="status-badge">
+                    <i class="fas fa-clock"></i>
+                    <span>Teslimat Bekleniyor</span>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="success-content">
+                <!-- Order Info Card -->
+                <div class="order-info-card">
+                    <div class="order-number">
+                        <div class="order-number-label">Sipariş Numarası</div>
+                        <div class="order-number-value">#{{ order.id }}</div>
+                    </div>
+                    
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-calendar"></i>
+                                Tarih
+                            </div>
+                            <div class="detail-value">{{ order.created_at.strftime('%d.%m.%Y') }}</div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-clock"></i>
+                                Saat
+                            </div>
+                            <div class="detail-value">{{ order.created_at.strftime('%H:%M') }}</div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-dollar-sign"></i>
+                                Ödenen Tutar
+                            </div>
+                            <div class="detail-value highlight">{{ order.price }}₺</div>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-wallet"></i>
+                                Kalan Bakiye
+                            </div>
+                            <div class="detail-value">{{ "%.2f"|format(user.balance) }}₺</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Card -->
+                <div class="product-card">
+                    <div class="product-image">
+                        {% if product.image_url %}
+                        <img src="{{ product.image_url }}" alt="{{ product.title }}">
+                        {% else %}
+                        <i class="fas fa-gamepad"></i>
+                        {% endif %}
+                    </div>
+                    <div class="product-info">
+                        <span class="product-game">{{ product.game }}</span>
+                        <h2 class="product-title">{{ product.title }}</h2>
+                        <div class="product-meta">
+                            {% if product.rank %}<i class="fas fa-trophy"></i> {{ product.rank }} • {% endif %}
+                            {% if product.region %}<i class="fas fa-globe"></i> {{ product.region }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Delivery Timeline -->
+                <div class="delivery-timeline">
+                    <div class="timeline-title">
+                        <i class="fas fa-shipping-fast"></i>
+                        Teslimat Süreci
+                    </div>
+                    
+                    <div class="timeline-steps">
+                        <!-- Step 1: Completed -->
+                        <div class="timeline-step">
+                            <div class="step-icon completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title completed">Ödeme Alındı</div>
+                                <div class="step-description">
+                                    Ödemeniz başarıyla işleme alındı ve bakiyeniz güncellendi.
+                                </div>
+                                <div class="step-time">
+                                    <i class="fas fa-check-circle"></i>
+                                    Tamamlandı - {{ order.created_at.strftime('%d.%m.%Y %H:%M') }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Active -->
+                        <div class="timeline-step">
+                            <div class="step-icon active">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title active">Satıcı Onayı Bekleniyor</div>
+                                <div class="step-description">
+                                    Satıcı siparişinizi hazırlıyor. Hesap bilgileri en kısa sürede size iletilecek.
+                                </div>
+                                <div class="step-time active">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    Ortalama bekleme süresi: 5-30 dakika
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Pending -->
+                        <div class="timeline-step">
+                            <div class="step-icon pending">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title">Hesap Bilgileri Teslim Edilecek</div>
+                                <div class="step-description">
+                                    Satıcı onayladıktan sonra hesap bilgileri email adresinize gönderilecek.
+                                </div>
+                                <div class="step-time">
+                                    <i class="fas fa-clock"></i>
+                                    Bekleniyor
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Pending -->
+                        <div class="timeline-step">
+                            <div class="step-icon pending">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="step-content">
+                                <div class="step-title">Sipariş Tamamlandı</div>
+                                <div class="step-description">
+                                    Hesabı aldıktan sonra değerlendirme yapabilir ve satıcıya puan verebilirsiniz.
+                                </div>
+                                <div class="step-time">
+                                    <i class="fas fa-clock"></i>
+                                    Bekleniyor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Info Box -->
+                <div class="info-box">
+                    <div class="info-title">
+                        <i class="fas fa-info-circle"></i>
+                        Önemli Bilgiler
+                    </div>
+                    <ul class="info-list">
+                        <li>Satıcı siparişi onayladığında email bildirimi alacaksınız</li>
+                        <li>Hesap bilgileri profilinizden "Siparişlerim" bölümünde görünecek</li>
+                        <li>Teslimat süresi ortalama 5-30 dakika arasındadır</li>
+                        <li>Sorun yaşarsanız canlı destek ile 7/24 iletişime geçebilirsiniz</li>
+                        <li>Hesabı aldıktan sonra şifresini mutlaka değiştirin</li>
+                    </ul>
+                </div>
+                
+                <!-- Button Group -->
+                <div class="btn-group">
+                    <a href="/profile" class="btn btn-primary">
+                        <i class="fas fa-box"></i> Siparişlerim
+                    </a>
+                    <a href="/products" class="btn btn-secondary">
+                        <i class="fas fa-shopping-bag"></i> Alışverişe Devam
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Enhanced Confetti Animation
+        function createConfetti() {
+            const colors = ['#06ffa5', '#00d9ff', '#7b2cbf', '#9d4edd', '#ff006e'];
+            const shapes = ['circle', 'square', 'triangle'];
+            const confettiCount = 80;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random position
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-20px';
+                    
+                    // Random color
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Random size
+                    const size = Math.random() * 8 + 6;
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    
+                    // Random shape
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    if (shape === 'circle') {
+                        confetti.style.borderRadius = '50%';
+                    } else if (shape === 'triangle') {
+                        confetti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                    }
+                    
+                    // Random animation
+                    confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                    
+                    // Random horizontal drift
+                    const drift = (Math.random() - 0.5) * 200;
+                    confetti.style.setProperty('--drift', drift + 'px');
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 20);
+            }
+        }
+        
+        // Success sound effect (optional - can be muted)
+        function playSuccessSound() {
+            // Create a simple success beep using Web Audio API
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                // Ses çalmazsa sessizce devam et
+                console.log('Audio not supported');
+            }
+        }
+        
+        // Animate numbers counting up
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = current.toFixed(2) + '₺';
+            }, 16);
+        }
+        
+        // Trigger all animations on page load
+        window.addEventListener('load', () => {
+            // Confetti
+            createConfetti();
+            
+            // Success sound (optional)
+            // playSuccessSound();
+            
+            // Animate balance number
+            const balanceElement = document.querySelector('.detail-value.highlight');
+            if (balanceElement) {
+                const finalValue = parseFloat(balanceElement.textContent);
+                balanceElement.textContent = '0.00₺';
+                setTimeout(() => {
+                    animateValue(balanceElement, 0, finalValue, 1000);
+                }, 300);
+            }
+            
+            // Add hover effects to info list items
+            const infoItems = document.querySelectorAll('.info-list li');
+            infoItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateX(-20px)';
+                    setTimeout(() => {
+                        item.style.transition = 'all 0.5s ease-out';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateX(0)';
+                    }, 50);
+                }, index * 100 + 600);
+            });
+        });
+        
+        // Add click effect to buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        width: 100px;
+                        height: 100px;
+                        margin-top: -50px;
+                        margin-left: -50px;
+                        animation: ripple 0.6s;
+                        pointer-events: none;
+                    `;
+                    ripple.style.left = e.clientX - this.getBoundingClientRect().left + 'px';
+                    ripple.style.top = e.clientY - this.getBoundingClientRect().top + 'px';
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

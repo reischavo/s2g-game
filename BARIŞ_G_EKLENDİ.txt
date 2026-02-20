@@ -1,0 +1,167 @@
+========================================
+✅ BARIŞ G KURUCUMUZ BÖLÜMÜ EKLENDİ!
+========================================
+
+🎨 PROFESYONEL KURUCUMUZ BÖLÜMÜ
+
+📌 EKLENEN BÖLÜM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Ana sayfaya özel "Kurucumuz" bölümü eklendi
+✅ Stats section ile Categories arasına yerleştirildi
+✅ Profesyonel ve modern tasarım
+✅ Barış G'nin fotoğrafı öne çıkarıldı
+
+📌 BÖLÜM ÖZELLİKLERİ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 SOL TARAF - FOTOĞRAF:
+• Büyük fotoğraf (400px)
+• Mor gradient glow efekti
+• Animasyonlu arka plan
+• Alt kısımda badge: "Barış G - Kurucu & CEO"
+• 3px mor border
+• Profesyonel shadow efekti
+
+🔥 SAĞ TARAF - BİLGİLER:
+• "Kurucumuz" başlığı (3rem, gradient)
+• "Barış G - S2G Game Kurucusu & CEO" (taç ikonu ile)
+• Açıklama metni
+• 3 istatistik kartı:
+  - 15K+ Mutlu Müşteri
+  - 2.5K+ Başarılı Satış
+  - %100 Güvenlik
+• Alıntı kutusu (quote)
+• 4 sosyal medya butonu:
+  - Instagram
+  - Twitter
+  - Discord
+  - YouTube
+
+📌 TASARIM DETAYLARI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Gradient arka plan (mor-pembe)
+• Pulse animasyonu
+• Glow efekti (fotoğraf etrafında)
+• Hover animasyonları (sosyal medya butonları)
+• Responsive tasarım (mobilde tek kolon)
+• Grid layout (2 kolon)
+
+📌 GÖRSEL KONUMU
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Dosya: s2g-game/static/images/baris-g.png
+
+Eğer dosya adı farklıysa:
+• baris-g.jpg
+• baris-g.jpeg
+• logo.png (geçici olarak)
+
+📌 SAYFA AKIŞI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Sponsor Banner (PUBG Mobile)
+2. Navbar
+3. Hero Section
+4. Stats Section (4 istatistik)
+5. 🆕 KURUCUMUZ BÖLÜMÜ (Barış G)
+6. Categories (Oyunlar)
+7. Featured Products
+8. Footer
+
+📌 CSS ÖZELLİKLERİ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+.founder-section {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, 
+        rgba(123, 44, 191, 0.1), 
+        rgba(255, 0, 110, 0.1));
+}
+
+.founder-image {
+    border-radius: 20px;
+    border: 3px solid rgba(123, 44, 191, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.founder-image-bg {
+    background: linear-gradient(135deg, #7b2cbf, #ff006e);
+    filter: blur(20px);
+    animation: glow 3s ease-in-out infinite;
+}
+
+📌 ANİMASYONLAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Glow animasyonu (fotoğraf arka planı)
+✅ Pulse animasyonu (bölüm arka planı)
+✅ Hover animasyonu (sosyal medya butonları)
+✅ Scale animasyonu (hover'da büyüme)
+
+📌 RESPONSİVE TASARIM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Desktop (1024px+):
+• 2 kolon (fotoğraf + bilgiler)
+• 400px fotoğraf genişliği
+
+Tablet/Mobile (< 1024px):
+• 1 kolon (üst üste)
+• Fotoğraf tam genişlik
+• İstatistikler tek kolon
+
+📌 SOSYAL MEDYA BUTONLARI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• 50x50px boyut
+• Mor border
+• Hover'da gradient arka plan
+• Hover'da yukarı hareket (translateY)
+• Mor shadow efekti
+
+📌 İSTATİSTİK KARTLARI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• 3 kolon grid
+• Gradient sayılar (mor-pembe)
+• Mor border
+• Yarı saydam arka plan
+• Merkeze hizalı
+
+📌 ALINTILAR (QUOTE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Sol tarafta mor border (4px)
+• Mor arka plan (10% opacity)
+• İtalik yazı
+• Quote ikonları (sol ve sağ)
+
+📌 GÖRÜNÜM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[FOTOĞRAF]              KURUCUMUZ
+Barış G                 👑 Barış G - S2G Game Kurucusu & CEO
+Kurucu & CEO            
+                        Açıklama metni...
+                        
+                        [15K+]  [2.5K+]  [%100]
+                        Müşteri  Satış   Güvenlik
+                        
+                        "Alıntı metni..."
+                        
+                        [📷] [🐦] [💬] [📺]
+
+========================================
+✅ BARIŞ G BÖLÜMÜ TAMAMLANDI!
+========================================
+
+🎮 Ana Sayfa: http://localhost:5000
+
+Barış G'nin fotoğrafı profesyonel bir şekilde
+ana sayfada öne çıkarıldı!
+
+Dosya: static/images/baris-g.png
+
+========================================

@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Mohawk Development - Admin Control Panel | S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --mohawk-primary: #7b2cbf;
+            --mohawk-secondary: #9d4edd;
+            --mohawk-accent: #c77dff;
+            --mohawk-pink: #ff006e;
+            --mohawk-success: #06ffa5;
+            --mohawk-warning: #ffbe0b;
+            --mohawk-danger: #ff006e;
+            --mohawk-bg-dark: #0a0a0f;
+            --mohawk-bg-card: rgba(26, 26, 46, 0.6);
+            --mohawk-border: rgba(123, 44, 191, 0.3);
+            --mohawk-text: #ffffff;
+            --mohawk-text-muted: #888888;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--bg-dark);
+            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bg-gradient {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.2;
+            animation: float 35s ease-in-out infinite;
+        }
+        
+        .bg-gradient-1 {
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, #7b2cbf, transparent);
+            top: -350px;
+            left: -350px;
+        }
+        
+        .bg-gradient-2 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, #ff006e, transparent);
+            bottom: -300px;
+            right: -300px;
+            animation-delay: 12s;
+        }
+        
+        .bg-gradient-3 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #9d4edd, transparent);
+            top: 50%;
+            left: 50%;
+            animation-delay: 24s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(150px, -150px) scale(1.2); }
+            66% { transform: translate(-150px, 150px) scale(0.8); }
+        }
+        
+        .admin-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Ultra Modern Header */
+        .admin-header {
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.3), rgba(157, 78, 221, 0.3));
+            backdrop-filter: blur(30px);
+            border: 2px solid var(--border);
+            padding: 0;
+            border-radius: 24px;
+            margin-bottom: 3rem;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(123, 44, 191, 0.4);
+            position: relative;
+        }
+        
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .admin-banner {
+            height: 150px;
+            background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #ff006e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to top, rgba(10, 10, 15, 0.9), transparent);
+        }
+        
+        .admin-content {
+            padding: 2rem 3rem 3rem;
+            position: relative;
+            margin-top: -60px;
+        }
+        
+        .admin-title-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #F5A623, #F7B731);
+            color: #000;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(245, 166, 35, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .admin-subtitle {
+            color: #ccc;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            padding: 0.85rem 1.75rem;
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: var(--secondary);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.5);
+        }
+        
+        .quick-action-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Ultra Modern Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 25px 60px rgba(123, 44, 191, 0.5);
+            background: rgba(123, 44, 191, 0.15);
+        }
+        
+        .stat-card-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(123, 44, 191, 0.3), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .stat-card:hover .stat-card-glow {
+            opacity: 1;
+            animation: glowRotate 3s linear infinite;
+        }
+        
+        @keyframes glowRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: inherit;
+            border-radius: 18px;
+            filter: blur(15px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+        }
+        
+        .stat-icon.pink {
+            background: linear-gradient(135deg, #ff006e, #ff4d8f);
+        }
+        
+        .stat-icon.green {
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+        }
+        
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #F5A623, #F7B731);
+        }
+        
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #00d9ff, #0099ff);
+        }
+        
+        .stat-icon.red {
+            background: linear-gradient(135deg, #ff006e, #ff4d8f);
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--success);
+            font-weight: 700;
+        }
+        
+        .stat-change.negative {
+            color: var(--danger);
+        }
+        
+        .stat-change i {
+            font-size: 1rem;
+        }
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: var(--bg-dark);
+        }
+        
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tbody tr {
+            transition: background 0.2s;
+        }
+        
+        tbody tr:hover {
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge-success {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .badge-warning {
+            background: rgba(255, 190, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+        
+        .badge-danger {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .badge-info {
+            background: rgba(157, 78, 221, 0.2);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(123, 44, 191, 0.4);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            background: #d90060;
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #ccc;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .log-entry {
+            padding: 1rem;
+            background: var(--bg-dark);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .log-time {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .log-action {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .log-details {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .ip-address {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: var(--success);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 1rem;
+            }
+            
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+        <div class="bg-gradient bg-gradient-3"></div>
+    </div>
+    
+    <div class="admin-container">
+        <!-- Ultra Modern Header -->
+        <div class="admin-header">
+            <div class="admin-banner"></div>
+            <div class="admin-content">
+                <div class="admin-title-section">
+                    <div>
+                        <h1 class="admin-title">
+                            <i class="fas fa-shield-alt"></i>
+                            MOHAWK DEVELOPMENT
+                        </h1>
+                        <p class="admin-subtitle">
+                            <i class="fas fa-code"></i> Ultra Modern Admin Control Panel | S2G Game Management System
+                            <br>
+                            <span style="font-size: 0.9rem; opacity: 0.8;">
+                                <i class="fas fa-user-shield"></i> Admin: {{ session.get('username') }} | 
+                                <i class="fas fa-clock"></i> {{ now.strftime('%d.%m.%Y %H:%M') if now else '' }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="admin-badge">
+                        <i class="fas fa-crown"></i>
+                        SUPER ADMIN
+                    </div>
+                </div>
+                
+                <div class="admin-quick-actions">
+                    <a href="#dashboard" class="quick-action-btn">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                    <a href="#users" class="quick-action-btn">
+                        <i class="fas fa-users"></i>
+                        Kullanıcılar
+                    </a>
+                    <a href="#products" class="quick-action-btn">
+                        <i class="fas fa-box"></i>
+                        İlanlar
+                    </a>
+                    <a href="#transactions" class="quick-action-btn">
+                        <i class="fas fa-exchange-alt"></i>
+                        İşlemler
+                    </a>
+                    <a href="#live-chat" class="quick-action-btn">
+                        <i class="fas fa-comments"></i>
+                        Canlı Destek
+                    </a>
+                    <a href="#analytics" class="quick-action-btn">
+                        <i class="fas fa-chart-line"></i>
+                        Analitik
+                    </a>
+                    <a href="#logs" class="quick-action-btn">
+                        <i class="fas fa-history"></i>
+                        Loglar
+                    </a>
+                    <a href="#settings" class="quick-action-btn">
+                        <i class="fas fa-cog"></i>
+                        Ayarlar
+                    </a>
+                    <a href="/" class="quick-action-btn">
+                        <i class="fas fa-home"></i>
+                        Ana Sayfa
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ultra Modern Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-glow"></div>
+                <div class="stat-icon purple">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value">{{ stats.total_users }}</div>
+                <div class="stat-label">Toplam Kullanıcı</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+12% bu ay</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-glow"></div>
+                <div class="stat-icon pink">
+                    <i class="fas fa-box"></i>
+                </div>
+                <div class="stat-value">{{ stats.total_products }}</div>
+                <div class="stat-label">Toplam Ürün</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+8% bu hafta</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-glow"></div>
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value">{{ stats.active_products }}</div>
+                <div class="stat-label">Aktif Ürün</div>
+                <div class="stat-change">
+                    <i class="fas fa-check"></i>
+                    <span>Satışta</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-glow"></div>
+                <div class="stat-icon orange">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-value">{{ stats.total_orders }}</div>
+                <div class="stat-label">Toplam Sipariş</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+25% bu ay</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-glow"></div>
+                <div class="stat-icon blue">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="stat-value">{{ "%.0f"|format(stats.total_revenue) }}₺</div>
+                <div class="stat-label">Toplam Gelir</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+35% bu ay</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-card-glow"></div>
+                <div class="stat-icon red">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-value">{{ stats.total_views }}</div>
+                <div class="stat-label">Toplam Görüntülenme</div>
+                <div class="stat-change">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>+18% bu hafta</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--success);">
+                    <i class="fas fa-lira-sign"></i>
+                </div>
+                <div class="stat-value">{{ stats.total_revenue|int }}₺</div>
+                <div class="stat-label">Toplam Gelir</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--secondary);">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-value">{{ stats.total_views }}</div>
+                <div class="stat-label">Toplam Görüntülenme</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="color: var(--warning);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value">{{ stats.pending_transactions }}</div>
+                <div class="stat-label">Bekleyen İşlem</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-bolt"></i> Hızlı İşlemler</h2>
+            </div>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="scrollToSection('add-product')">
+                    <i class="fas fa-plus"></i> Yeni Ürün Ekle
+                </button>
+                <button class="btn btn-primary" onclick="scrollToSection('users')">
+                    <i class="fas fa-users"></i> Kullanıcıları Görüntüle
+                </button>
+                <button class="btn btn-primary" onclick="scrollToSection('logs')">
+                    <i class="fas fa-history"></i> Aktivite Logları
+                </button>
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Ana Sayfaya Dön
+                </a>
+            </div>
+        </div>
+
+        <!-- Add Product Section -->
+        <div class="section" id="add-product">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-plus-circle"></i> Yeni Ürün Ekle</h2>
+            </div>
+            <form id="addProductForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><i class="fas fa-heading"></i> Ürün Başlığı</label>
+                        <input type="text" name="title" required placeholder="Örn: Valorant Radiant Hesabı">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-gamepad"></i> Oyun</label>
+                        <select name="game" required>
+                            <option value="Valorant">Valorant</option>
+                            <option value="League of Legends">League of Legends</option>
+                            <option value="CS2">CS2</option>
+                            <option value="PUBG Mobile">PUBG Mobile</option>
+                            <option value="Clash of Clans">Clash of Clans</option>
+                            <option value="Discord">Discord</option>
+                            <option value="Fortnite">Fortnite</option>
+                            <option value="Minecraft">Minecraft</option>
+                            <option value="Apex Legends">Apex Legends</option>
+                            <option value="Rocket League">Rocket League</option>
+                            <option value="Overwatch 2">Overwatch 2</option>
+                            <option value="Genshin Impact">Genshin Impact</option>
+                            <option value="Brawl Stars">Brawl Stars</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-tag"></i> Kategori</label>
+                        <select name="category" required>
+                            <option value="Hesap">Hesap</option>
+                            <option value="Abonelik">Abonelik</option>
+                            <option value="Eşya">Eşya</option>
+                            <option value="Skin">Skin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-lira-sign"></i> Fiyat (₺)</label>
+                        <input type="number" name="price" required placeholder="0.00" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-trophy"></i> Rank/Level</label>
+                        <input type="text" name="rank" placeholder="Örn: Radiant, TH15">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-globe"></i> Bölge</label>
+                        <input type="text" name="region" placeholder="TR, EU, Global" value="TR">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Görsel URL</label>
+                    <input type="url" name="image_url" placeholder="https://images.unsplash.com/...">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Açıklama</label>
+                    <textarea name="description" required placeholder="Ürün açıklaması..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Ürün Ekle
+                </button>
+            </form>
+        </div>
+
+        <!-- Products Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-box"></i> Ürünler ({{ products|length }})</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Başlık</th>
+                            <th>Oyun</th>
+                            <th>Kategori</th>
+                            <th>Fiyat</th>
+                            <th>Görüntülenme</th>
+                            <th>Durum</th>
+                            <th>Tarih</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products[:20] %}
+                        <tr>
+                            <td><strong>#{{ product.id }}</strong></td>
+                            <td>{{ product.title[:40] }}...</td>
+                            <td><span class="badge badge-info">{{ product.game }}</span></td>
+                            <td>{{ product.category }}</td>
+                            <td><strong>{{ product.price }}₺</strong></td>
+                            <td><i class="fas fa-eye"></i> {{ product.views }}</td>
+                            <td>
+                                {% if product.is_sold %}
+                                    <span class="badge badge-danger">Satıldı</span>
+                                {% else %}
+                                    <span class="badge badge-success">Aktif</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ product.created_at.strftime('%d.%m.%Y') }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="openEditModal({{ product.id }}, '{{ product.title }}', '{{ product.description }}', {{ product.price }}, '{{ product.game }}', '{{ product.rank }}', '{{ product.region }}', '{{ product.image_url or '' }}')" style="margin-right: 0.5rem;">
+                                    <i class="fas fa-edit"></i> Düzenle
+                                </button>
+                                <button class="btn btn-warning btn-sm" onclick="toggleProduct({{ product.id }})" style="margin-right: 0.5rem;">
+                                    <i class="fas fa-sync"></i> {% if product.is_sold %}Aktif Yap{% else %}Satıldı{% endif %}
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteProduct({{ product.id }})">
+                                    <i class="fas fa-trash"></i> Sil
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="section" id="users">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-users"></i> Kullanıcılar ({{ users|length }})</h2>
+                <button onclick="openAddUserModal()" style="padding: 0.85rem 1.75rem; background: linear-gradient(135deg, var(--mohawk-primary), var(--mohawk-secondary)); border: none; border-radius: 14px; color: #fff; font-weight: 700; cursor: pointer; transition: all 0.3s;">
+                    <i class="fas fa-user-plus"></i> Kullanıcı Ekle
+                </button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>Email</th>
+                            <th>Bakiye</th>
+                            <th>Son IP</th>
+                            <th>Son Giriş</th>
+                            <th>Admin</th>
+                            <th>Kayıt Tarihi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td><strong>#{{ user.id }}</strong></td>
+                            <td><i class="fas fa-user"></i> {{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td><strong>{{ user.balance }}₺</strong></td>
+                            <td><span class="ip-address">{{ user.last_ip or 'N/A' }}</span></td>
+                            <td>{{ user.last_login.strftime('%d.%m.%Y %H:%M') if user.last_login else 'Hiç' }}</td>
+                            <td>
+                                {% if user.is_admin %}
+                                    <span class="badge badge-warning"><i class="fas fa-crown"></i> Admin</span>
+                                {% else %}
+                                    <span class="badge badge-info">Kullanıcı</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ user.created_at.strftime('%d.%m.%Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Siparişler ({{ orders|length }})</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Kullanıcı</th>
+                            <th>Ürün ID</th>
+                            <th>Fiyat</th>
+                            <th>IP Adresi</th>
+                            <th>Durum</th>
+                            <th>Tarih</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders[:20] %}
+                        <tr>
+                            <td><strong>#{{ order.id }}</strong></td>
+                            <td>#{{ order.user_id }}</td>
+                            <td>#{{ order.product_id }}</td>
+                            <td><strong>{{ order.price }}₺</strong></td>
+                            <td><span class="ip-address">{{ order.ip_address or 'N/A' }}</span></td>
+                            <td>
+                                {% if order.status == 'completed' %}
+                                    <span class="badge badge-success">Tamamlandı</span>
+                                {% elif order.status == 'pending' %}
+                                    <span class="badge badge-warning">Bekliyor</span>
+                                {% else %}
+                                    <span class="badge badge-danger">İptal</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Transactions Section (NEW) -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-exchange-alt"></i> Bakiye İşlemleri ({{ transactions|length }})
+                    {% if stats.pending_transactions > 0 %}
+                        <span class="badge badge-warning" style="margin-left: 1rem;">{{ stats.pending_transactions }} Bekliyor</span>
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Kullanıcı</th>
+                            <th>Tip</th>
+                            <th>Tutar</th>
+                            <th>Yöntem</th>
+                            <th>Durum</th>
+                            <th>Tarih</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions[:30] %}
+                        <tr>
+                            <td><strong>#{{ transaction.id }}</strong></td>
+                            <td>#{{ transaction.user_id }}</td>
+                            <td>
+                                {% if transaction.type == 'deposit' %}
+                                    <span class="badge badge-success"><i class="fas fa-arrow-up"></i> Yükleme</span>
+                                {% else %}
+                                    <span class="badge badge-danger"><i class="fas fa-arrow-down"></i> Çekim</span>
+                                {% endif %}
+                            </td>
+                            <td><strong>{{ transaction.amount }}₺</strong></td>
+                            <td>{{ transaction.method }}</td>
+                            <td>
+                                {% if transaction.status == 'completed' %}
+                                    <span class="badge badge-success">Onaylandı</span>
+                                {% elif transaction.status == 'pending' %}
+                                    <span class="badge badge-warning">Bekliyor</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Reddedildi</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ transaction.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                            <td>
+                                {% if transaction.status == 'pending' %}
+                                    <button class="btn btn-success btn-sm" onclick="approveTransaction({{ transaction.id }})" style="margin-right: 0.5rem;">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="rejectTransaction({{ transaction.id }})">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                {% else %}
+                                    <span style="color: #888;">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Activity Logs Section -->
+        <div class="section" id="logs">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-history"></i> Aktivite Logları (Son 50)</h2>
+            </div>
+            {% for log in logs %}
+            <div class="log-entry">
+                <div class="log-time">
+                    <i class="fas fa-clock"></i> {{ log.created_at.strftime('%d.%m.%Y %H:%M:%S') }}
+                </div>
+                <div class="log-action">
+                    <i class="fas fa-info-circle"></i> {{ log.action }}
+                </div>
+                <div class="log-details">
+                    <i class="fas fa-network-wired"></i> IP: <span class="ip-address">{{ log.ip_address }}</span> | 
+                    <i class="fas fa-user"></i> User ID: #{{ log.user_id }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- LIVE CHAT MANAGEMENT SECTION -->
+        <div class="section" id="live-chat">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-comments"></i> Canlı Destek Mesajları
+                    <span id="total-unread" class="badge badge-danger" style="margin-left: 1rem; display: none;">0 Okunmamış</span>
+                </h2>
+                <button onclick="refreshChatSessions()" class="btn btn-primary">
+                    <i class="fas fa-sync"></i> Yenile
+                </button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2rem; min-height: 600px;">
+                <!-- Chat Sessions List -->
+                <div style="background: rgba(10, 10, 15, 0.5); border: 2px solid var(--mohawk-border); border-radius: 16px; padding: 1.5rem; overflow-y: auto; max-height: 600px;">
+                    <h3 style="margin: 0 0 1.5rem 0; font-size: 1.2rem; color: var(--mohawk-accent);">
+                        <i class="fas fa-users"></i> Aktif Oturumlar
+                    </h3>
+                    <div id="chat-sessions-list">
+                        <div style="text-align: center; padding: 3rem 1rem; color: #888;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>Oturumlar yükleniyor...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Messages Area -->
+                <div style="background: rgba(10, 10, 15, 0.5); border: 2px solid var(--mohawk-border); border-radius: 16px; display: flex; flex-direction: column;">
+                    <div id="chat-header" style="padding: 1.5rem; border-bottom: 2px solid var(--mohawk-border); display: none;">
+                        <h3 style="margin: 0; font-size: 1.2rem; color: var(--mohawk-accent);">
+                            <i class="fas fa-user"></i> <span id="chat-username">Kullanıcı</span>
+                        </h3>
+                        <p style="margin: 0.5rem 0 0 0; color: #888; font-size: 0.9rem;">
+                            <span id="chat-info"></span>
+                        </p>
+                    </div>
+                    
+                    <div id="chat-messages-area" style="flex: 1; padding: 1.5rem; overflow-y: auto; max-height: 400px;">
+                        <div style="text-align: center; padding: 3rem 1rem; color: #888;">
+                            <i class="fas fa-comments" style="font-size: 3rem; margin-bottom: 1rem; color: var(--mohawk-primary);"></i>
+                            <p style="font-size: 1.1rem;">Bir oturum seçin</p>
+                            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Mesajları görüntülemek için soldaki listeden bir kullanıcı seçin</p>
+                        </div>
+                    </div>
+                    
+                    <div id="chat-reply-area" style="padding: 1.5rem; border-top: 2px solid var(--mohawk-border); display: none;">
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="text" id="admin-message-input" placeholder="Mesajınızı yazın..." style="flex: 1; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                            <button onclick="sendAdminMessage()" class="btn btn-primary" style="padding: 1rem 2rem;">
+                                <i class="fas fa-paper-plane"></i> Gönder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: İlan Düzenleme -->
+    <div id="editProductModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(10, 10, 15, 0.95)); backdrop-filter: blur(30px); border: 2px solid var(--mohawk-border); border-radius: 24px; padding: 3rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(123, 44, 191, 0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; background: linear-gradient(135deg, #fff, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <i class="fas fa-edit"></i> İlan Düzenle
+                </h2>
+                <button onclick="closeEditModal()" style="background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: all 0.3s;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editProductForm">
+                <input type="hidden" id="edit_product_id">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Başlık</label>
+                    <input type="text" id="edit_title" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Açıklama</label>
+                    <textarea id="edit_description" rows="3" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem; resize: vertical;"></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Fiyat (₺)</label>
+                        <input type="number" id="edit_price" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Oyun</label>
+                        <select id="edit_game" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                            <option value="PUBG Mobile">PUBG Mobile</option>
+                            <option value="Valorant">Valorant</option>
+                            <option value="League of Legends">League of Legends</option>
+                            <option value="CS2">CS2</option>
+                            <option value="Clash of Clans">Clash of Clans</option>
+                            <option value="Discord">Discord</option>
+                            <option value="Fortnite">Fortnite</option>
+                            <option value="Minecraft">Minecraft</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Rank</label>
+                        <input type="text" id="edit_rank" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Bölge</label>
+                        <input type="text" id="edit_region" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                    </div>
+                </div>
+                <div style="margin-bottom: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Görsel URL</label>
+                    <input type="url" id="edit_image_url" style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" style="flex: 1; padding: 1.25rem; background: linear-gradient(135deg, var(--mohawk-primary), var(--mohawk-secondary)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                    <button type="button" onclick="closeEditModal()" style="flex: 1; padding: 1.25rem; background: rgba(255, 0, 110, 0.2); border: 2px solid var(--mohawk-pink); border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Kullanıcı Ekleme -->
+    <div id="addUserModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(10, 10, 15, 0.95)); backdrop-filter: blur(30px); border: 2px solid var(--mohawk-border); border-radius: 24px; padding: 3rem; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(123, 44, 191, 0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 2rem; background: linear-gradient(135deg, #fff, #9d4edd); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <i class="fas fa-user-plus"></i> Kullanıcı Ekle
+                </h2>
+                <button onclick="closeAddUserModal()" style="background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; opacity: 0.7;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addUserForm">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Kullanıcı Adı</label>
+                    <input type="text" name="username" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Email</label>
+                    <input type="email" name="email" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Şifre</label>
+                    <input type="password" name="password" required style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #ccc; font-weight: 600;">Bakiye (₺)</label>
+                    <input type="number" name="balance" value="0" step="0.01" style="width: 100%; padding: 1rem; background: rgba(26, 26, 46, 0.8); border: 2px solid var(--mohawk-border); border-radius: 12px; color: #fff; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 1.5rem; display: flex; gap: 2rem;">
+                    <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                        <input type="checkbox" name="is_admin" style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #ccc; font-weight: 600;">Admin Yetkisi</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                        <input type="checkbox" name="is_verified" style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="color: #ccc; font-weight: 600;">Doğrulanmış</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" style="flex: 1; padding: 1.25rem; background: linear-gradient(135deg, var(--mohawk-primary), var(--mohawk-secondary)); border: none; border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer;">
+                        <i class="fas fa-user-plus"></i> Kullanıcı Ekle
+                    </button>
+                    <button type="button" onclick="closeAddUserModal()" style="flex: 1; padding: 1.25rem; background: rgba(255, 0, 110, 0.2); border: 2px solid var(--mohawk-pink); border-radius: 14px; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer;">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // MOHAWK DEVELOPMENT ADMIN PANEL - ULTRA MODERN
+        // ============================================
+        
+        // İlan Düzenleme Modal
+        function openEditModal(productId, title, description, price, game, rank, region, imageUrl) {
+            document.getElementById('edit_product_id').value = productId;
+            document.getElementById('edit_title').value = title;
+            document.getElementById('edit_description').value = description;
+            document.getElementById('edit_price').value = price;
+            document.getElementById('edit_game').value = game;
+            document.getElementById('edit_rank').value = rank;
+            document.getElementById('edit_region').value = region;
+            document.getElementById('edit_image_url').value = imageUrl || '';
+            document.getElementById('editProductModal').style.display = 'flex';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editProductModal').style.display = 'none';
+        }
+        
+        // İlan Düzenleme Form Submit
+        document.getElementById('editProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const productId = document.getElementById('edit_product_id').value;
+            const data = {
+                title: document.getElementById('edit_title').value,
+                description: document.getElementById('edit_description').value,
+                price: parseFloat(document.getElementById('edit_price').value),
+                game: document.getElementById('edit_game').value,
+                rank: document.getElementById('edit_rank').value,
+                region: document.getElementById('edit_region').value,
+                image_url: document.getElementById('edit_image_url').value
+            };
+            
+            try {
+                const response = await fetch(`/admin/edit-product/${productId}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('✅ İlan başarıyla güncellendi!', 'success');
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    showNotification('❌ Hata: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Bir hata oluştu!', 'error');
+            }
+        });
+        
+        // İlan Durumu Değiştirme (Toggle)
+        async function toggleProduct(productId) {
+            try {
+                const response = await fetch(`/admin/toggle-product/${productId}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification(result.message, 'success');
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    showNotification('❌ Hata: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Bir hata oluştu!', 'error');
+            }
+        }
+        
+        // Kullanıcı Ekleme Modal
+        function openAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+        
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+        }
+        
+        // Kullanıcı Ekleme Form Submit
+        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                balance: parseFloat(formData.get('balance') || 0),
+                is_admin: formData.get('is_admin') === 'on',
+                is_verified: formData.get('is_verified') === 'on'
+            };
+            
+            try {
+                const response = await fetch('/admin/add-user', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('✅ Kullanıcı başarıyla eklendi!', 'success');
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    showNotification('❌ Hata: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('❌ Bir hata oluştu!', 'error');
+            }
+        });
+        
+        // Bildirim Sistemi
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                padding: 1.5rem 2rem;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #06ffa5, #00d9ff)' : 'linear-gradient(135deg, #ff006e, #ff4d8f)'};
+                color: ${type === 'success' ? '#000' : '#fff'};
+                border-radius: 14px;
+                font-weight: 700;
+                font-size: 1rem;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Arama Fonksiyonu
+        function searchTable(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById(tableId);
+            const tr = table.getElementsByTagName('tr');
+            
+            for (let i = 1; i < tr.length; i++) {
+                let txtValue = tr[i].textContent || tr[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+        
+        // Smooth Scroll
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // ESC tuşu ile modal kapatma
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeEditModal();
+                closeAddUserModal();
+            }
+        });
+        
+        // Modal dışına tıklayınca kapatma
+        document.getElementById('editProductModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editProductModal') closeEditModal();
+        });
+        
+        document.getElementById('addUserModal').addEventListener('click', (e) => {
+            if (e.target.id === 'addUserModal') closeAddUserModal();
+        });
+        
+        // CSS Animasyonları
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Mevcut fonksiyonlar (eski kodlar)
+        // Add Product
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/admin/add-product', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ Ürün başarıyla eklendi!');
+                    window.location.reload();
+                } else {
+                    alert('❌ Hata: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Bir hata oluştu!');
+            }
+        });
+        
+        // Delete Product
+        function deleteProduct(productId) {
+            if (confirm('Bu ürünü silmek istediğinize emin misiniz?')) {
+                fetch('/admin/delete-product/' + productId, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ Ürün silindi!');
+                        window.location.reload();
+                    } else {
+                        alert('❌ Hata: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('❌ Bir hata oluştu!');
+                });
+            }
+        }
+        
+        // Approve Transaction
+        function approveTransaction(transactionId) {
+            if (confirm('Bu işlemi onaylamak istediğinize emin misiniz?')) {
+                fetch('/admin/approve-transaction/' + transactionId, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ İşlem onaylandı!');
+                        window.location.reload();
+                    } else {
+                        alert('❌ Hata: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('❌ Bir hata oluştu!');
+                });
+            }
+        }
+        
+        // Reject Transaction
+        function rejectTransaction(transactionId) {
+            if (confirm('Bu işlemi reddetmek istediğinize emin misiniz?')) {
+                fetch('/admin/reject-transaction/' + transactionId, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ İşlem reddedildi!');
+                        window.location.reload();
+                    } else {
+                        alert('❌ Hata: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('❌ Bir hata oluştu!');
+                });
+            }
+        }
+        
+        // Mark as Sold
+        function markAsSold(productId) {
+            if (confirm('Bu ürünü satıldı olarak işaretlemek istediğinize emin misiniz?')) {
+                fetch('/admin/mark-sold/' + productId, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('✅ Ürün satıldı olarak işaretlendi!');
+                        window.location.reload();
+                    } else {
+                        alert('❌ Hata: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('❌ Bir hata oluştu!');
+                });
+            }
+        }
+        
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    
+    <!-- Socket.IO -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
+    <!-- Live Chat Management Script -->
+    <script>
+        // ============================================
+        // LIVE CHAT MANAGEMENT - ADMIN PANEL
+        // ============================================
+        
+        const socket = io();
+        let currentSession = null;
+        
+        // Socket.IO bağlantısı
+        socket.on('connect', () => {
+            console.log('✅ Admin Socket.IO connected');
+        });
+        
+        // Yeni mesaj geldiğinde
+        socket.on('new_message', (data) => {
+            console.log('📨 New message received:', data);
+            
+            // Oturum listesini yenile
+            refreshChatSessions();
+            
+            // Eğer bu oturum açıksa mesajı ekle
+            if (currentSession && 
+                ((currentSession.type === 'user' && data.user_id === currentSession.user_id) ||
+                 (currentSession.type === 'guest' && data.session_id === currentSession.session_id))) {
+                addMessageToChat(data.message, 'user', data.username, data.created_at);
+            }
+            
+            // Bildirim göster
+            showNotification(`💬 Yeni mesaj: ${data.username}`, 'info');
+        });
+        
+        // Sayfa yüklendiğinde oturumları getir
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshChatSessions();
+            
+            // Enter tuşu ile mesaj gönder
+            document.getElementById('admin-message-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendAdminMessage();
+                }
+            });
+            
+            // 30 saniyede bir otomatik yenile
+            setInterval(refreshChatSessions, 30000);
+        });
+        
+        // Chat oturumlarını yenile
+        async function refreshChatSessions() {
+            try {
+                const response = await fetch('/api/chat/sessions');
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayChatSessions(result.sessions);
+                    
+                    // Toplam okunmamış sayısını güncelle
+                    const totalUnread = result.sessions.reduce((sum, s) => sum + s.unread_count, 0);
+                    const unreadBadge = document.getElementById('total-unread');
+                    if (totalUnread > 0) {
+                        unreadBadge.textContent = `${totalUnread} Okunmamış`;
+                        unreadBadge.style.display = 'inline-block';
+                    } else {
+                        unreadBadge.style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Oturumlar yüklenemedi:', error);
+            }
+        }
+        
+        // Oturumları listele
+        function displayChatSessions(sessions) {
+            const container = document.getElementById('chat-sessions-list');
+            
+            if (sessions.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem 1rem; color: #888;">
+                        <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Henüz mesaj yok</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = sessions.map(session => `
+                <div onclick='loadChatSession(${JSON.stringify(session)})' style="
+                    padding: 1rem;
+                    background: rgba(26, 26, 46, 0.6);
+                    border: 2px solid ${session.unread_count > 0 ? 'var(--mohawk-primary)' : 'var(--mohawk-border)'};
+                    border-radius: 12px;
+                    margin-bottom: 1rem;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.background='rgba(123, 44, 191, 0.2)'" onmouseout="this.style.background='rgba(26, 26, 46, 0.6)'">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: var(--mohawk-accent); font-size: 1rem;">
+                            <i class="fas fa-${session.type === 'user' ? 'user' : 'user-secret'}"></i>
+                            ${session.username}
+                        </strong>
+                        ${session.unread_count > 0 ? `
+                            <span style="background: var(--mohawk-danger); color: #fff; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">
+                                ${session.unread_count}
+                            </span>
+                        ` : ''}
+                    </div>
+                    ${session.email ? `
+                        <div style="color: #9d4edd; font-size: 0.85rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-envelope"></i> ${session.email}
+                        </div>
+                    ` : ''}
+                    <div style="color: #888; font-size: 0.85rem;">
+                        <i class="fas fa-comment"></i> ${session.message_count} mesaj
+                    </div>
+                    <div style="color: #666; font-size: 0.8rem; margin-top: 0.25rem;">
+                        <i class="fas fa-clock"></i> ${session.last_message}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Chat oturumunu yükle
+        async function loadChatSession(session) {
+            currentSession = session;
+            
+            // Header'ı güncelle
+            document.getElementById('chat-header').style.display = 'block';
+            document.getElementById('chat-username').textContent = session.username;
+            
+            let infoHTML = `
+                <i class="fas fa-${session.type === 'user' ? 'user' : 'user-secret'}"></i> ${session.type === 'user' ? 'Kayıtlı Kullanıcı' : 'Misafir'}
+            `;
+            
+            if (session.email) {
+                infoHTML += ` | <i class="fas fa-envelope"></i> ${session.email}`;
+            }
+            
+            infoHTML += ` | <i class="fas fa-comment"></i> ${session.message_count} mesaj`;
+            
+            document.getElementById('chat-info').innerHTML = infoHTML;
+            
+            // Reply area'yı göster
+            document.getElementById('chat-reply-area').style.display = 'block';
+            
+            // Mesajları yükle
+            try {
+                const params = session.type === 'user' 
+                    ? `user_id=${session.user_id}` 
+                    : `session_id=${session.session_id}`;
+                
+                const response = await fetch(`/api/chat/session-messages?${params}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayChatMessages(result.messages);
+                }
+            } catch (error) {
+                console.error('Mesajlar yüklenemedi:', error);
+            }
+        }
+        
+        // Mesajları göster
+        function displayChatMessages(messages) {
+            const container = document.getElementById('chat-messages-area');
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem 1rem; color: #888;">
+                        <i class="fas fa-comment-slash" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Henüz mesaj yok</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = messages.map(msg => `
+                <div style="margin-bottom: 1.5rem; display: flex; ${msg.sender_type === 'admin' ? 'justify-content: flex-end;' : 'justify-content: flex-start;'}">
+                    <div style="
+                        max-width: 70%;
+                        padding: 1rem 1.5rem;
+                        border-radius: 18px;
+                        ${msg.sender_type === 'admin' 
+                            ? 'background: linear-gradient(135deg, var(--mohawk-primary), var(--mohawk-secondary)); color: #fff;' 
+                            : 'background: rgba(26, 26, 46, 0.8); color: #fff; border: 1px solid var(--mohawk-border);'}
+                    ">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+                            ${msg.sender_type === 'admin' ? '👑 Admin' : '👤 ' + msg.username}
+                        </div>
+                        <div style="line-height: 1.5;">${msg.message}</div>
+                        <div style="font-size: 0.75rem; opacity: 0.6; margin-top: 0.5rem;">
+                            ${msg.created_at}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // En alta scroll
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // Mesaj ekle (gerçek zamanlı)
+        function addMessageToChat(message, senderType, username, time) {
+            const container = document.getElementById('chat-messages-area');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                margin-bottom: 1.5rem;
+                display: flex;
+                ${senderType === 'admin' ? 'justify-content: flex-end;' : 'justify-content: flex-start;'}
+            `;
+            
+            messageDiv.innerHTML = `
+                <div style="
+                    max-width: 70%;
+                    padding: 1rem 1.5rem;
+                    border-radius: 18px;
+                    ${senderType === 'admin' 
+                        ? 'background: linear-gradient(135deg, var(--mohawk-primary), var(--mohawk-secondary)); color: #fff;' 
+                        : 'background: rgba(26, 26, 46, 0.8); color: #fff; border: 1px solid var(--mohawk-border);'}
+                    animation: slideUp 0.3s ease-out;
+                ">
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+                        ${senderType === 'admin' ? '👑 Admin' : '👤 ' + username}
+                    </div>
+                    <div style="line-height: 1.5;">${message}</div>
+                    <div style="font-size: 0.75rem; opacity: 0.6; margin-top: 0.5rem;">
+                        ${time}
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // Admin mesaj gönder
+        async function sendAdminMessage() {
+            const input = document.getElementById('admin-message-input');
+            const message = input.value.trim();
+            
+            if (!message || !currentSession) return;
+            
+            try {
+                const data = {
+                    message: message,
+                    session_id: currentSession.type === 'guest' ? currentSession.session_id : null,
+                    user_id: currentSession.type === 'user' ? currentSession.user_id : null
+                };
+                
+                const response = await fetch('/api/chat/admin-send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Mesajı ekle
+                    const now = new Date();
+                    const timeStr = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth()+1).toString().padStart(2, '0')}.${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+                    addMessageToChat(message, 'admin', 'Admin', timeStr);
+                    
+                    // Input'u temizle
+                    input.value = '';
+                    
+                    showNotification('✅ Mesaj gönderildi!', 'success');
+                } else {
+                    showNotification('❌ Hata: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Mesaj gönderilemedi:', error);
+                showNotification('❌ Bir hata oluştu!', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 Teslimat Yap - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bg-gradient {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            animation: float 35s ease-in-out infinite;
+        }
+        
+        .bg-gradient-1 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, #7b2cbf, transparent);
+            top: -300px;
+            left: -300px;
+        }
+        
+        .bg-gradient-2 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #9d4edd, transparent);
+            bottom: -250px;
+            right: -250px;
+            animation-delay: 12s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: #888;
+        }
+        
+        /* Order Card */
+        .order-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(10, 10, 15, 0.95));
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(123, 44, 191, 0.2);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(123, 44, 191, 0.2);
+        }
+        
+        .order-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .order-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2), rgba(255, 152, 0, 0.2));
+            border: 2px solid rgba(255, 193, 7, 0.5);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: #ffc107;
+        }
+        
+        /* Product Info */
+        .product-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(10, 10, 15, 0.6);
+            border-radius: 16px;
+        }
+        
+        .product-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.2), rgba(157, 78, 221, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        
+        .product-image i {
+            font-size: 3rem;
+            color: #7b2cbf;
+            opacity: 0.3;
+        }
+        
+        .product-details {
+            flex: 1;
+        }
+        
+        .product-game {
+            display: inline-block;
+            background: rgba(123, 44, 191, 0.2);
+            color: #9d4edd;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Buyer Info */
+        .buyer-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-item {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .info-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        /* Delivery Form */
+        .delivery-form {
+            background: rgba(10, 10, 15, 0.6);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .form-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ccc;
+            margin-bottom: 0.75rem;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #7b2cbf;
+            box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
+        }
+        
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+            color: #000;
+            box-shadow: 0 10px 30px rgba(6, 255, 165, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(6, 255, 165, 0.6);
+        }
+        
+        .btn-secondary {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            border-color: rgba(123, 44, 191, 0.6);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .product-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .buyer-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-shipping-fast"></i> Teslimat Yap
+            </h1>
+            <p class="page-subtitle">Müşteriye hesap bilgilerini iletin</p>
+        </div>
+        
+        <!-- Order Card -->
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-number">
+                    <i class="fas fa-receipt"></i> Sipariş #{{ order.id }}
+                </div>
+                <div class="order-status">
+                    <i class="fas fa-clock"></i>
+                    Teslimat Bekliyor
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="product-info">
+                <div class="product-image">
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.title }}">
+                    {% else %}
+                    <i class="fas fa-gamepad"></i>
+                    {% endif %}
+                </div>
+                <div class="product-details">
+                    <span class="product-game">{{ product.game }}</span>
+                    <h2 class="product-title">{{ product.title }}</h2>
+                    <div class="product-meta">
+                        {% if product.rank %}<i class="fas fa-trophy"></i> {{ product.rank }} • {% endif %}
+                        {% if product.region %}<i class="fas fa-globe"></i> {{ product.region }}{% endif %}
+                    </div>
+                    <div class="product-price">{{ order.price }}₺</div>
+                </div>
+            </div>
+            
+            <!-- Buyer Info -->
+            <div class="buyer-info">
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-user"></i>
+                        Alıcı
+                    </div>
+                    <div class="info-value">{{ buyer.username }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-envelope"></i>
+                        Email
+                    </div>
+                    <div class="info-value">{{ buyer.email }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-calendar"></i>
+                        Sipariş Tarihi
+                    </div>
+                    <div class="info-value">{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <i class="fas fa-dollar-sign"></i>
+                        Kazancınız
+                    </div>
+                    <div class="info-value">{{ "%.2f"|format(order.price * 0.9) }}₺</div>
+                </div>
+            </div>
+            
+            <!-- Delivery Form -->
+            <div class="delivery-form">
+                <div class="form-title">
+                    <i class="fas fa-key"></i>
+                    Hesap Bilgilerini Girin
+                </div>
+                
+                <form id="deliveryForm">
+                    <div class="form-group">
+                        <label class="form-label">Kullanıcı Adı / Email</label>
+                        <input type="text" class="form-input" name="account_username" required placeholder="Hesap kullanıcı adı veya email">
+                        <div class="form-hint">Müşteriye teslim edilecek hesabın kullanıcı adı</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Şifre</label>
+                        <input type="text" class="form-input" name="account_password" required placeholder="Hesap şifresi">
+                        <div class="form-hint">Hesabın şifresi (müşteri değiştirebilir)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Ek Bilgiler (Opsiyonel)</label>
+                        <textarea class="form-textarea" name="additional_info" placeholder="Güvenlik soruları, 2FA kodları, özel notlar vb."></textarea>
+                        <div class="form-hint">Hesap ile ilgili ek bilgiler (güvenlik soruları, 2FA vb.)</div>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Teslimatı Tamamla
+                        </button>
+                        <a href="/profile" class="btn btn-secondary">
+                            <i class="fas fa-times"></i>
+                            İptal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('deliveryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                order_id: {{ order.id }},
+                account_username: formData.get('account_username'),
+                account_password: formData.get('account_password'),
+                additional_info: formData.get('additional_info')
+            };
+            
+            try {
+                const response = await fetch('/seller/deliver', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ Teslimat başarıyla tamamlandı! Müşteriye email gönderildi.');
+                    window.location.href = '/profile';
+                } else {
+                    alert('❌ Hata: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Bir hata oluştu!');
+            }
+        });
+    </script>
+</body>
+</html>

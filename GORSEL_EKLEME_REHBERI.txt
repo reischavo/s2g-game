@@ -1,0 +1,55 @@
+📸 GERÇEK HESAP GÖRSELLERİ EKLEME REHBERİ
+==========================================
+
+Şu anda ürünlerde placeholder görseller var. Gerçek hesap görselleri eklemek için:
+
+1️⃣ HESAP SCREENSHOT'LARI ÇEK
+   - PUBG Mobile: Envanter ekranı, skin'ler, UC bakiyesi
+   - Valorant: Koleksiyon ekranı, skin'ler, agent'lar
+   - LOL: Koleksiyon, skin'ler, şampiyonlar
+   - CS2: Envanter, skin'ler, knife
+   
+2️⃣ GÖRSELLERİ YÜKLE
+   Seçenek A - Imgur (Önerilen):
+   - imgur.com'a git
+   - "New post" tıkla
+   - Görseli yükle
+   - Sağ tık > "Copy image address"
+   - URL'yi kopyala (https://i.imgur.com/XXXXX.png)
+   
+   Seçenek B - Kendi sunucun:
+   - s2g-game/static/images/ klasörüne koy
+   - URL: /static/images/pubg-conqueror.png
+   
+3️⃣ VERİTABANINDA GÜNCELLE
+   Admin panelden veya Python ile:
+   
+   ```python
+   from app import app, db, Product
+   
+   with app.app_context():
+       # PUBG Mobile Conqueror
+       product = Product.query.filter_by(title__contains='Conqueror').first()
+       product.image_url = 'https://i.imgur.com/SENIN_GORSEL.png'
+       db.session.commit()
+   ```
+
+4️⃣ VEYA YENİ ÜRÜN OLUŞTUR
+   create_real_game_products.py dosyasını düzenle:
+   - image_url kısmına gerçek URL'leri yaz
+   - python create_real_game_products.py çalıştır
+
+📝 ÖRNEK GERÇEK GÖRSEL URL'LERİ:
+   PUBG Mobile Conqueror: https://i.imgur.com/SENIN_PUBG_GORSEL.png
+   Valorant Radiant: https://i.imgur.com/SENIN_VAL_GORSEL.png
+   LOL Challenger: https://i.imgur.com/SENIN_LOL_GORSEL.png
+
+💡 İPUCU:
+   - Görseller 800x400px olmalı (veya 2:1 oran)
+   - PNG veya JPG formatı
+   - Maksimum 2MB boyut
+   - Hesap bilgilerini gizle (isim, ID vb.)
+
+🎮 ŞU ANDA:
+   Tüm ürünler placeholder görsellerle çalışıyor.
+   Gerçek görselleri ekleyince müşteriler gerçek hesapları görecek!

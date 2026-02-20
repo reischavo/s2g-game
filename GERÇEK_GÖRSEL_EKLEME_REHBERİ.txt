@@ -1,0 +1,141 @@
+========================================
+S2G GAME - GERÇEK GÖRSEL EKLEME REHBERİ
+========================================
+
+🎮 GERÇEK OYUN HESABI GÖRSELLERİ NASIL EKLENİR?
+
+📌 YÖNTEM 1: MANUEL GÖRSEL YÜKLEME (ÖNERİLEN)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Kendi oyun hesaplarınızın screenshot'larını çekin
+2. static/images/products/ klasörüne kaydedin
+3. Admin panelden ürün eklerken görsel URL'ini girin
+   Örnek: /static/images/products/pubg_conqueror_1.jpg
+
+✅ Avantajlar:
+   • Telif sorunu yok
+   • Kendi hesaplarınız
+   • Tam kontrol
+   • Güvenli
+
+📌 YÖNTEM 2: WEB SCRAPING (DENEME AŞAMASINDA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. SCRAPE_PRODUCTS.bat dosyasını çalıştır
+2. GameSatış, ItemSatış, GameMarkt sitelerinden çeker
+3. Otomatik olarak veritabanına ekler
+
+⚠️ Uyarı:
+   • Bazı siteler bot koruması kullanır (403 hatası)
+   • Rate limiting olabilir
+   • Görseller çalışmayabilir
+
+Komut:
+   python scrape_real_products.py
+
+📌 YÖNTEM 3: UNSPLASH/PEXELS API (ÜCRETSİZ)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Unsplash API Key al: https://unsplash.com/developers
+2. Pexels API Key al: https://www.pexels.com/api/
+3. create_products_with_real_images.py dosyasını düzenle
+4. API key'leri ekle
+5. Scripti çalıştır
+
+✅ Avantajlar:
+   • Ücretsiz
+   • Yüksek kalite
+   • Telif sorunu yok
+   • Otomatik
+
+📌 YÖNTEM 4: IMGUR/IMGBB UPLOAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Hesap screenshot'larını çek
+2. Imgur.com veya ImgBB.com'a yükle
+3. Direkt link'i kopyala
+4. Admin panelden ürün eklerken kullan
+
+✅ Avantajlar:
+   • Hızlı
+   • Kolay
+   • Ücretsiz hosting
+   • Kalıcı linkler
+
+📌 YÖNTEM 5: BAŞKA SİTELERDEN KOPYALAMA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ DİKKAT: Telif hakkı konusunda dikkatli olun!
+
+Eğer başka sitelerden görsel kullanacaksanız:
+
+1. Sağ tık > "Resmi Farklı Kaydet"
+2. static/images/products/ klasörüne kaydet
+3. Veya direkt URL'yi kullan (hotlinking)
+
+NOT: Bazı siteler hotlinking'i engelleyebilir!
+
+📌 ÖNERİLEN ÇÖZÜM: KENDİ HESAPLARINIZDAKİ SCREENSHOT'LAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+En güvenli ve profesyonel yöntem:
+
+1. Satacağınız hesapların ekran görüntülerini çekin
+2. Photoshop/Canva ile düzenleyin (logo, watermark ekleyin)
+3. static/images/products/ klasörüne kaydedin
+4. Admin panelden ürün eklerken kullanın
+
+✅ Örnek Görsel İsimlendirme:
+   • pubg_conqueror_glacier_m416.jpg
+   • valorant_radiant_reaver_vandal.jpg
+   • lol_challenger_prestige_skins.jpg
+
+📌 HIZLI BAŞLANGIÇ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ADD_REAL_IMAGES.bat dosyasını çalıştır
+   (Unsplash görsellerle örnek ürünler oluşturur)
+
+2. Admin panele gir (admin / admin123)
+
+3. Ürünleri düzenle ve kendi görsellerini ekle
+
+4. Veya yeni ürün ekle butonunu kullan
+
+📌 GÖRSEL ÖZELLİKLERİ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Önerilen boyutlar:
+   • Genişlik: 800-1200px
+   • Yükseklik: 400-600px
+   • Format: JPG, PNG, WebP
+   • Boyut: Max 500KB (hızlı yükleme için)
+
+📌 SORUN GİDERME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Görsel görünmüyor:
+   ✅ URL'yi kontrol et
+   ✅ Dosya yolunu kontrol et
+   ✅ Hotlinking engellenmiş olabilir
+
+❌ 403 Forbidden hatası:
+   ✅ User-Agent ekle
+   ✅ Referer header ekle
+   ✅ Görseli indir ve kendi sunucuna yükle
+
+❌ Scraping çalışmıyor:
+   ✅ Siteler bot koruması kullanıyor
+   ✅ Manuel görsel ekleme kullan
+   ✅ API kullan
+
+📌 DESTEK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sorun yaşıyorsanız:
+1. SCRAPE_PRODUCTS.bat'ı dene
+2. ADD_REAL_IMAGES.bat'ı dene
+3. Manuel görsel ekleme yap
+4. Admin panelden görsel URL'lerini güncelle
+
+========================================

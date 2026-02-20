@@ -1,0 +1,238 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        RENDER.COM DEPLOYMENT - 5 DAKİKADA CANLI!           ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📅 Tarih: 20 Şubat 2026
+🚀 Platform: Render.com
+⏱️ Süre: 5 dakika
+💰 Maliyet: TAMAMEN ÜCRETSİZ
+
+═══════════════════════════════════════════════════════════════
+
+✅ HAZIRLIK TAMAMLANDI
+═══════════════════════════════════════════════════════════════
+
+Aşağıdaki dosyalar hazır:
+✅ app.py - Flask uygulaması
+✅ requirements.txt - Bağımlılıklar (gunicorn dahil)
+✅ Procfile - Render başlatma komutu
+✅ .gitignore - Gereksiz dosyaları hariç tut
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 1: GITHUB'A KOD YÜKLE
+═══════════════════════════════════════════════════════════════
+
+1. GitHub'a giriş yap: https://github.com
+
+2. Yeni repository oluştur:
+   - Sağ üstte "+" → "New repository" tıkla
+   - Repository name: s2g-game
+   - Public seç (ücretsiz için gerekli)
+   - "Create repository" tıkla
+
+3. Kodu GitHub'a yükle:
+
+   Windows CMD'de s2g-game klasörüne git:
+   
+   cd C:\Users\[KULLANICI_ADIN]\Desktop\s2g-game
+   
+   (veya klasörün bulunduğu yere)
+
+   Git komutları:
+   
+   git init
+   git add .
+   git commit -m "S2G Game - Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/[KULLANICI_ADIN]/s2g-game.git
+   git push -u origin main
+
+   NOT: [KULLANICI_ADIN] yerine GitHub kullanıcı adını yaz!
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 2: RENDER.COM'A KAYIT OL
+═══════════════════════════════════════════════════════════════
+
+1. Render.com'a git: https://render.com
+
+2. "Get Started for Free" tıkla
+
+3. "Sign up with GitHub" seç (en kolay yol)
+   - GitHub ile giriş yap
+   - Render'a izin ver
+
+4. Email'ini onayla
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 3: WEB SERVICE OLUŞTUR
+═══════════════════════════════════════════════════════════════
+
+1. Render Dashboard'da "New +" butonuna tıkla
+
+2. "Web Service" seç
+
+3. GitHub repository'sini bağla:
+   - "Connect a repository" tıkla
+   - s2g-game repository'sini seç
+   - "Connect" tıkla
+
+4. Ayarları yap:
+   
+   Name: s2g-game
+   Region: Frankfurt (Avrupa - en yakın)
+   Branch: main
+   Runtime: Python 3
+   Build Command: pip install -r requirements.txt
+   Start Command: gunicorn app:app --bind 0.0.0.0:$PORT
+   
+   Instance Type: Free
+
+5. "Create Web Service" tıkla
+
+6. 2-3 dakika bekle (build süreci)
+
+7. Build tamamlanınca Render otomatik URL verecek:
+   https://s2g-game.onrender.com
+
+8. URL'ye tıkla → S2G GAME CANLI! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 4: KENDI DOMAIN'İNİ BAĞLA (s2ggame.com)
+═══════════════════════════════════════════════════════════════
+
+1. Render Dashboard'da service'ini seç
+
+2. "Settings" sekmesine git
+
+3. "Custom Domain" bölümünde:
+   - "Add Custom Domain" tıkla
+   - s2ggame.com yaz
+   - "Save" tıkla
+
+4. Render bir CNAME kaydı gösterecek, örnek:
+   s2g-game.onrender.com
+
+5. Wix'e geri dön:
+   - Wix Dashboard → Ayarlar → Domains
+   - DNS kayıtlarını yönet
+   - Yeni CNAME kaydı ekle:
+     * Type: CNAME
+     * Host: @ (veya www)
+     * Points to: s2g-game.onrender.com
+     * TTL: 3600
+
+6. 5-10 dakika bekle (DNS propagation)
+
+7. https://s2ggame.com adresine git → CANLI! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+🎯 RENDER AVANTAJLARI
+═══════════════════════════════════════════════════════════════
+
+✅ Tamamen ücretsiz (750 saat/ay)
+✅ Otomatik HTTPS (SSL sertifikası)
+✅ Otomatik deploy (GitHub'a push → otomatik güncelleme)
+✅ Hızlı (CDN ile)
+✅ Kolay kullanım
+✅ Kendi domain bağlanır
+✅ Logs ve monitoring
+✅ Environment variables
+✅ PostgreSQL database (ücretsiz)
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ ÖNEMLİ NOTLAR
+═══════════════════════════════════════════════════════════════
+
+1. FREE TIER SINIRLAMASI:
+   - 750 saat/ay (yeterli)
+   - 15 dakika kullanılmazsa uyur
+   - İlk istek 30 saniye sürebilir (cold start)
+   - Sonraki istekler hızlı
+
+2. UYUMA SORUNU ÇÖZÜMÜ:
+   - UptimeRobot kullan (ücretsiz)
+   - Her 5 dakikada bir ping at
+   - Site hiç uyumaz
+
+3. DATABASE:
+   - SQLite yerine PostgreSQL kullan (önerilir)
+   - Render'de "New +" → "PostgreSQL" ekle
+   - Environment variable olarak bağla
+
+4. ENVIRONMENT VARIABLES:
+   - Render Dashboard → Settings → Environment
+   - SECRET_KEY, DATABASE_URL vb. ekle
+
+═══════════════════════════════════════════════════════════════
+
+🔧 SORUN GİDERME
+═══════════════════════════════════════════════════════════════
+
+SORUN: Build başarısız
+ÇÖZÜM:
+- Render Logs'u kontrol et
+- requirements.txt doğru mu?
+- Python versiyonu uyumlu mu?
+
+SORUN: Site açılmıyor
+ÇÖZÜM:
+- Render Dashboard'da "Logs" sekmesine git
+- Son deployment başarılı mı?
+- Start command doğru mu?
+
+SORUN: Database hatası
+ÇÖZÜM:
+- SQLite production'da sorun çıkarabilir
+- PostgreSQL kullan (Render'de ücretsiz)
+
+═══════════════════════════════════════════════════════════════
+
+📞 YARDIM
+═══════════════════════════════════════════════════════════════
+
+Render Docs: https://render.com/docs
+Render Community: https://community.render.com
+
+═══════════════════════════════════════════════════════════════
+
+🎉 BAŞARILI DEPLOYMENT SONRASI
+═══════════════════════════════════════════════════════════════
+
+Site canlı olduktan sonra:
+
+1. ✅ https://s2ggame.com adresine git
+2. ✅ SSL sertifikası otomatik aktif
+3. ✅ Hızlı ve güvenli
+4. ✅ GitHub'a push → otomatik güncelleme
+5. ✅ Tamamen ücretsiz
+
+Artık profesyonel bir deployment'ın var! 🚀
+
+═══════════════════════════════════════════════════════════════
+
+📋 HIZLI BAŞLANGIÇ KOMUTLARI
+═══════════════════════════════════════════════════════════════
+
+# Git kurulumu (ilk kez)
+cd s2g-game
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/KULLANICI_ADIN/s2g-game.git
+git push -u origin main
+
+# Sonraki güncellemeler
+git add .
+git commit -m "Update"
+git push
+
+Render otomatik deploy edecek!
+
+═══════════════════════════════════════════════════════════════

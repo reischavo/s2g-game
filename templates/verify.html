@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimlik Doğrulama - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-bg"></div>
+        
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1 class="auth-title">
+                    <span class="gradient-text">KİMLİK DOĞRULAMA</span>
+                </h1>
+                <p class="auth-subtitle">Hesabınızı güvenli hale getirin</p>
+            </div>
+            
+            {% if user.is_verified %}
+            <div class="alert alert-success" style="display: block; margin-bottom: 1.5rem;">
+                <i class="fas fa-check-circle"></i> Hesabınız zaten doğrulanmış!
+            </div>
+            <a href="/profile" class="btn btn-primary btn-block">
+                <i class="fas fa-arrow-left"></i> Profilime Dön
+            </a>
+            {% else %}
+            <form class="auth-form" id="verifyForm">
+                <div class="form-group">
+                    <label for="phone">
+                        <i class="fas fa-phone"></i> Telefon Numarası
+                    </label>
+                    <input type="tel" id="phone" name="phone" required placeholder="05XX XXX XX XX" pattern="[0-9]{10,11}">
+                    <small style="color: #888;">Örnek: 05551234567</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_card">
+                        <i class="fas fa-id-card"></i> TC Kimlik No
+                    </label>
+                    <input type="text" id="id_card" name="id_card" required placeholder="XXXXXXXXXXX" pattern="[0-9]{11}" maxlength="11">
+                    <small style="color: #888;">11 haneli TC kimlik numaranız</small>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="terms" required>
+                        <span>Bilgilerimin doğru olduğunu onaylıyorum</span>
+                    </label>
+                </div>
+                
+                <div class="alert" id="alert" style="display: none;"></div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-check"></i> Kimliğimi Doğrula
+                </button>
+                
+                <div class="auth-footer">
+                    <p><a href="/profile" class="auth-link">← Profilime Dön</a></p>
+                </div>
+            </form>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: rgba(6, 255, 165, 0.1); border-radius: 12px; border: 1px solid var(--success);">
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-shield-alt"></i> Neden Kimlik Doğrulama?</h3>
+                <ul style="color: #aaa; line-height: 1.8;">
+                    <li>Hesabınızı güvende tutun</li>
+                    <li>Bakiye çekme işlemi yapabilin</li>
+                    <li>Daha yüksek limitlerden faydalanın</li>
+                    <li>Öncelikli destek alın</li>
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        
+        <a href="/profile" class="back-home">
+            <i class="fas fa-arrow-left"></i> Profilime Dön
+        </a>
+    </div>
+    
+    <script>
+        {% if not user.is_verified %}
+        document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('phone').value;
+            const id_card = document.getElementById('id_card').value;
+            
+            if (id_card.length !== 11) {
+                showAlert('error', 'TC Kimlik No 11 haneli olmalıdır!');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ phone, id_card })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 2000);
+                } else {
+                    showAlert('error', data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Bir hata oluştu!');
+            }
+        });
+        
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.style.display = 'block';
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check' : 'exclamation') + '-circle"></i> ' + message;
+        }
+        {% endif %}
+    </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        WIX DOMAIN + CLOUDFLARE KURULUM KILAVUZU             ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📅 Tarih: 20 Şubat 2026
+🌐 Domain Sağlayıcı: Wix.com
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ ÖNEMLİ: WIX NAMESERVER DEĞİŞİKLİĞİ
+═══════════════════════════════════════════════════════════════
+
+Wix'te nameserver değiştirmek biraz farklı çalışır.
+Wix, domain'leri kendi sisteminde tutmayı sever.
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 1: WIX'TE NAMESERVER DEĞİŞTİRME
+═══════════════════════════════════════════════════════════════
+
+1. Wix Dashboard'a giriş yap:
+   https://www.wix.com/my-account/domains/
+
+2. s2ggame.com domain'ini seç
+
+3. "Advanced" veya "DNS Settings" sekmesine git
+
+4. "Change Nameservers" veya "Use External Nameservers" seçeneğini bul
+
+5. Cloudflare'in verdiği nameserver'ları gir:
+   (Cloudflare'de gösterilen nameserver'lar, örnek:)
+   - ns1.cloudflare.com
+   - ns2.cloudflare.com
+   (veya farklı isimler olabilir)
+
+6. "Save" veya "Update" butonuna bas
+
+7. Wix bir uyarı gösterecek: "Domain Wix'ten ayrılacak"
+   - Onayla ve devam et
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ WIX ÖZEL DURUM: DOMAIN TRANSFER LOCK
+═══════════════════════════════════════════════════════════════
+
+Wix bazı durumlarda domain'i "kilitli" tutar.
+Eğer nameserver değiştiremiyorsan:
+
+1. Domain'in "Transfer Lock" durumunu kontrol et
+2. Eğer kilitliyse, kilidi aç
+3. Wix Support'a yaz: "I want to change nameservers to Cloudflare"
+
+═══════════════════════════════════════════════════════════════
+
+🚀 ALTERNATIF ÇÖZÜM: WIX DNS KAYITLARI (ÖNERİLEN)
+═══════════════════════════════════════════════════════════════
+
+Eğer Wix nameserver değiştirmeye izin vermiyorsa,
+Cloudflare'i atlayıp direkt Wix DNS kayıtları kullanabilirsin!
+
+ADIM 1: Wix'te DNS Kayıtları Ekle
+───────────────────────────────────
+
+1. Wix Dashboard → Domains → s2ggame.com
+
+2. "Manage DNS Records" veya "DNS Settings" sekmesine git
+
+3. Yeni A kaydı ekle:
+   
+   A KAYDI 1:
+   - Type: A
+   - Host: @ (veya boş bırak)
+   - Points to: SUNUCU_IP_ADRESI
+   - TTL: 3600 (1 saat)
+
+   A KAYDI 2 (www için):
+   - Type: A
+   - Host: www
+   - Points to: SUNUCU_IP_ADRESI
+   - TTL: 3600
+
+4. "Save" butonuna bas
+
+5. 10-30 dakika bekle (Wix DNS propagation hızlı)
+
+ADIM 2: Test Et
+───────────────────────────────────
+
+1. 10-30 dakika sonra tarayıcıda aç:
+   http://s2ggame.com
+
+2. Eğer çalışıyorsa → BAŞARILI!
+
+3. Eğer çalışmıyorsa → whatsmydns.net'te kontrol et
+
+═══════════════════════════════════════════════════════════════
+
+🎯 HANGİ YÖNTEMI SEÇMELİYİM?
+═══════════════════════════════════════════════════════════════
+
+YÖNTEM 1: Cloudflare Nameserver (Daha İyi)
+✅ CDN hızlandırma
+✅ DDoS koruması
+✅ SSL sertifikası
+✅ Gelişmiş güvenlik
+❌ Wix'te nameserver değiştirmek zor olabilir
+❌ 24-48 saat propagation süresi
+
+YÖNTEM 2: Wix DNS Kayıtları (Daha Hızlı)
+✅ Kolay kurulum
+✅ 10-30 dakika propagation
+✅ Wix'te kalır
+❌ CDN yok
+❌ DDoS koruması yok
+❌ Cloudflare özellikleri yok
+
+ÖNERİM: Şimdilik Wix DNS kayıtları kullan!
+Sonra Cloudflare'e geçersin.
+
+═══════════════════════════════════════════════════════════════
+
+📝 WIX DNS KAYITLARI ADIM ADIM
+═══════════════════════════════════════════════════════════════
+
+1. https://www.wix.com/my-account/domains/ adresine git
+
+2. s2ggame.com domain'ini seç
+
+3. "Manage DNS Records" butonuna tıkla
+
+4. "Add Record" veya "+ Add" butonuna tıkla
+
+5. İLK KAYIT (Ana domain):
+   ┌─────────────────────────────────┐
+   │ Type: A                         │
+   │ Host: @                         │
+   │ Points to: SUNUCU_IP_ADRESI     │
+   │ TTL: 3600                       │
+   └─────────────────────────────────┘
+
+6. "Save" butonuna tıkla
+
+7. "Add Record" tekrar tıkla
+
+8. İKİNCİ KAYIT (www subdomain):
+   ┌─────────────────────────────────┐
+   │ Type: A                         │
+   │ Host: www                       │
+   │ Points to: SUNUCU_IP_ADRESI     │
+   │ TTL: 3600                       │
+   └─────────────────────────────────┘
+
+9. "Save" butonuna tıkla
+
+10. TAMAMLANDI! 10-30 dakika bekle.
+
+═══════════════════════════════════════════════════════════════
+
+🔍 SUNUCU IP ADRESİNİ NASIL BULURUM?
+═══════════════════════════════════════════════════════════════
+
+Eğer evde sunucu çalıştırıyorsan:
+
+1. https://whatismyipaddress.com/ adresine git
+2. Gösterilen IP adresini kopyala
+3. Bu IP'yi Wix DNS kayıtlarına yapıştır
+
+Eğer VPS/Cloud sunucu kullanıyorsan:
+
+1. VPS sağlayıcının paneline git
+2. Sunucunun Public IP adresini bul
+3. Bu IP'yi Wix DNS kayıtlarına yapıştır
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ ÖNEMLİ NOTLAR
+═══════════════════════════════════════════════════════════════
+
+1. SUNUCU ÇALIŞMALI:
+   - Flask uygulaması çalışıyor olmalı
+   - Port 5000 açık olmalı (veya 80/443)
+
+2. FIREWALL AYARLARI:
+   - Windows Firewall'da port 5000 açık olmalı
+   - Router'da port forwarding yapılmalı (evde sunucu ise)
+
+3. FLASK AYARLARI:
+   - app.run(host='0.0.0.0', port=5000)
+   - Dışarıdan erişime izin vermeli
+
+4. PORT 80/443 İÇİN:
+   - Eğer port 5000 yerine 80 kullanmak istersen
+   - Nginx veya Apache reverse proxy kurmalısın
+
+═══════════════════════════════════════════════════════════════
+
+✅ KONTROL LİSTESİ
+═══════════════════════════════════════════════════════════════
+
+□ Wix'te DNS kayıtlarını ekledim
+□ A kaydı: @ → SUNUCU_IP
+□ A kaydı: www → SUNUCU_IP
+□ 10-30 dakika bekledim
+□ Flask uygulaması çalışıyor
+□ Port 5000 açık
+□ Firewall ayarları yapıldı
+□ http://s2ggame.com adresine girdim
+□ Site açıldı! ✅
+
+═══════════════════════════════════════════════════════════════
+
+❓ SORUN GİDERME
+═══════════════════════════════════════════════════════════════
+
+SORUN: Site açılmıyor
+ÇÖZÜM:
+- whatsmydns.net'te kontrol et
+- DNS kayıtları yayılmış mı?
+- Flask uygulaması çalışıyor mu?
+- Firewall ayarları doğru mu?
+
+SORUN: "Connection refused" hatası
+ÇÖZÜM:
+- Flask uygulaması çalışıyor mu?
+- Port 5000 açık mı?
+- host='0.0.0.0' olarak ayarlandı mı?
+
+SORUN: "This site can't be reached"
+ÇÖZÜM:
+- DNS kayıtları doğru mu?
+- IP adresi doğru mu?
+- 10-30 dakika bekledin mi?
+
+═══════════════════════════════════════════════════════════════
+
+🎉 BAŞARILI KURULUM SONRASI
+═══════════════════════════════════════════════════════════════
+
+Site çalışmaya başladıktan sonra:
+
+1. SSL sertifikası ekle (Let's Encrypt)
+2. Nginx reverse proxy kur (port 80/443 için)
+3. Cloudflare'i ekle (CDN ve güvenlik için)
+4. Backup sistemi kur
+
+═══════════════════════════════════════════════════════════════
+
+📞 YARDIM
+═══════════════════════════════════════════════════════════════
+
+Eğer Wix'te DNS kayıtlarını eklerken sorun yaşarsan:
+- Wix Support'a yaz
+- "I want to add A records for my domain" de
+- IP adresini ve host'u söyle
+
+═══════════════════════════════════════════════════════════════

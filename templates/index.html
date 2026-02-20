@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S2G Game - Oyun Hesabı Alışveriş</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="/" style="display: flex; align-items: center;">
+                    <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="S2G Game" style="height: 50px;">
+                </a>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="/" class="nav-link active">Ana Sayfa</a>
+                <a href="/products" class="nav-link">Ürünler</a>
+                <a href="#" class="nav-link">Hakkımızda</a>
+                <a href="#" class="nav-link">İletişim</a>
+            </div>
+            
+            <div class="nav-actions">
+                {% if session.get('user_id') %}
+                    <a href="/profile" class="user-info" style="text-decoration: none; color: var(--text); display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-wallet"></i> Bakiye
+                    </a>
+                    <a href="/profile" class="btn btn-outline btn-sm">
+                        <i class="fas fa-user"></i> {{ session.get('username') }}
+                    </a>
+                {% else %}
+                    <a href="/login" class="btn btn-outline">Giriş Yap</a>
+                    <a href="/register" class="btn btn-primary">Kayıt Ol</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">S2G GAME</span>
+                    <br>Oyun Hesabı Alışveriş
+                </h1>
+                <p class="hero-subtitle">Güvenli ve hızlı oyun hesabı alışverişi platformu</p>
+                <div class="hero-buttons">
+                    <a href="/products" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shopping-cart"></i> Ürünleri İncele
+                    </a>
+                    <a href="#features" class="btn btn-outline btn-lg">
+                        <i class="fas fa-info-circle"></i> Daha Fazla
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <h3 class="stat-number">1000+</h3>
+                    <p class="stat-label">Aktif Kullanıcı</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-gamepad stat-icon"></i>
+                    <h3 class="stat-number">500+</h3>
+                    <p class="stat-label">Satılan Hesap</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shield-alt stat-icon"></i>
+                    <h3 class="stat-number">%100</h3>
+                    <p class="stat-label">Güvenli İşlem</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock stat-icon"></i>
+                    <h3 class="stat-number">24/7</h3>
+                    <p class="stat-label">Destek</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Öne Çıkan Ürünler</h2>
+                <a href="/products" class="btn btn-outline">Tümünü Gör</a>
+            </div>
+            
+            <!-- Category Quick Links -->
+            <div style="display: flex; gap: 0.8rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;">
+                <a href="/products?game=Valorant" class="btn btn-outline btn-sm">
+                    <i class="fas fa-crosshairs"></i> Valorant
+                </a>
+                <a href="/products?game=League of Legends" class="btn btn-outline btn-sm">
+                    <i class="fas fa-gamepad"></i> LOL
+                </a>
+                <a href="/products?game=CS2" class="btn btn-outline btn-sm">
+                    <i class="fas fa-bullseye"></i> CS2
+                </a>
+                <a href="/products?game=PUBG Mobile" class="btn btn-outline btn-sm">
+                    <i class="fas fa-mobile-alt"></i> PUBG
+                </a>
+                <a href="/products?game=Clash of Clans" class="btn btn-outline btn-sm">
+                    <i class="fas fa-shield-alt"></i> COC
+                </a>
+                <a href="/products?game=Discord" class="btn btn-outline btn-sm">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
+                <a href="/products?game=Fortnite" class="btn btn-outline btn-sm">
+                    <i class="fas fa-trophy"></i> Fortnite
+                </a>
+                <a href="/products?game=Minecraft" class="btn btn-outline btn-sm">
+                    <i class="fas fa-cube"></i> Minecraft
+                </a>
+            </div>
+            
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ product.image_url or 'https://via.placeholder.com/300x200' }}" alt="{{ product.title }}">
+                        <span class="product-badge">{{ product.game }}</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">{{ product.title }}</h3>
+                        <div class="product-meta">
+                            <span class="product-rank"><i class="fas fa-trophy"></i> {{ product.rank }}</span>
+                            <span class="product-region"><i class="fas fa-globe"></i> {{ product.region }}</span>
+                        </div>
+                        <p class="product-description">{{ product.description[:100] }}...</p>
+                        <div class="product-footer">
+                            <span class="product-price">{{ product.price }} TL</span>
+                            <a href="/product/{{ product.id }}" class="btn btn-primary btn-sm">Detay</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Neden S2G Game?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <h3>Güvenli İşlem</h3>
+                    <p>Tüm işlemleriniz SSL ile korunur</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <h3>Hızlı Teslimat</h3>
+                    <p>Anında hesap teslimi</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset feature-icon"></i>
+                    <h3>7/24 Destek</h3>
+                    <p>Her zaman yanınızdayız</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-check-circle feature-icon"></i>
+                    <h3>Garantili Ürünler</h3>
+                    <p>Tüm hesaplar garantilidir</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>S2G Game</h4>
+                    <p>Güvenli ve hızlı oyun hesabı alışverişi platformu</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Hızlı Linkler</h4>
+                    <a href="/">Ana Sayfa</a>
+                    <a href="/products">Ürünler</a>
+                    <a href="#">Hakkımızda</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Destek</h4>
+                    <a href="#">SSS</a>
+                    <a href="#">İletişim</a>
+                    <a href="#">Kullanım Koşulları</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Sosyal Medya</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 S2G Game. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Fake Live Purchase Notifications
+        const fakeUsers = [
+            'Ahmet K.', 'Mehmet Y.', 'Ayşe D.', 'Fatma S.', 'Ali R.', 'Zeynep M.', 
+            'Burak T.', 'Elif N.', 'Cem Ö.', 'Deniz A.', 'Emre B.', 'Selin K.',
+            'Murat G.', 'Esra P.', 'Onur V.', 'Merve L.', 'Kerem Z.', 'Gizem H.'
+        ];
+        
+        const fakeProducts = [
+            'Valorant Radiant Hesabı', 'LOL Master Hesabı', 'CS2 Global Elite',
+            'PUBG Conqueror Hesabı', 'Clash of Clans TH15', 'Discord Nitro',
+            'Fortnite 200+ Skin', 'Minecraft Premium', 'Apex Predator',
+            'Rocket League GC', 'Overwatch 2 GM', 'Genshin AR60'
+        ];
+        
+        function showPurchaseNotification() {
+            const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+            const product = fakeProducts[Math.floor(Math.random() * fakeProducts.length)];
+            const time = Math.floor(Math.random() * 5) + 1;
+            
+            const notification = document.createElement('div');
+            notification.className = 'live-notification';
+            notification.innerHTML = `
+                <div class="live-notification-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="live-notification-content">
+                    <div class="live-notification-user">${user}</div>
+                    <div class="live-notification-product">${product} satın aldı</div>
+                    <div class="live-notification-time">${time} dakika önce</div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
+        }
+        
+        // Show notification every 8-15 seconds
+        setInterval(() => {
+            showPurchaseNotification();
+        }, Math.random() * 7000 + 8000);
+        
+        // Show first notification after 3 seconds
+        setTimeout(showPurchaseNotification, 3000);
+    </script>
+</body>
+</html>

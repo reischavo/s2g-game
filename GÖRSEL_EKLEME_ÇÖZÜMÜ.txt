@@ -1,0 +1,64 @@
+========================================
+✅ GERÇEK GÖRSEL EKLEME ÇÖZÜMÜ
+========================================
+
+🎮 DURUM: Web scraping siteler bot koruması kullandığı için çalışmıyor.
+
+📌 ÇÖZÜM: Kendi hesap görsellerini manuel olarak ekle!
+
+========================================
+🔥 EN KOLAY YÖNTEM: IMGUR
+========================================
+
+1. Kendi oyun hesaplarının screenshot'larını çek
+2. https://imgur.com/upload adresine git
+3. Görselleri sürükle-bırak
+4. "Copy Link" butonuna tıkla
+5. Admin panele gir: http://localhost:5000/admin
+   Kullanıcı: admin
+   Şifre: admin123
+6. Ürünü bul ve görsel URL'ini güncelle
+
+✅ Imgur linki örneği:
+   https://i.imgur.com/ABC123.jpg
+
+========================================
+💎 ALTERNATİF: DISCORD CDN
+========================================
+
+1. Discord'a screenshot yükle
+2. Sağ tık > "Bağlantıyı Kopyala"
+3. Admin panelden güncelle
+
+✅ Discord CDN linki örneği:
+   https://cdn.discordapp.com/attachments/123/456/image.jpg
+
+========================================
+📁 ALTERNATİF: LOKAL GÖRSEL
+========================================
+
+1. Screenshot'ları çek
+2. s2g-game/static/images/products/ klasörüne kaydet
+3. Admin panelden URL'i güncelle
+
+✅ Lokal URL örneği:
+   /static/images/products/pubg_conqueror.jpg
+
+========================================
+🎯 HIZLI BAŞLANGIÇ
+========================================
+
+1. Flask çalışıyor: http://localhost:5000
+2. Admin panel: http://localhost:5000/admin
+3. Ürünler: http://localhost:5000/products
+
+Kullanıcı: admin
+Şifre: admin123
+
+========================================
+✅ 13 ÜRÜN HAZIR!
+========================================
+
+Şimdi sadece kendi hesap görsellerini eklemen yeterli!
+
+========================================

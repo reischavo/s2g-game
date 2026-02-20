@@ -1,0 +1,154 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        CLOUDFLARE NAMESERVER PROPAGATION KONTROL             ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📅 Tarih: 20 Şubat 2026
+⏰ Durum: 24 saat geçti, hala "checking" durumunda
+
+═══════════════════════════════════════════════════════════════
+
+🔍 KONTROL ADIMI 1: NAMESERVER'LARI KONTROL ET
+═══════════════════════════════════════════════════════════════
+
+Domain sağlayıcında (örn: GoDaddy, Namecheap, vb.) nameserver'ları 
+Cloudflare'in verdiği nameserver'larla değiştirdin mi?
+
+Cloudflare'in verdiği nameserver'lar şuna benzer:
+- ns1.cloudflare.com
+- ns2.cloudflare.com
+(veya farklı isimler olabilir, Cloudflare'de gösterilen nameserver'ları kullan)
+
+NASIL KONTROL EDİLİR:
+1. Domain sağlayıcına giriş yap
+2. s2ggame.com domain'ini seç
+3. DNS/Nameserver ayarlarına git
+4. Nameserver'ların Cloudflare'in verdiği ile aynı olduğunu kontrol et
+
+═══════════════════════════════════════════════════════════════
+
+🔍 KONTROL ADIMI 2: DNS PROPAGATION KONTROL ET
+═══════════════════════════════════════════════════════════════
+
+Online araçlarla DNS propagation'ı kontrol edebilirsin:
+
+1. https://www.whatsmydns.net/
+   - Domain: s2ggame.com
+   - Type: NS (Nameserver)
+   - Cloudflare nameserver'ları görünüyor mu?
+
+2. https://dnschecker.org/
+   - Domain: s2ggame.com
+   - Type: NS
+   - Dünya genelinde Cloudflare nameserver'ları yayılmış mı?
+
+3. CMD/Terminal'de kontrol:
+   nslookup -type=NS s2ggame.com
+
+═══════════════════════════════════════════════════════════════
+
+🔍 KONTROL ADIMI 3: CLOUDFLARE'DE MANUEL KONTROL
+═══════════════════════════════════════════════════════════════
+
+Cloudflare'de manuel kontrol yapabilirsin:
+
+1. Cloudflare Dashboard'a git
+2. s2ggame.com domain'ini seç
+3. Overview sayfasında "Re-check now" butonu var mı?
+4. Varsa tıkla, yoksa biraz daha bekle
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ OLASI SORUNLAR VE ÇÖZÜMLER
+═══════════════════════════════════════════════════════════════
+
+SORUN 1: Nameserver'lar yanlış girilmiş
+ÇÖZÜM:
+- Domain sağlayıcıda nameserver'ları kontrol et
+- Cloudflare'in verdiği nameserver'larla aynı mı?
+- Typo (yazım hatası) var mı?
+- Düzelt ve kaydet
+
+SORUN 2: Domain sağlayıcı yavaş
+ÇÖZÜM:
+- Bazı domain sağlayıcılar 48-72 saat sürebilir
+- Sabırlı ol, biraz daha bekle
+- Domain sağlayıcının support'una sor
+
+SORUN 3: Domain kilitli (locked)
+ÇÖZÜM:
+- Domain sağlayıcıda domain'in "locked" durumda olup olmadığını kontrol et
+- Eğer kilitliyse, kilidi aç
+- Nameserver değişikliği için unlock gerekebilir
+
+SORUN 4: DNSSEC aktif
+ÇÖZÜM:
+- Domain sağlayıcıda DNSSEC ayarlarını kontrol et
+- DNSSEC aktifse, devre dışı bırak
+- Cloudflare'de DNSSEC'i tekrar aktif edebilirsin
+
+═══════════════════════════════════════════════════════════════
+
+🚀 HIZLI ÇÖZÜM: CLOUDFLARE'İ ATLA
+═══════════════════════════════════════════════════════════════
+
+Eğer Cloudflare'i beklemek istemiyorsan, şimdilik atlayabilirsin:
+
+SEÇENEK 1: Direkt IP ile erişim
+- http://SUNUCU_IP_ADRESI:5000
+- Cloudflare olmadan çalışır
+- Ama domain ile erişemezsin
+
+SEÇENEK 2: Domain'i direkt sunucuya yönlendir
+- Domain sağlayıcıda A kaydı ekle
+- s2ggame.com → SUNUCU_IP_ADRESI
+- Cloudflare'i tamamen atla
+- Ama CDN ve güvenlik özellikleri olmaz
+
+SEÇENEK 3: Cloudflare'i sonra ekle
+- Şimdilik domain'i direkt sunucuya yönlendir
+- Site çalışır hale gelsin
+- Sonra Cloudflare'i eklersin
+
+═══════════════════════════════════════════════════════════════
+
+📝 ŞİMDİ NE YAPMALIYIM?
+═══════════════════════════════════════════════════════════════
+
+1. ÖNCE KONTROL ET:
+   □ Domain sağlayıcıda nameserver'lar doğru mu?
+   □ whatsmydns.net'te Cloudflare nameserver'ları görünüyor mu?
+   □ nslookup ile kontrol et
+
+2. EĞER NAMESERVER'LAR DOĞRUYSA:
+   □ Biraz daha bekle (48-72 saat)
+   □ Cloudflare'de "Re-check now" butonuna bas
+   □ Domain sağlayıcının support'una sor
+
+3. EĞER BEKLEMEK İSTEMİYORSAN:
+   □ Cloudflare'i şimdilik atla
+   □ Domain'i direkt sunucuya yönlendir
+   □ A kaydı ekle: s2ggame.com → SUNUCU_IP
+
+═══════════════════════════════════════════════════════════════
+
+🎯 ÖNERİM
+═══════════════════════════════════════════════════════════════
+
+1. whatsmydns.net'te kontrol et
+2. Eğer Cloudflare nameserver'ları görünüyorsa → Biraz daha bekle
+3. Eğer görünmüyorsa → Domain sağlayıcıda nameserver'ları kontrol et
+4. Eğer beklemek istemiyorsan → Cloudflare'i atla, direkt A kaydı ekle
+
+═══════════════════════════════════════════════════════════════
+
+❓ BANA SÖYLE
+═══════════════════════════════════════════════════════════════
+
+1. Domain sağlayıcın hangisi? (GoDaddy, Namecheap, vb.)
+2. Nameserver'ları değiştirdin mi?
+3. whatsmydns.net'te ne görünüyor?
+4. Beklemek istiyor musun yoksa Cloudflare'i atlayalım mı?
+
+Bunları söylersen daha spesifik yardım edebilirim!
+
+═══════════════════════════════════════════════════════════════

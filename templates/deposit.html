@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakiye Yükle - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-bg"></div>
+        
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1 class="auth-title">
+                    <span class="gradient-text">BAKİYE YÜKLE</span>
+                </h1>
+                <p class="auth-subtitle">Mevcut Bakiye: <strong>{{ user.balance }}₺</strong></p>
+            </div>
+            
+            <form class="auth-form" id="depositForm">
+                <div class="form-group">
+                    <label for="amount">
+                        <i class="fas fa-lira-sign"></i> Yüklenecek Tutar
+                    </label>
+                    <input type="number" id="amount" name="amount" required placeholder="0.00" step="0.01" min="10">
+                    <small style="color: #888;">Minimum: 10₺</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="method">
+                        <i class="fas fa-credit-card"></i> Ödeme Yöntemi
+                    </label>
+                    <select id="method" name="method" required>
+                        <option value="">Seçiniz</option>
+                        <option value="Papara">Papara</option>
+                        <option value="Banka Havalesi">Banka Havalesi</option>
+                        <option value="Kripto">Kripto Para</option>
+                        <option value="Kredi Kartı">Kredi Kartı</option>
+                    </select>
+                </div>
+                
+                <div class="alert" id="alert" style="display: none;"></div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-check"></i> Yükleme Talebi Oluştur
+                </button>
+                
+                <div class="auth-footer">
+                    <p><a href="/profile" class="auth-link">← Profilime Dön</a></p>
+                </div>
+            </form>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: rgba(123, 44, 191, 0.1); border-radius: 12px; border: 1px solid var(--primary);">
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> Bilgilendirme</h3>
+                <ul style="color: #aaa; line-height: 1.8;">
+                    <li>Bakiye yükleme talebiniz 5-30 dakika içinde onaylanacaktır</li>
+                    <li>Papara ile anında yükleme yapabilirsiniz</li>
+                    <li>Banka havalesi 1-2 saat sürebilir</li>
+                    <li>Kripto para transferleri 3 onay sonrası işlenir</li>
+                </ul>
+            </div>
+        </div>
+        
+        <a href="/profile" class="back-home">
+            <i class="fas fa-arrow-left"></i> Profilime Dön
+        </a>
+    </div>
+    
+    <script>
+        document.getElementById('depositForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amount = document.getElementById('amount').value;
+            const method = document.getElementById('method').value;
+            
+            if (parseFloat(amount) < 10) {
+                showAlert('error', 'Minimum yükleme tutarı 10₺ olmalıdır!');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/deposit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ amount, method })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 2000);
+                } else {
+                    showAlert('error', data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Bir hata oluştu!');
+            }
+        });
+        
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.style.display = 'block';
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check' : 'exclamation') + '-circle"></i> ' + message;
+        }
+    </script>
+</body>
+</html>

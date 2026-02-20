@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-bg"></div>
+        
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1 class="auth-title">
+                    <span class="gradient-text">KAYIT OL</span>
+                </h1>
+                <p class="auth-subtitle">S2G Game'e katıl ve alışverişe başla</p>
+            </div>
+            
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Kullanıcı Adı
+                    </label>
+                    <input type="text" id="username" name="username" required placeholder="Kullanıcı adı seç" minlength="3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input type="email" id="email" name="email" required placeholder="Email adresini gir">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Şifre
+                    </label>
+                    <input type="password" id="password" name="password" required placeholder="Güçlü bir şifre oluştur" minlength="6">
+                    <div class="password-strength" id="passwordStrength"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password_confirm">
+                        <i class="fas fa-lock"></i> Şifre Tekrar
+                    </label>
+                    <input type="password" id="password_confirm" name="password_confirm" required placeholder="Şifreni tekrar gir">
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="terms" required>
+                        <span><a href="#" class="auth-link">Kullanım Koşullarını</a> kabul ediyorum</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Kayıt Ol
+                </button>
+                
+                <div class="auth-divider">
+                    <span>veya</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="btn btn-social btn-discord">
+                        <i class="fab fa-discord"></i> Discord ile Kayıt
+                    </button>
+                    <button type="button" class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i> Google ile Kayıt
+                    </button>
+                </div>
+                
+                <div class="auth-footer">
+                    <p>Zaten hesabın var mı? <a href="/login" class="auth-link">Giriş Yap</a></p>
+                </div>
+            </form>
+            
+            <div class="alert" id="alert" style="display: none;"></div>
+        </div>
+        
+        <a href="/" class="back-home">
+            <i class="fas fa-arrow-left"></i> Ana Sayfaya Dön
+        </a>
+    </div>
+    
+    <script>
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z\d]/.test(password)) strength++;
+            
+            const strengthText = ['Çok Zayıf', 'Zayıf', 'Orta', 'Güçlü', 'Çok Güçlü'];
+            const strengthColor = ['#ff006e', '#fb5607', '#ffbe0b', '#06ffa5', '#00ff88'];
+            
+            strengthBar.textContent = strengthText[strength - 1] || '';
+            strengthBar.style.color = strengthColor[strength - 1] || '';
+        });
+        
+        // Register form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password_confirm').value;
+            
+            if (password !== passwordConfirm) {
+                const alert = document.getElementById('alert');
+                alert.style.display = 'block';
+                alert.className = 'alert alert-error';
+                alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Şifreler eşleşmiyor!';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                
+                const alert = document.getElementById('alert');
+                alert.style.display = 'block';
+                
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 1500);
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+╔════════════════════════════════════════════════════════════╗
+║         ✅ PORT SORUNU ÇÖZÜLDÜ - KULLANIM REHBERİ ✅      ║
+╚════════════════════════════════════════════════════════════╝
+
+🔧 YAPILAN DEĞİŞİKLİKLER:
+═══════════════════════════════════════════════════════════
+
+✅ Port 5000 → 8000 değiştirildi
+✅ app.py güncellendi (socketio.run port=8000)
+✅ CLOUDFLARE_SETUP_s2ggame.bat güncellendi
+✅ START.bat güncellendi
+✅ HIZLI_BASLATMA.bat güncellendi
+✅ FIX_PORT_AND_START.bat oluşturuldu (otomatik düzeltme)
+
+
+📋 KULLANIM TALİMATLARI:
+═══════════════════════════════════════════════════════════
+
+SEÇENEK 1: OTOMATIK BAŞLATMA (ÖNERİLEN)
+────────────────────────────────────────
+
+1. FIX_PORT_AND_START.bat dosyasını çift tıklayın
+
+   Bu script:
+   ✓ Eski python process'lerini sonlandırır
+   ✓ Cloudflare config dosyasını günceller (5000→8000)
+   ✓ S2G Game sunucusunu başlatır (Port 8000)
+   ✓ Cloudflare Tunnel'ı başlatır
+
+2. İki pencere açılacak - HER İKİSİNİ DE AÇIK TUTUN!
+
+3. Tarayıcıda test edin:
+   🌐 https://s2ggame.com
+   🌐 https://www.s2ggame.com
+   👨‍💼 https://s2ggame.com/admin
+
+
+SEÇENEK 2: MANUEL BAŞLATMA
+────────────────────────────────────────
+
+1. Görev Yöneticisi'ni açın (Ctrl+Shift+Esc)
+
+2. "Ayrıntılar" sekmesinde python.exe'yi bulun ve sonlandırın
+
+3. İki pencere açın:
+
+   Pencere 1: START.bat
+   (S2G Game sunucusu - Port 8000)
+
+   Pencere 2: START_TUNNEL.bat
+   (Cloudflare Tunnel)
+
+4. Tarayıcıda test edin:
+   🌐 https://s2ggame.com
+
+
+SEÇENEK 3: HIZLI BAŞLATMA (Config zaten güncellediyseniz)
+────────────────────────────────────────
+
+1. HIZLI_BASLATMA.bat dosyasını çift tıklayın
+
+2. İki pencere açılacak - HER İKİSİNİ DE AÇIK TUTUN!
+
+
+🔍 TEST ADRESLERI:
+═══════════════════════════════════════════════════════════
+
+Lokal Test (Cloudflare olmadan):
+💻 http://localhost:8000
+💻 http://localhost:8000/admin
+
+Canlı Site (Cloudflare Tunnel ile):
+🌐 https://s2ggame.com
+🌐 https://www.s2ggame.com
+👨‍💼 https://s2ggame.com/admin
+
+
+🔐 ADMİN GİRİŞ BİLGİLERİ:
+═══════════════════════════════════════════════════════════
+
+Kullanıcı Adı: admin
+Şifre: admin123
+
+
+⚠️  ÖNEMLİ NOTLAR:
+═══════════════════════════════════════════════════════════
+
+1. Her iki pencereyi de (Flask + Tunnel) açık tutun!
+
+2. Port 5000 zaten kullanımdaysa:
+   ✓ Port 8000 kullanılıyor artık
+   ✓ Sorun çözüldü!
+
+3. Cloudflare config dosyası otomatik güncelleniyor:
+   📁 %USERPROFILE%\.cloudflared\config.yml
+   ✓ Yedek: config.yml.backup
+
+4. Eğer hala sorun varsa:
+   - Bilgisayarı yeniden başlatın
+   - FIX_PORT_AND_START.bat'ı tekrar çalıştırın
+
+
+🎯 HIZLI BAŞLATMA KOMUTU:
+═══════════════════════════════════════════════════════════
+
+Tek tıkla her şeyi başlat:
+👉 FIX_PORT_AND_START.bat
+
+
+📞 SORUN GİDERME:
+═══════════════════════════════════════════════════════════
+
+❌ "Port 5000 zaten kullanımda" hatası:
+   ✅ FIX_PORT_AND_START.bat çalıştırın
+
+❌ "cloudflared.exe bulunamadı" hatası:
+   ✅ cloudflared.exe'nin s2g-game klasöründe olduğundan emin olun
+
+❌ "Tunnel bulunamadı" hatası:
+   ✅ CLOUDFLARE_SETUP_s2ggame.bat'ı tekrar çalıştırın
+
+❌ Site açılmıyor:
+   ✅ Her iki pencere de açık mı kontrol edin
+   ✅ Cloudflare nameserver'ları doğru mu kontrol edin
+   ✅ 5-10 dakika bekleyin (DNS yayılması)
+
+
+✅ BAŞARILI KURULUM KONTROLÜ:
+═══════════════════════════════════════════════════════════
+
+1. İki pencere açık mı? ✓
+2. Flask sunucusu çalışıyor mu? (Port 8000) ✓
+3. Cloudflare Tunnel bağlı mı? ✓
+4. https://s2ggame.com açılıyor mu? ✓
+
+Hepsi ✓ ise kurulum başarılı! 🎉
+
+
+═══════════════════════════════════════════════════════════
+Son Güncelleme: 19 Şubat 2026
+Port Değişikliği: 5000 → 8000
+═══════════════════════════════════════════════════════════

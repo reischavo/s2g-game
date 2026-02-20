@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="brand-text">S2G GAME</span>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/products" class="nav-link active">Ürünler</a>
+                <a href="#" class="nav-link">Hakkımızda</a>
+                <a href="#" class="nav-link">İletişim</a>
+            </div>
+            <div class="nav-actions">
+                {% if session.get('username') %}
+                    <span class="user-info">Hoş geldin, {{ session.get('username') }}</span>
+                    <a href="/logout" class="btn btn-outline btn-sm">Çıkış</a>
+                {% else %}
+                    <a href="/login" class="btn btn-outline btn-sm">Giriş Yap</a>
+                    <a href="/register" class="btn btn-primary btn-sm">Kayıt Ol</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="gradient-text">Tüm Ürünler</span>
+                </h2>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div style="display: flex; gap: 0.8rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="/products?game=all" class="btn {% if current_game == 'all' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-th"></i> Tümü
+                </a>
+                <a href="/products?game=Valorant" class="btn {% if current_game == 'Valorant' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-crosshairs"></i> Valorant
+                </a>
+                <a href="/products?game=League of Legends" class="btn {% if current_game == 'League of Legends' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-gamepad"></i> League of Legends
+                </a>
+                <a href="/products?game=CS2" class="btn {% if current_game == 'CS2' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-bullseye"></i> CS2
+                </a>
+                <a href="/products?game=PUBG Mobile" class="btn {% if current_game == 'PUBG Mobile' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-mobile-alt"></i> PUBG Mobile
+                </a>
+                <a href="/products?game=Clash of Clans" class="btn {% if current_game == 'Clash of Clans' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-shield-alt"></i> Clash of Clans
+                </a>
+                <a href="/products?game=Discord" class="btn {% if current_game == 'Discord' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fab fa-discord"></i> Discord
+                </a>
+                <a href="/products?game=Fortnite" class="btn {% if current_game == 'Fortnite' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-trophy"></i> Fortnite
+                </a>
+                <a href="/products?game=Minecraft" class="btn {% if current_game == 'Minecraft' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-cube"></i> Minecraft
+                </a>
+                <a href="/products?game=Apex Legends" class="btn {% if current_game == 'Apex Legends' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-fire"></i> Apex Legends
+                </a>
+                <a href="/products?game=Rocket League" class="btn {% if current_game == 'Rocket League' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-car"></i> Rocket League
+                </a>
+                <a href="/products?game=Overwatch 2" class="btn {% if current_game == 'Overwatch 2' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-users"></i> Overwatch 2
+                </a>
+                <a href="/products?game=Genshin Impact" class="btn {% if current_game == 'Genshin Impact' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-star"></i> Genshin Impact
+                </a>
+                <a href="/products?game=Brawl Stars" class="btn {% if current_game == 'Brawl Stars' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
+                    <i class="fas fa-fist-raised"></i> Brawl Stars
+                </a>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ product.image_url or 'https://via.placeholder.com/400x200/7b2cbf/ffffff?text=' + product.game }}" alt="{{ product.title }}">
+                        <span class="product-badge">{{ product.game }}</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">{{ product.title }}</h3>
+                        <div class="product-meta">
+                            <span><i class="fas fa-trophy"></i> {{ product.rank or 'N/A' }}</span>
+                            <span><i class="fas fa-globe"></i> {{ product.region or 'TR' }}</span>
+                        </div>
+                        <p class="product-description">{{ product.description[:100] }}...</p>
+                        <div class="product-footer">
+                            <span class="product-price">{{ product.price }} ₺</span>
+                            <a href="/product/{{ product.id }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-shopping-cart"></i> İncele
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if not products %}
+            <div style="text-align: center; padding: 4rem 0; color: var(--text-muted);">
+                <i class="fas fa-inbox" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>Henüz ürün bulunmuyor</h3>
+                <p>Bu kategoride ürün eklendiğinde burada görünecek.</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>S2G Game</h4>
+                    <p style="color: var(--text-muted);">Güvenli ve hızlı oyun hesabı alışverişi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Hızlı Linkler</h4>
+                    <a href="/">Ana Sayfa</a>
+                    <a href="/products">Ürünler</a>
+                    <a href="#">Hakkımızda</a>
+                    <a href="#">İletişim</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Destek</h4>
+                    <a href="#">SSS</a>
+                    <a href="#">Kullanım Koşulları</a>
+                    <a href="#">Gizlilik Politikası</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Sosyal Medya</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 S2G Game. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

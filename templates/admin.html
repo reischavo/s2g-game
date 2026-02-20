@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-panel {
+            padding: 4rem 0;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .admin-stat-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .admin-stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-stat-label {
+            color: var(--text-muted);
+        }
+        
+        .admin-section {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        
+        .admin-section h3 {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .admin-table th {
+            background: var(--bg-dark);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(6, 255, 165, 0.2);
+            color: #06ffa5;
+        }
+        
+        .status-sold {
+            background: rgba(255, 0, 110, 0.2);
+            color: #ff006e;
+        }
+        
+        .status-pending {
+            background: rgba(255, 190, 11, 0.2);
+            color: #ffbe0b;
+        }
+        
+        .add-product-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-field label {
+            color: var(--text);
+            font-weight: 500;
+        }
+        
+        .form-field input,
+        .form-field textarea,
+        .form-field select {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
+        .form-field textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            .add-product-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-table {
+                font-size: 0.9rem;
+            }
+            
+            .admin-table th,
+            .admin-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="brand-text">S2G GAME</span>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/products" class="nav-link">Ürünler</a>
+                <a href="/admin" class="nav-link active">Admin Panel</a>
+            </div>
+            <div class="nav-actions">
+                <span class="user-info">Admin: {{ session.get('username') }}</span>
+                <a href="/logout" class="btn btn-outline btn-sm">Çıkış</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Panel -->
+    <section class="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <h1 class="section-title">
+                    <span class="gradient-text">ADMIN PANEL</span>
+                </h1>
+                <p style="color: var(--text-muted);">S2G Game Yönetim Paneli</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="admin-stats">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon" style="color: var(--primary);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="admin-stat-number">{{ users|length }}</div>
+                    <div class="admin-stat-label">Toplam Kullanıcı</div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon" style="color: var(--accent);">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="admin-stat-number">{{ products|length }}</div>
+                    <div class="admin-stat-label">Toplam Ürün</div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon" style="color: #06ffa5;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="admin-stat-number">{{ orders|length }}</div>
+                    <div class="admin-stat-label">Toplam Sipariş</div>
+                </div>
+                
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon" style="color: #ffbe0b;">
+                        <i class="fas fa-lira-sign"></i>
+                    </div>
+                    <div class="admin-stat-number">{{ orders|sum(attribute='price')|default(0)|int }}</div>
+                    <div class="admin-stat-label">Toplam Gelir (₺)</div>
+                </div>
+            </div>
+
+            <!-- Add Product -->
+            <div class="admin-section">
+                <h3><i class="fas fa-plus-circle"></i> Yeni Ürün Ekle</h3>
+                <form class="add-product-form" id="addProductForm">
+                    <div class="form-field">
+                        <label>Ürün Başlığı</label>
+                        <input type="text" name="title" required placeholder="Örn: Valorant Hesabı">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label>Oyun</label>
+                        <select name="game" required>
+                            <option value="Valorant">Valorant</option>
+                            <option value="League of Legends">League of Legends</option>
+                            <option value="CS2">CS2</option>
+                            <option value="Fortnite">Fortnite</option>
+                            <option value="Diğer">Diğer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label>Fiyat (₺)</label>
+                        <input type="number" name="price" required placeholder="0.00" step="0.01">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label>Rank</label>
+                        <input type="text" name="rank" placeholder="Örn: Immortal 3">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label>Bölge</label>
+                        <input type="text" name="region" placeholder="Örn: TR" value="TR">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label>Görsel URL</label>
+                        <input type="url" name="image_url" placeholder="https://...">
+                    </div>
+                    
+                    <div class="form-field full-width">
+                        <label>Açıklama</label>
+                        <textarea name="description" required placeholder="Ürün açıklaması..."></textarea>
+                    </div>
+                    
+                    <div class="form-field full-width">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus"></i> Ürün Ekle
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Products Table -->
+            <div class="admin-section">
+                <h3><i class="fas fa-box"></i> Ürünler</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Başlık</th>
+                                <th>Oyun</th>
+                                <th>Fiyat</th>
+                                <th>Durum</th>
+                                <th>Tarih</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>#{{ product.id }}</td>
+                                <td>{{ product.title }}</td>
+                                <td>{{ product.game }}</td>
+                                <td>{{ product.price }} ₺</td>
+                                <td>
+                                    {% if product.is_sold %}
+                                        <span class="status-badge status-sold">Satıldı</span>
+                                    {% else %}
+                                        <span class="status-badge status-active">Aktif</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ product.created_at.strftime('%d.%m.%Y') }}</td>
+                                <td>
+                                    <button class="btn btn-outline btn-sm" onclick="deleteProduct({{ product.id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="admin-section">
+                <h3><i class="fas fa-users"></i> Kullanıcılar</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kullanıcı Adı</th>
+                                <th>Email</th>
+                                <th>Bakiye</th>
+                                <th>Admin</th>
+                                <th>Kayıt Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>#{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.balance }} ₺</td>
+                                <td>
+                                    {% if user.is_admin %}
+                                        <span class="status-badge status-active">Evet</span>
+                                    {% else %}
+                                        <span class="status-badge status-pending">Hayır</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.created_at.strftime('%d.%m.%Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="admin-section">
+                <h3><i class="fas fa-shopping-cart"></i> Siparişler</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kullanıcı ID</th>
+                                <th>Ürün ID</th>
+                                <th>Fiyat</th>
+                                <th>Durum</th>
+                                <th>Tarih</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                            <tr>
+                                <td>#{{ order.id }}</td>
+                                <td>#{{ order.user_id }}</td>
+                                <td>#{{ order.product_id }}</td>
+                                <td>{{ order.price }} ₺</td>
+                                <td>
+                                    {% if order.status == 'completed' %}
+                                        <span class="status-badge status-active">Tamamlandı</span>
+                                    {% elif order.status == 'pending' %}
+                                        <span class="status-badge status-pending">Bekliyor</span>
+                                    {% else %}
+                                        <span class="status-badge status-sold">İptal</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 S2G Game Admin Panel. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Add Product
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch('/admin/add-product', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Ürün başarıyla eklendi!');
+                    window.location.reload();
+                } else {
+                    alert('Hata: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Bir hata oluştu!');
+            }
+        });
+        
+        // Delete Product
+        function deleteProduct(productId) {
+            if (confirm('Bu ürünü silmek istediğinize emin misiniz?')) {
+                fetch('/admin/delete-product/' + productId, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Ürün silindi!');
+                        window.location.reload();
+                    } else {
+                        alert('Hata: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Bir hata oluştu!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

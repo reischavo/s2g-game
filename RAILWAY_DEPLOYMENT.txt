@@ -1,0 +1,227 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        RAILWAY.APP DEPLOYMENT - 3 DAKİKADA CANLI!          ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📅 Tarih: 20 Şubat 2026
+🚀 Platform: Railway.app
+⏱️ Süre: 3 dakika
+
+═══════════════════════════════════════════════════════════════
+
+✅ HAZIRLIK TAMAMLANDI
+═══════════════════════════════════════════════════════════════
+
+Aşağıdaki dosyalar oluşturuldu:
+✅ Procfile - Railway başlatma komutu
+✅ railway.json - Railway konfigürasyonu
+✅ requirements.txt - Gunicorn eklendi
+✅ .gitignore - Gereksiz dosyaları hariç tut
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 1: GITHUB'A KOD YÜKLE
+═══════════════════════════════════════════════════════════════
+
+1. GitHub'a giriş yap: https://github.com
+
+2. Yeni repository oluştur:
+   - "New repository" butonuna tıkla
+   - İsim: s2g-game (veya istediğin isim)
+   - Public veya Private seç
+   - "Create repository" tıkla
+
+3. Kodu GitHub'a yükle:
+
+   CMD/Terminal'de s2g-game klasörüne git:
+   cd s2g-game
+
+   Git komutları:
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/KULLANICI_ADIN/s2g-game.git
+   git push -u origin main
+
+   (KULLANICI_ADIN yerine GitHub kullanıcı adını yaz)
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 2: RAILWAY.APP'E KAYIT OL
+═══════════════════════════════════════════════════════════════
+
+1. Railway.app'e git: https://railway.app
+
+2. "Start a New Project" veya "Login with GitHub" tıkla
+
+3. GitHub ile giriş yap (izin ver)
+
+4. $5 ücretsiz kredi alacaksın!
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 3: PROJEYI DEPLOY ET
+═══════════════════════════════════════════════════════════════
+
+1. Railway Dashboard'da "New Project" tıkla
+
+2. "Deploy from GitHub repo" seç
+
+3. s2g-game repository'sini seç
+
+4. Railway otomatik olarak:
+   ✅ Kodu çeker
+   ✅ Python ortamı kurar
+   ✅ requirements.txt'yi yükler
+   ✅ Gunicorn ile başlatır
+   ✅ HTTPS sertifikası ekler
+
+5. 2-3 dakika bekle (build süreci)
+
+6. "View Logs" ile ilerlemeyi izle
+
+═══════════════════════════════════════════════════════════════
+
+📝 ADIM 4: DOMAIN BAĞLA
+═══════════════════════════════════════════════════════════════
+
+1. Railway Dashboard'da projeyi seç
+
+2. "Settings" sekmesine git
+
+3. "Domains" bölümünde:
+   - "Generate Domain" tıkla
+   - Railway otomatik domain verir: s2g-game.up.railway.app
+
+4. Kendi domain'ini bağla (s2ggame.com):
+   - "Custom Domain" tıkla
+   - s2ggame.com yaz
+   - Railway bir CNAME kaydı gösterecek
+
+5. Wix'e geri dön:
+   - DNS kayıtlarına git
+   - CNAME kaydı ekle:
+     * Host: @ (veya www)
+     * Points to: Railway'in verdiği CNAME
+     * TTL: 3600
+
+6. 5-10 dakika bekle
+
+7. https://s2ggame.com adresine git → CANLI! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+🎯 RAILWAY AVANTAJLARI
+═══════════════════════════════════════════════════════════════
+
+✅ Otomatik HTTPS (SSL sertifikası)
+✅ Otomatik deploy (GitHub'a push → otomatik güncelleme)
+✅ Hızlı (CDN ile)
+✅ Uyumaz (her zaman aktif)
+✅ Kolay kullanım
+✅ $5 ücretsiz kredi
+✅ Database dahil (PostgreSQL)
+✅ Logs ve monitoring
+
+═══════════════════════════════════════════════════════════════
+
+💰 MALİYET
+═══════════════════════════════════════════════════════════════
+
+İLK AY: Ücretsiz ($5 kredi)
+SONRASI: ~$5/ay (kullanıma göre)
+
+Eğer trafik az ise $5 kredi 1-2 ay yeter.
+Sonra kredi kartı eklemen lazım.
+
+═══════════════════════════════════════════════════════════════
+
+⚠️ ÖNEMLİ NOTLAR
+═══════════════════════════════════════════════════════════════
+
+1. DATABASE:
+   - Railway otomatik SQLite kullanır
+   - Ama SQLite production'da önerilmez
+   - PostgreSQL kullanmak daha iyi
+   - Railway'de "Add PostgreSQL" ile ekleyebilirsin
+
+2. ENVIRONMENT VARIABLES:
+   - Railway'de "Variables" sekmesinden ekle
+   - SECRET_KEY, DATABASE_URL, vb.
+
+3. LOGS:
+   - Railway Dashboard'da "Logs" sekmesinden izle
+   - Hataları buradan görebilirsin
+
+4. OTOMATIK DEPLOY:
+   - GitHub'a her push → Railway otomatik deploy eder
+   - Çok pratik!
+
+═══════════════════════════════════════════════════════════════
+
+🔧 SORUN GİDERME
+═══════════════════════════════════════════════════════════════
+
+SORUN: Build başarısız
+ÇÖZÜM:
+- Railway Logs'u kontrol et
+- requirements.txt doğru mu?
+- Python versiyonu uyumlu mu?
+
+SORUN: Site açılmıyor
+ÇÖZÜM:
+- Railway'de "Deployments" sekmesine git
+- Son deployment başarılı mı?
+- Logs'da hata var mı?
+
+SORUN: Database hatası
+ÇÖZÜM:
+- SQLite yerine PostgreSQL kullan
+- Railway'de "Add PostgreSQL" tıkla
+- app.py'de DATABASE_URL'yi güncelle
+
+═══════════════════════════════════════════════════════════════
+
+📞 YARDIM
+═══════════════════════════════════════════════════════════════
+
+Railway Docs: https://docs.railway.app
+Railway Discord: https://discord.gg/railway
+
+═══════════════════════════════════════════════════════════════
+
+🎉 BAŞARILI DEPLOYMENT SONRASI
+═══════════════════════════════════════════════════════════════
+
+Site canlı olduktan sonra:
+
+1. ✅ https://s2ggame.com adresine git
+2. ✅ SSL sertifikası otomatik aktif
+3. ✅ Hızlı ve güvenli
+4. ✅ Her zaman aktif (uyumaz)
+5. ✅ GitHub'a push → otomatik güncelleme
+
+Artık profesyonel bir deployment'ın var! 🚀
+
+═══════════════════════════════════════════════════════════════
+
+📋 HIZLI BAŞLANGIÇ KOMUTLARI
+═══════════════════════════════════════════════════════════════
+
+# Git kurulumu (ilk kez)
+cd s2g-game
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/KULLANICI_ADIN/s2g-game.git
+git push -u origin main
+
+# Sonraki güncellemeler
+git add .
+git commit -m "Update"
+git push
+
+Railway otomatik deploy edecek!
+
+═══════════════════════════════════════════════════════════════

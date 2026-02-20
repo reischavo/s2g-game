@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #0a0a0f;
+        }
+        
+        .profile-wrapper {
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+        
+        .profile-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Profile Header - GameSatış Style */
+        .profile-header-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 0;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .profile-banner {
+            height: 200px;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd, #ff006e);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=200&fit=crop') center/cover;
+            opacity: 0.2;
+        }
+        
+        .profile-main {
+            padding: 0 2rem 2rem 2rem;
+            position: relative;
+            margin-top: -60px;
+        }
+        
+        .profile-avatar-wrapper {
+            display: flex;
+            align-items: flex-end;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-avatar-large {
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 5px solid #1a1a2e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .profile-info-main {
+            flex: 1;
+            padding-bottom: 1rem;
+        }
+        
+        .profile-username {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .profile-email {
+            color: #888;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .profile-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .badge-verified {
+            background: rgba(6, 255, 165, 0.15);
+            color: #06ffa5;
+            border: 2px solid #06ffa5;
+        }
+        
+        .badge-member {
+            background: rgba(157, 78, 221, 0.15);
+            color: #9d4edd;
+            border: 2px solid #9d4edd;
+        }
+        
+        /* Stats Grid */
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-box {
+            background: #1a1a2e;
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .stat-box:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.3);
+        }
+        
+        .stat-icon-large {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-value-large {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label-large {
+            color: #888;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Content Grid */
+        .profile-content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .content-card {
+            background: #1a1a2e;
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        
+        .content-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(123, 44, 191, 0.2);
+        }
+        
+        .content-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Transaction Item */
+        .transaction-list-item {
+            background: rgba(10, 10, 15, 0.5);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .transaction-list-item:hover {
+            border-color: var(--primary);
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .transaction-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .transaction-icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .transaction-icon-box.deposit {
+            background: rgba(6, 255, 165, 0.15);
+            color: #06ffa5;
+        }
+        
+        .transaction-icon-box.withdraw {
+            background: rgba(255, 0, 110, 0.15);
+            color: #ff006e;
+        }
+        
+        .transaction-details h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .transaction-details p {
+            margin: 0;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .transaction-right {
+            text-align: right;
+        }
+        
+        .transaction-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* Order Item */
+        .order-list-item {
+            background: rgba(10, 10, 15, 0.5);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .order-list-item:hover {
+            border-color: var(--primary);
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .order-id {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        
+        @media (max-width: 1024px) {
+            .profile-content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-avatar-wrapper {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .profile-username {
+                font-size: 2rem;
+                justify-content: center;
+            }
+            
+            .profile-stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="/" style="display: flex; align-items: center;">
+                    <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="S2G Game" style="height: 50px;">
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/products" class="nav-link">Ürünler</a>
+                <a href="/profile" class="nav-link active">Profilim</a>
+            </div>
+            <div class="nav-actions">
+                <span class="user-info">{{ user.balance }}₺</span>
+                <a href="/logout" class="btn btn-outline btn-sm">Çıkış</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <!-- Profile Header Card -->
+            <div class="profile-header-card">
+                <div class="profile-banner"></div>
+                <div class="profile-main">
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-large">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info-main">
+                            <h1 class="profile-username">
+                                {{ user.username }}
+                                {% if user.is_verified %}
+                                    <i class="fas fa-check-circle" style="color: #06ffa5; font-size: 1.5rem;"></i>
+                                {% endif %}
+                            </h1>
+                            <div class="profile-email">{{ user.email }}</div>
+                            <div class="profile-badges">
+                                {% if user.is_verified %}
+                                    <span class="profile-badge badge-verified">
+                                        <i class="fas fa-shield-alt"></i> Doğrulanmış Hesap
+                                    </span>
+                                {% endif %}
+                                <span class="profile-badge badge-member">
+                                    <i class="fas fa-calendar"></i> Üye: {{ user.created_at.strftime('%d.%m.%Y') }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="profile-stats-grid">
+                <div class="stat-box">
+                    <div class="stat-icon-large">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-value-large">{{ user.balance }}₺</div>
+                    <div class="stat-label-large">Bakiye</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon-large">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-value-large">{{ orders|length }}</div>
+                    <div class="stat-label-large">Toplam Sipariş</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon-large">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="stat-value-large">{{ transactions|length }}</div>
+                    <div class="stat-label-large">İşlem Sayısı</div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon-large">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value-large">{% if user.is_verified %}VIP{% else %}Standart{% endif %}</div>
+                    <div class="stat-label-large">Üyelik Tipi</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="/deposit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus"></i> Bakiye Yükle
+                </a>
+                <a href="/withdraw" class="btn btn-outline btn-lg">
+                    <i class="fas fa-minus"></i> Bakiye Çek
+                </a>
+                {% if not user.is_verified %}
+                <a href="/verify" class="btn btn-outline btn-lg">
+                    <i class="fas fa-id-card"></i> Kimlik Doğrula
+                </a>
+                {% endif %}
+                <a href="/products" class="btn btn-outline btn-lg">
+                    <i class="fas fa-shopping-cart"></i> Alışverişe Başla
+                </a>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="profile-content-grid">
+                <!-- Transactions -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title">
+                            <i class="fas fa-exchange-alt"></i> Son İşlemler
+                        </h2>
+                    </div>
+                    {% if transactions %}
+                        {% for transaction in transactions[:5] %}
+                        <div class="transaction-list-item">
+                            <div class="transaction-left">
+                                <div class="transaction-icon-box {{ transaction.type }}">
+                                    <i class="fas fa-{{ 'arrow-up' if transaction.type == 'deposit' else 'arrow-down' }}"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <h4>{{ 'Bakiye Yükleme' if transaction.type == 'deposit' else 'Bakiye Çekme' }}</h4>
+                                    <p>{{ transaction.created_at.strftime('%d.%m.%Y %H:%M') }} • {{ transaction.method }}</p>
+                                </div>
+                            </div>
+                            <div class="transaction-right">
+                                <div class="transaction-amount" style="color: {{ '#06ffa5' if transaction.type == 'deposit' else '#ff006e' }};">
+                                    {{ '+' if transaction.type == 'deposit' else '-' }}{{ transaction.amount }}₺
+                                </div>
+                                <span class="badge badge-{{ 'success' if transaction.status == 'completed' else 'warning' if transaction.status == 'pending' else 'danger' }}">
+                                    {{ 'Onaylandı' if transaction.status == 'completed' else 'Bekliyor' if transaction.status == 'pending' else 'Reddedildi' }}
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>Henüz işlem bulunmuyor</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Orders -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title">
+                            <i class="fas fa-shopping-bag"></i> Siparişlerim
+                        </h2>
+                    </div>
+                    {% if orders %}
+                        {% for order in orders[:5] %}
+                        <div class="order-list-item">
+                            <div class="order-header">
+                                <span class="order-id">Sipariş #{{ order.id }}</span>
+                                <span class="badge badge-{{ 'success' if order.status == 'completed' else 'warning' }}">
+                                    {{ 'Tamamlandı' if order.status == 'completed' else 'Bekliyor' }}
+                                </span>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-date">{{ order.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+                                <span style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">{{ order.price }}₺</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-shopping-cart"></i>
+                            <p>Henüz sipariş bulunmuyor</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 S2G Game. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

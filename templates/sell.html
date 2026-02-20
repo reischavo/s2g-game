@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İlan Ver - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+        }
+        
+        /* Navbar */
+        .modern-navbar {
+            background: rgba(10, 10, 15, 0.98);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(123, 44, 191, 0.3);
+            padding: 1.25rem 3rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Sell Container */
+        .sell-wrapper {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .sell-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem;
+        }
+        
+        .sell-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .sell-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .sell-subtitle {
+            font-size: 1.2rem;
+            color: #888;
+        }
+        
+        /* Form Card */
+        .form-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #9d4edd;
+            font-size: 1.1rem;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #7b2cbf;
+            box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+        }
+        
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .form-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(123, 44, 191, 0.6);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #06ffa5, #00d9ff);
+            color: #000;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+        }
+        
+        .success-message.show {
+            display: flex;
+        }
+        
+        /* Tips Box */
+        .tips-box {
+            background: rgba(245, 166, 35, 0.1);
+            border: 2px solid rgba(245, 166, 35, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tips-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #F5A623;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tips-list {
+            list-style: none;
+            color: #ccc;
+        }
+        
+        .tips-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .tips-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #F5A623;
+            font-weight: 700;
+        }
+        
+        /* Image Upload Area */
+        .image-upload-area {
+            width: 100%;
+            min-height: 300px;
+            border: 3px dashed rgba(123, 44, 191, 0.5);
+            border-radius: 16px;
+            background: rgba(10, 10, 15, 0.6);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .image-upload-area:hover {
+            border-color: #7b2cbf;
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .upload-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            text-align: center;
+            min-height: 300px;
+        }
+        
+        .upload-placeholder i {
+            font-size: 4rem;
+            color: #7b2cbf;
+            margin-bottom: 1.5rem;
+            animation: uploadFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes uploadFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .upload-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-hint {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-upload {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-upload:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.5);
+        }
+        
+        .image-preview {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 1rem;
+        }
+        
+        .preview-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .image-preview:hover .preview-overlay {
+            opacity: 1;
+        }
+        
+        .btn-remove {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #ff006e, #ff4d8f);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-remove:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 0, 110, 0.5);
+        }
+        
+        /* Upload Progress */
+        .upload-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .upload-progress.show {
+            display: flex;
+        }
+        
+        .progress-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(123, 44, 191, 0.3);
+            border-top-color: #7b2cbf;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .progress-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="modern-navbar">
+        <div class="navbar-container">
+            <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                <img src="{{ url_for('static', filename='images/sitelogo.png') }}" alt="S2G Game" style="height: 45px;">
+                <span class="logo-text">S2G GAME</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Sell Content -->
+    <div class="sell-wrapper">
+        <div class="sell-container">
+            <div class="sell-header">
+                <h1 class="sell-title">İlan Ver</h1>
+                <p class="sell-subtitle">Oyun hesabınızı güvenle satın</p>
+            </div>
+            
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle" style="font-size: 2rem;"></i>
+                <div>
+                    <div style="font-size: 1.2rem;">İlanınız Başarıyla Eklendi!</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">İlanınız incelendikten sonra yayınlanacaktır.</div>
+                </div>
+            </div>
+            
+            <!-- Tips Box -->
+            <div class="tips-box">
+                <div class="tips-title">
+                    <i class="fas fa-lightbulb"></i>
+                    İlan Verme İpuçları
+                </div>
+                <ul class="tips-list">
+                    <li>Başlığı açıklayıcı ve detaylı yazın</li>
+                    <li>Hesabın tüm özelliklerini açıklamaya ekleyin</li>
+                    <li>Gerçek hesap görselini yükleyin (Imgur kullanabilirsiniz)</li>
+                    <li>Fiyatı piyasa değerine uygun belirleyin</li>
+                    <li>Rank, seviye, skin sayısı gibi detayları belirtin</li>
+                </ul>
+            </div>
+            
+            <!-- Form -->
+            <div class="form-card">
+                <form id="sellForm">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-heading"></i> İlan Başlığı
+                        </label>
+                        <input type="text" class="form-input" id="title" required 
+                               placeholder="Örn: PUBG Mobile Conqueror | Glacier M416 | 8500 UC">
+                        <div class="form-hint">Hesabınızın öne çıkan özelliklerini başlıkta belirtin</div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-gamepad"></i> Oyun
+                            </label>
+                            <select class="form-select" id="game" required>
+                                <option value="">Oyun Seçin</option>
+                                <option value="PUBG Mobile">PUBG Mobile</option>
+                                <option value="Valorant">Valorant</option>
+                                <option value="League of Legends">League of Legends</option>
+                                <option value="CS2">CS2</option>
+                                <option value="Clash of Clans">Clash of Clans</option>
+                                <option value="Discord">Discord</option>
+                                <option value="Fortnite">Fortnite</option>
+                                <option value="Minecraft">Minecraft</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-trophy"></i> Rank/Seviye
+                            </label>
+                            <input type="text" class="form-input" id="rank" required 
+                                   placeholder="Örn: Conqueror, Radiant, TH15">
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-tag"></i> Fiyat (₺)
+                            </label>
+                            <input type="number" class="form-input" id="price" required 
+                                   placeholder="0.00" step="0.01" min="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-globe"></i> Bölge
+                            </label>
+                            <select class="form-select" id="region" required>
+                                <option value="TR">Türkiye</option>
+                                <option value="EU">Avrupa</option>
+                                <option value="NA">Kuzey Amerika</option>
+                                <option value="Global">Global</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-image"></i> Ürün Görseli
+                        </label>
+                        
+                        <!-- Image Upload Area -->
+                        <div class="image-upload-area" id="imageUploadArea">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <div class="upload-text">Görsel Yükle</div>
+                                <div class="upload-hint">PNG, JPG, JPEG, GIF, WEBP (Max 16MB)</div>
+                                <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                                <button type="button" class="btn-upload" onclick="document.getElementById('imageInput').click()">
+                                    <i class="fas fa-folder-open"></i> Dosya Seç
+                                </button>
+                            </div>
+                            
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Preview">
+                                <div class="preview-overlay">
+                                    <button type="button" class="btn-remove" onclick="removeImage()">
+                                        <i class="fas fa-trash"></i> Kaldır
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" id="image_url" name="image_url">
+                        <div class="form-hint">
+                            Hesabınızın ekran görüntüsünü yükleyin. Görsel otomatik olarak yüklenecektir.
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-align-left"></i> Açıklama
+                        </label>
+                        <textarea class="form-textarea" id="description" required 
+                                  placeholder="Hesabınızın tüm özelliklerini detaylı bir şekilde yazın...
+
+Örnek:
+✅ Conqueror Rank (Season 30)
+✅ 8500+ UC Bakiye
+✅ Glacier M416 (Legendary)
+✅ 150+ Premium Skins
+✅ Full Access
+✅ Email Değiştirilebilir"></textarea>
+                        <div class="form-hint">Emoji kullanarak daha çekici hale getirebilirsiniz (🔥⭐💎👑)</div>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <i class="fas fa-bullhorn"></i> İlanı Yayınla
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let uploadedImageUrl = '';
+        
+        // Image Upload Handler
+        document.getElementById('imageInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Show preview immediately
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('uploadPlaceholder').style.display = 'none';
+                document.getElementById('imagePreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+            
+            // Upload to server
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Show progress
+            const uploadArea = document.getElementById('imageUploadArea');
+            const progressDiv = document.createElement('div');
+            progressDiv.className = 'upload-progress show';
+            progressDiv.innerHTML = `
+                <div class="progress-spinner"></div>
+                <div class="progress-text">Yükleniyor...</div>
+            `;
+            uploadArea.appendChild(progressDiv);
+            
+            try {
+                const response = await fetch('/upload-image', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    uploadedImageUrl = result.image_url;
+                    document.getElementById('image_url').value = result.image_url;
+                    progressDiv.remove();
+                } else {
+                    alert('❌ ' + result.message);
+                    removeImage();
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                alert('❌ Yükleme sırasında bir hata oluştu!');
+                removeImage();
+            } finally {
+                progressDiv.remove();
+            }
+        });
+        
+        // Remove Image
+        function removeImage() {
+            document.getElementById('imageInput').value = '';
+            document.getElementById('previewImg').src = '';
+            document.getElementById('image_url').value = '';
+            document.getElementById('uploadPlaceholder').style.display = 'flex';
+            document.getElementById('imagePreview').style.display = 'none';
+            uploadedImageUrl = '';
+        }
+        
+        // Form Submit
+        document.getElementById('sellForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yükleniyor...';
+            
+            const data = {
+                title: document.getElementById('title').value,
+                game: document.getElementById('game').value,
+                rank: document.getElementById('rank').value,
+                price: document.getElementById('price').value,
+                region: document.getElementById('region').value,
+                image_url: document.getElementById('image_url').value || uploadedImageUrl,
+                description: document.getElementById('description').value,
+                category: 'Hesap'
+            };
+            
+            try {
+                const response = await fetch('/sell', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('successMessage').classList.add('show');
+                    document.getElementById('sellForm').reset();
+                    removeImage();
+                    
+                    setTimeout(() => {
+                        window.location.href = '/my-listings';
+                    }, 2000);
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Bir hata oluştu!');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-bullhorn"></i> İlanı Yayınla';
+            }
+        });
+    </script>
+</body>
+</html>

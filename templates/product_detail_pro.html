@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title }} - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+        }
+        
+        /* Sponsor Banner */
+        .sponsor-banner {
+            background: linear-gradient(90deg, #F5A623, #F7B731);
+            padding: 0.85rem 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #000;
+        }
+        
+        /* Navbar */
+        .modern-navbar {
+            background: rgba(10, 10, 15, 0.98);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(123, 44, 191, 0.3);
+            padding: 1.25rem 3rem;
+        }
+        
+        .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Product Detail */
+        .product-detail-wrapper {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 3rem;
+        }
+        
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        /* Left Side - Image */
+        .product-image-section {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        
+        .product-main-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .product-main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 16px;
+        }
+        
+        .product-badges-detail {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .badge-detail {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .badge-sponsor-detail {
+            background: linear-gradient(135deg, #F5A623, #F7B731);
+            color: #000;
+        }
+        
+        .badge-verified {
+            background: rgba(6, 255, 165, 0.2);
+            border: 2px solid #06ffa5;
+            color: #06ffa5;
+        }
+        
+        .badge-instant {
+            background: rgba(123, 44, 191, 0.2);
+            border: 2px solid #7b2cbf;
+            color: #9d4edd;
+        }
+        
+        /* Right Side - Info */
+        .product-info-section {
+            background: rgba(26, 26, 46, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+        
+        .product-detail-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .product-price-section {
+            background: rgba(123, 44, 191, 0.1);
+            border: 2px solid rgba(123, 44, 191, 0.5);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .price-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-value {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #7b2cbf, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .product-meta-detail {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .meta-box {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        
+        .meta-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #9d4edd;
+        }
+        
+        .product-description-detail {
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .description-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #9d4edd;
+        }
+        
+        .description-text {
+            line-height: 1.8;
+            color: #ccc;
+            white-space: pre-line;
+        }
+        
+        .btn-buy-now {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-buy-now:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(123, 44, 191, 0.6);
+        }
+        
+        /* Security Info */
+        .security-info {
+            background: rgba(6, 255, 165, 0.1);
+            border: 2px solid rgba(6, 255, 165, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .security-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #06ffa5;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .security-list {
+            list-style: none;
+            color: #ccc;
+        }
+        
+        .security-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .security-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #06ffa5;
+            font-weight: 700;
+        }
+        
+        @media (max-width: 1024px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sponsor Banner -->
+    <div class="sponsor-banner">
+        <i class="fas fa-trophy"></i>
+        <strong>PUBG MOBILE RESMİ SPONSORU</strong>
+        <i class="fas fa-trophy"></i>
+        | Güvenli Alışveriş | 7/24 Destek | Anında Teslimat
+    </div>
+    
+    <!-- Navbar -->
+    <nav class="modern-navbar">
+        <div class="navbar-container">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <img src="{{ url_for('static', filename='images/sitelogo.png') }}" alt="S2G Game" style="height: 45px;">
+                <span class="logo-text">S2G GAME</span>
+            </div>
+            <a href="/products" style="color: #9d4edd; text-decoration: none; font-weight: 600;">
+                <i class="fas fa-arrow-left"></i> Ürünlere Dön
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Product Detail -->
+    <div class="product-detail-wrapper">
+        <div class="product-detail-grid">
+            <!-- Left Side - Image -->
+            <div class="product-image-section">
+                <div class="product-main-image">
+                    <img src="{{ product.image_url }}" alt="{{ product.title }}">
+                </div>
+                <div class="product-badges-detail">
+                    {% if product.game == 'PUBG Mobile' %}
+                        <span class="badge-detail badge-sponsor-detail">
+                            <i class="fas fa-star"></i> RESMİ SPONSOR
+                        </span>
+                    {% endif %}
+                    <span class="badge-detail badge-verified">
+                        <i class="fas fa-shield-check"></i> DOĞRULANMIŞ
+                    </span>
+                    <span class="badge-detail badge-instant">
+                        <i class="fas fa-bolt"></i> ANINDA TESLİMAT
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Right Side - Info -->
+            <div class="product-info-section">
+                <h1 class="product-detail-title">{{ product.title }}</h1>
+                
+                <div class="product-price-section">
+                    <div class="price-label">Fiyat</div>
+                    <div class="price-value">{{ product.price }}₺</div>
+                </div>
+                
+                <div class="product-meta-detail">
+                    <div class="meta-box">
+                        <div class="meta-label">Oyun</div>
+                        <div class="meta-value">{{ product.game }}</div>
+                    </div>
+                    <div class="meta-box">
+                        <div class="meta-label">Rank/Seviye</div>
+                        <div class="meta-value">{{ product.rank }}</div>
+                    </div>
+                    <div class="meta-box">
+                        <div class="meta-label">Bölge</div>
+                        <div class="meta-value">{{ product.region }}</div>
+                    </div>
+                    <div class="meta-box">
+                        <div class="meta-label">Stok</div>
+                        <div class="meta-value">{{ product.stock }} Adet</div>
+                    </div>
+                </div>
+                
+                <div class="product-description-detail">
+                    <div class="description-title">
+                        <i class="fas fa-info-circle"></i> Ürün Detayları
+                    </div>
+                    <div class="description-text">{{ product.description }}</div>
+                </div>
+                
+                <button class="btn-buy-now" onclick="buyProduct({{ product.id }})">
+                    <i class="fas fa-shopping-cart"></i>
+                    Hemen Satın Al
+                </button>
+                
+                <div class="security-info">
+                    <div class="security-title">
+                        <i class="fas fa-shield-alt"></i> Güvenlik Garantisi
+                    </div>
+                    <ul class="security-list">
+                        <li>%100 Güvenli Ödeme</li>
+                        <li>Anında Teslimat Garantisi</li>
+                        <li>7/24 Canlı Destek</li>
+                        <li>Para İade Garantisi</li>
+                        <li>S2G Esports Güvencesi</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        async function buyProduct(productId) {
+            if (!confirm('Bu ürünü satın almak istediğinizden emin misiniz?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/buy/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Satın alındı ekranına yönlendir
+                    window.location.href = `/order-success/${data.order_id}`;
+                } else {
+                    alert('❌ ' + data.message);
+                    if (data.message.includes('Giriş')) {
+                        window.location.href = '/login';
+                    } else if (data.message.includes('bakiye')) {
+                        if (confirm('Yetersiz bakiye! Bakiye yüklemek ister misiniz?')) {
+                            window.location.href = '/deposit';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Bir hata oluştu!');
+            }
+        }
+    </script>
+</body>
+</html>

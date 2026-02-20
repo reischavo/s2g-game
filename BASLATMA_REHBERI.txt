@@ -1,0 +1,66 @@
+╔════════════════════════════════════════════════════════════╗
+║         🎮 S2G GAME - BAŞLATMA REHBERİ 🎮                 ║
+╚════════════════════════════════════════════════════════════╝
+
+📋 HIZLI BAŞLANGIÇ (3 ADIM)
+═══════════════════════════════════════════════════════════
+
+1️⃣  HIZLI_COZUM.bat çalıştır
+   → Tüm sorunları otomatik çözer
+
+2️⃣  BASLATMA_ADIM_ADIM.bat çalıştır
+   → İki pencere açar (Flask + Cloudflare)
+
+3️⃣  Tarayıcıda aç: https://s2ggame.com
+
+
+🔧 SORUN ÇÖZME
+═══════════════════════════════════════════════════════════
+
+Pencereler kapanıyorsa:
+→ TEST_SISTEM.bat çalıştır
+→ Hangi adımda hata var göreceksin
+
+Site açılmıyorsa:
+→ SORUN_GIDERME.md dosyasını oku
+→ DNS propagation 24-48 saat sürebilir
+
+
+📁 ÖNEMLİ DOSYALAR
+═══════════════════════════════════════════════════════════
+
+HIZLI_COZUM.bat          → Sorunları otomatik çöz
+BASLATMA_ADIM_ADIM.bat   → Adım adım başlat (ÖNERİLEN)
+HIZLI_BASLATMA.bat       → Hızlı başlat
+TEST_SISTEM.bat          → Sistem kontrolü
+SORUN_GIDERME.md         → Detaylı sorun giderme
+
+
+🌐 SİTE BİLGİLERİ
+═══════════════════════════════════════════════════════════
+
+Domain:        https://s2ggame.com
+Admin Panel:   https://s2ggame.com/admin
+Admin Hesap:   admin / admin123
+
+
+⚠️  ÖNEMLİ NOTLAR
+═══════════════════════════════════════════════════════════
+
+✅ cloudflared.exe bu klasörde olmalı
+✅ İki pencere açık kalmalı (Flask + Cloudflare)
+✅ Nameserver değişikliği 24-48 saat sürebilir
+✅ Her iki pencereyi de KAPATMAYIN!
+
+
+🆘 YARDIM
+═══════════════════════════════════════════════════════════
+
+1. TEST_SISTEM.bat → Sistem durumunu gör
+2. SORUN_GIDERME.md → Detaylı rehber oku
+3. HIZLI_COZUM.bat → Otomatik çözüm dene
+
+
+═══════════════════════════════════════════════════════════
+İyi çalışmalar! 🚀
+═══════════════════════════════════════════════════════════

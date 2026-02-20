@@ -1,0 +1,120 @@
+✅ İLAN EKLEME EKRANINA DOSYA YÜKLEME SİSTEMİ EKLENDİ!
+========================================================
+
+🎨 YENİ ÖZELLİKLER:
+------------------
+
+1. DOSYA YÜKLEME ALANI:
+   ✅ Drag & drop alanı (dashed border)
+   ✅ Dosya seç butonu
+   ✅ Desteklenen formatlar: PNG, JPG, JPEG, GIF, WEBP
+   ✅ Maksimum boyut: 16MB
+   ✅ Float animasyonu (upload icon)
+
+2. GÖRSEL ÖNİZLEME:
+   ✅ Anında önizleme (FileReader API)
+   ✅ Tam boyut görüntüleme
+   ✅ Hover overlay efekti
+   ✅ Kaldır butonu (kırmızı)
+
+3. YÜKLEME SÜRECİ:
+   ✅ Progress spinner animasyonu
+   ✅ "Yükleniyor..." mesajı
+   ✅ Otomatik sunucuya yükleme
+   ✅ Benzersiz dosya adı (UUID)
+   ✅ Güvenli dosya kaydetme
+
+4. BACKEND SİSTEMİ:
+   ✅ Flask route: /upload-image
+   ✅ Dosya doğrulama (allowed_file)
+   ✅ UUID ile benzersiz isim
+   ✅ static/uploads/products/ klasörüne kayıt
+   ✅ URL döndürme
+   ✅ Activity log kaydı
+
+📁 DOSYA YAPISI:
+---------------
+s2g-game/
+├── static/
+│   └── uploads/
+│       └── products/
+│           └── [uuid].jpg/png/gif/webp
+├── app.py (dosya yükleme route'u)
+└── templates/
+    └── sell.html (yeni arayüz)
+
+🎭 ANİMASYONLAR:
+---------------
+✅ Upload Float (3s) - Icon yüzer
+✅ Progress Spin (1s) - Spinner döner
+✅ Hover Overlay - Kaldır butonu görünür
+
+💡 KULLANICI DENEYİMİ:
+---------------------
+1. Kullanıcı "Dosya Seç" butonuna tıklar
+2. Dosya seçer (Android/Emülatör/PC)
+3. Anında önizleme görünür
+4. Arka planda sunucuya yüklenir
+5. Progress spinner gösterilir
+6. Yükleme tamamlanınca URL kaydedilir
+7. İlan gönderildiğinde görsel dahil edilir
+
+🔒 GÜVENLİK:
+-----------
+✅ Dosya uzantısı kontrolü
+✅ Maksimum boyut limiti (16MB)
+✅ Secure filename (werkzeug)
+✅ UUID ile benzersiz isim
+✅ Giriş kontrolü (session)
+
+📱 RESPONSIVE:
+-------------
+✅ Desktop: Tam boyut upload alanı
+✅ Tablet: Orta boyut
+✅ Mobil: Küçük boyut, dokunmatik uyumlu
+✅ Android: Kamera/galeri seçimi
+✅ Emülatör: Dosya sistemi erişimi
+
+🎨 TASARIM:
+----------
+✅ Mor tema (site ile uyumlu)
+✅ Dashed border (upload alanı)
+✅ Glassmorphism efektler
+✅ Gradient butonlar
+✅ Hover animasyonları
+✅ Progress spinner
+
+📊 BACKEND ROUTE:
+----------------
+POST /upload-image
+- Input: FormData (file)
+- Output: JSON {success, image_url, filename}
+- Validation: File type, size, login
+- Storage: static/uploads/products/
+- Naming: UUID.ext
+
+🌐 FLASK:
+--------
+✅ Flask çalışıyor
+✅ URL: http://127.0.0.1:5000/sell
+
+📝 KULLANIM:
+-----------
+1. http://127.0.0.1:5000/sell adresine git
+2. Giriş yap (gerekli)
+3. Form doldur
+4. "Dosya Seç" butonuna tıkla
+5. Görsel seç (Android/PC/Emülatör)
+6. Önizleme görünür
+7. Otomatik yüklenir
+8. İlanı yayınla
+
+🎉 SONUÇ:
+---------
+✅ Link yerine dosya yükleme
+✅ Android/Emülatör uyumlu
+✅ Anında önizleme
+✅ Otomatik sunucu yükleme
+✅ Güvenli ve modern
+
+Artık kullanıcılar Imgur'a gerek kalmadan direkt görsel yükleyebilir! 📸🚀

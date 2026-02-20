@@ -1,0 +1,336 @@
+🏠 S2G GAME - EV SUNUCUSU KURULUMU TAMAMLANDI
+========================================================
+
+✅ OLUŞTURULAN DOSYALAR:
+
+1. HOME_SERVER_DEPLOYMENT.md
+   📖 Detaylı ev sunucusu kurulum rehberi
+   - 4 farklı yöntem
+   - Adım adım talimatlar
+   - Karşılaştırma tablosu
+
+2. setup_home_server.bat (Windows)
+   🤖 Otomatik kurulum scripti
+   - Cloudflare Tunnel
+   - Port Forwarding
+   - Ngrok
+   - Lokal kurulum
+
+3. setup_home_server.sh (Linux/Mac)
+   🤖 Otomatik kurulum scripti
+   - Tüm yöntemler destekleniyor
+   - Otomatik paket kurulumu
+
+========================================================
+
+🎯 4 FARKLI YÖNTEM:
+
+YÖNTEM 1: CLOUDFLARE TUNNEL (ÖNERİLEN)
+---------------------------------------
+✅ En kolay yöntem
+✅ Port forwarding gerekmez
+✅ Otomatik SSL
+✅ DDoS koruması
+✅ Ücretsiz
+
+Kurulum:
+1. setup_home_server.bat çalıştır (Windows)
+   veya
+   ./setup_home_server.sh (Linux)
+2. Seçenek 1'i seç
+3. Cloudflare hesabı oluştur
+4. Domain ekle
+5. Script'in talimatlarını takip et
+
+Sonuç:
+https://yourdomain.com - Otomatik SSL ile çalışır!
+
+YÖNTEM 2: PORT FORWARDING + DYNAMIC DNS
+----------------------------------------
+✅ En hızlı yöntem
+✅ Tam kontrol
+✅ Kendi domain'iniz
+✅ Ücretsiz
+
+Adımlar:
+1. Bilgisayarınıza statik IP verin
+2. Modem/Router'da port forwarding yapın:
+   - Port 80 → 192.168.1.100:5000
+   - Port 443 → 192.168.1.100:5000
+3. Dynamic DNS kurulumu:
+   - No-IP: https://www.noip.com/
+   - DuckDNS: https://www.duckdns.org/
+4. Domain'i DDNS'e yönlendir
+
+Sonuç:
+http://yourdomain.com veya http://yoursite.ddns.net
+
+YÖNTEM 3: NGROK (HIZLI TEST)
+-----------------------------
+✅ Anında çalışır
+✅ Kurulum yok
+✅ Test için mükemmel
+
+Kurulum:
+1. https://ngrok.com/ hesap aç
+2. setup_home_server.bat çalıştır
+3. Seçenek 3'ü seç
+4. Auth token gir
+
+Sonuç:
+https://abc123.ngrok.io (Random URL)
+
+YÖNTEM 4: SADECE LOKAL
+-----------------------
+✅ En basit
+✅ Sadece ağınızdan erişim
+
+Kurulum:
+1. INSTALL.bat çalıştır
+2. START.bat çalıştır
+
+Sonuç:
+http://localhost:5000
+http://192.168.1.100:5000 (ağdan)
+
+========================================================
+
+🚀 HIZLI BAŞLANGIÇ:
+
+WINDOWS:
+--------
+1. setup_home_server.bat çalıştır
+2. Yöntemi seç (1-4)
+3. Talimatları takip et
+4. Site hazır!
+
+LINUX/MAC:
+----------
+1. chmod +x setup_home_server.sh
+2. ./setup_home_server.sh
+3. Yöntemi seç (1-4)
+4. Talimatları takip et
+5. Site hazır!
+
+========================================================
+
+📋 CLOUDFLARE TUNNEL DETAYLI KURULUM:
+
+1. CLOUDFLARE HESABI
+   https://dash.cloudflare.com/
+   - Ücretsiz hesap aç
+   - Email doğrula
+
+2. DOMAIN EKLE
+   - "Add a Site" tıkla
+   - Domain'i gir (example.com)
+   - Free plan seç
+   - Nameserver'ları kopyala
+
+3. NAMESERVER DEĞİŞTİR
+   Domain sağlayıcınızda (Namecheap, GoDaddy vb.):
+   - DNS ayarlarına git
+   - Nameserver'ları Cloudflare'inkilerle değiştir:
+     * ns1.cloudflare.com
+     * ns2.cloudflare.com
+   - Kaydet (5-30 dakika bekle)
+
+4. CLOUDFLARED KUR
+   Windows:
+   - https://github.com/cloudflare/cloudflared/releases
+   - cloudflared-windows-amd64.exe indir
+   - cloudflared.exe olarak yeniden adlandır
+   
+   Linux:
+   - wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+   - sudo dpkg -i cloudflared-linux-amd64.deb
+
+5. TUNNEL OLUŞTUR
+   cloudflared tunnel login
+   cloudflared tunnel create s2g-game
+   
+6. CONFIG OLUŞTUR
+   Windows: %USERPROFILE%\.cloudflared\config.yml
+   Linux: ~/.cloudflared/config.yml
+   
+   İçerik:
+   tunnel: TUNNEL_ID
+   credentials-file: PATH_TO_CREDENTIALS
+   
+   ingress:
+     - hostname: example.com
+       service: http://localhost:5000
+     - hostname: www.example.com
+       service: http://localhost:5000
+     - service: http_status:404
+
+7. DNS ROUTE
+   cloudflared tunnel route dns s2g-game example.com
+   cloudflared tunnel route dns s2g-game www.example.com
+
+8. BAŞLAT
+   Windows:
+   - START.bat (bir pencerede)
+   - cloudflared tunnel run s2g-game (başka pencerede)
+   
+   Linux:
+   - sudo cloudflared service install
+   - sudo systemctl start cloudflared
+   - ./start.sh
+
+9. TEST
+   https://example.com
+   - Otomatik SSL
+   - DDoS koruması
+   - Hızlı ve güvenli
+
+========================================================
+
+🔧 PORT FORWARDING DETAYLI KURULUM:
+
+1. BİLGİSAYARINIZIN IP'SİNİ ÖĞRENİN
+   Windows: ipconfig
+   Linux: ip addr show
+   
+   Örnek: 192.168.1.100
+
+2. STATİK IP ATAYIN
+   Windows:
+   - Ayarlar > Ağ > Ethernet > IP ataması
+   - Manuel > IPv4
+   - IP: 192.168.1.100
+   - Alt ağ: 255.255.255.0
+   - Ağ geçidi: 192.168.1.1
+   
+   Linux:
+   - sudo nano /etc/netplan/01-netcfg.yaml
+   - addresses: [192.168.1.100/24]
+   - gateway4: 192.168.1.1
+
+3. MODEM/ROUTER AYARLARI
+   - Tarayıcıda 192.168.1.1 aç
+   - admin/admin ile giriş yap
+   - Port Forwarding/NAT/Sanal Sunucu bul
+   
+   Kurallar:
+   Dış Port: 80  → İç IP: 192.168.1.100 → İç Port: 5000
+   Dış Port: 443 → İç IP: 192.168.1.100 → İç Port: 5000
+
+4. DYNAMIC DNS
+   No-IP:
+   - https://www.noip.com/ hesap aç
+   - Hostname oluştur: yoursite.ddns.net
+   - DUC (Dynamic Update Client) indir
+   - Kurulum yap ve giriş yap
+   
+   DuckDNS:
+   - https://www.duckdns.org/ gir
+   - GitHub ile giriş yap
+   - Subdomain oluştur: yoursite.duckdns.org
+   - Token kopyala
+   - Otomatik güncelleme kur:
+     Windows: Görev Zamanlayıcı
+     Linux: Crontab
+
+5. DOMAIN BAĞLA (Opsiyonel)
+   Domain sağlayıcınızda:
+   CNAME Record:
+   @ → yoursite.ddns.net
+   www → yoursite.ddns.net
+
+6. TEST
+   http://yoursite.ddns.net
+   veya
+   http://yourdomain.com
+
+========================================================
+
+⚠️ ÖNEMLİ NOTLAR:
+
+GÜVENLİK:
+- Güçlü şifreler kullanın
+- Firewall aktif tutun
+- Admin şifresini değiştirin
+- Düzenli yedekleme yapın
+
+PERFORMANS:
+- Upload hızınız önemli
+- Çok kullanıcı için VPS önerilir
+- UPS kullanın (elektrik kesintisi)
+
+YASAL:
+- ISP kurallarını kontrol edin
+- Bazı ISP'ler sunucu yasaklar
+- Ticari kullanım için VPS önerilir
+
+İNTERNET:
+- Statik IP yoksa DDNS kullanın
+- Upload hızı minimum 10 Mbps
+- Sınırsız kotanız olsun
+
+BİLGİSAYAR:
+- 7/24 açık kalmalı
+- Yeterli soğutma
+- Düzenli bakım
+
+========================================================
+
+🎯 HANGİ YÖNTEM?
+
+BAŞLANGIÇ İÇİN:
+→ Cloudflare Tunnel
+  En kolay, port forwarding gerekmez
+
+TEKNİK BİLGİNİZ VARSA:
+→ Port Forwarding + DDNS
+  En hızlı, tam kontrol
+
+SADECE TEST İÇİN:
+→ Ngrok
+  Anında çalışır
+
+SADECE AĞ İÇİ:
+→ Lokal Kurulum
+  En basit
+
+========================================================
+
+📊 KARŞILAŞTIRMA:
+
+| Özellik          | Cloudflare | Port Fwd | Ngrok | Lokal |
+|------------------|------------|----------|-------|-------|
+| Kolay Kurulum    | ⭐⭐⭐⭐⭐ | ⭐⭐     | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Hız              | ⭐⭐⭐⭐   | ⭐⭐⭐⭐⭐ | ⭐⭐⭐   | ⭐⭐⭐⭐⭐ |
+| Güvenlik         | ⭐⭐⭐⭐⭐ | ⭐⭐⭐   | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| Ücretsiz         | ✅         | ✅       | ⭐⭐   | ✅    |
+| SSL Otomatik     | ✅         | ❌       | ✅    | ❌    |
+| Port Fwd Gerekli | ❌         | ✅       | ❌    | ❌    |
+| Dış Erişim       | ✅         | ✅       | ✅    | ❌    |
+
+========================================================
+
+✅ KURULUM TAMAMLANDI!
+
+Artık sitenizi kendi bilgisayarınızda çalıştırabilirsiniz!
+
+HIZLI BAŞLANGIÇ:
+1. setup_home_server.bat çalıştır (Windows)
+   veya
+   ./setup_home_server.sh (Linux)
+
+2. Cloudflare Tunnel seç (Seçenek 1)
+
+3. Talimatları takip et
+
+4. Site hazır: https://yourdomain.com
+
+========================================================
+
+🦅 Mohawk Development
+
+İyi satışlar! 🎮
+
+Destek için:
+- HOME_SERVER_DEPLOYMENT.md oku
+- setup_home_server scripti kullan
+- Cloudflare Tunnel önerilir

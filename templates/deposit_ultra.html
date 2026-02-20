@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakiye Yükle - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(123, 44, 191, 0.15), transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 0, 110, 0.15), transparent 50%);
+            z-index: 0;
+        }
+        
+        .deposit-container {
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .deposit-card {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+        
+        .deposit-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .deposit-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        
+        .deposit-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #9d4edd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .current-balance {
+            font-size: 1.2rem;
+            color: #888;
+        }
+        
+        .current-balance strong {
+            color: #06ffa5;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        
+        .form-label i {
+            color: #9d4edd;
+            margin-right: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1.25rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #7b2cbf;
+            box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+        }
+        
+        .form-hint {
+            margin-top: 0.5rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Payment Methods Grid */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-method {
+            padding: 1.5rem;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .payment-method:hover {
+            border-color: #7b2cbf;
+            background: rgba(123, 44, 191, 0.1);
+        }
+        
+        .payment-method.selected {
+            border-color: #7b2cbf;
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.2), rgba(157, 78, 221, 0.2));
+        }
+        
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            color: #9d4edd;
+        }
+        
+        .payment-method-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .payment-method-time {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(123, 44, 191, 0.5);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .info-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(123, 44, 191, 0.1);
+            border: 1px solid rgba(123, 44, 191, 0.3);
+            border-radius: 12px;
+        }
+        
+        .info-box h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #9d4edd;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            color: #aaa;
+            line-height: 2;
+        }
+        
+        .info-box ul li {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .info-box ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #06ffa5;
+            font-weight: 700;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            color: #888;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #9d4edd;
+        }
+        
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .alert-success {
+            background: rgba(6, 255, 165, 0.15);
+            border: 2px solid #06ffa5;
+            color: #06ffa5;
+        }
+        
+        .alert-error {
+            background: rgba(255, 0, 110, 0.15);
+            border: 2px solid #ff006e;
+            color: #ff006e;
+        }
+        
+        @media (max-width: 768px) {
+            .deposit-card {
+                padding: 2rem;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <div class="deposit-container">
+        <div class="deposit-card">
+            <div class="deposit-header">
+                <div class="deposit-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h1 class="deposit-title">Bakiye Yükle</h1>
+                <p class="current-balance">Mevcut Bakiye: <strong>{{ user.balance }}₺</strong></p>
+            </div>
+            
+            <form id="depositForm">
+                <div class="alert" id="alert"></div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lira-sign"></i> Yüklenecek Tutar
+                    </label>
+                    <input type="number" id="amount" class="form-input" placeholder="0.00" step="0.01" min="10" required>
+                    <div class="form-hint">Minimum yükleme tutarı: 10₺</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-credit-card"></i> Ödeme Yöntemi Seçin
+                    </label>
+                    <div class="payment-methods">
+                        <div class="payment-method" data-method="Papara">
+                            <i class="fas fa-bolt"></i>
+                            <div class="payment-method-name">Papara</div>
+                            <div class="payment-method-time">Anında</div>
+                        </div>
+                        <div class="payment-method" data-method="Banka Havalesi">
+                            <i class="fas fa-university"></i>
+                            <div class="payment-method-name">Banka Havalesi</div>
+                            <div class="payment-method-time">1-2 Saat</div>
+                        </div>
+                        <div class="payment-method" data-method="Kripto">
+                            <i class="fab fa-bitcoin"></i>
+                            <div class="payment-method-name">Kripto Para</div>
+                            <div class="payment-method-time">3 Onay</div>
+                        </div>
+                        <div class="payment-method" data-method="Kredi Kartı">
+                            <i class="fas fa-credit-card"></i>
+                            <div class="payment-method-name">Kredi Kartı</div>
+                            <div class="payment-method-time">Anında</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-check-circle"></i>
+                    Yükleme Talebi Oluştur
+                </button>
+            </form>
+            
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> Bilgilendirme</h3>
+                <ul>
+                    <li>Bakiye yükleme talebiniz 5-30 dakika içinde onaylanacaktır</li>
+                    <li>Papara ve Kredi Kartı ile anında yükleme yapabilirsiniz</li>
+                    <li>Banka havalesi 1-2 saat sürebilir</li>
+                    <li>Kripto para transferleri 3 onay sonrası işlenir</li>
+                    <li>Tüm işlemler S2G Esports güvencesi altındadır</li>
+                </ul>
+            </div>
+            
+            <a href="/profile" class="back-link">
+                <i class="fas fa-arrow-left"></i> Profilime Dön
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        let selectedMethod = null;
+        
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                method.classList.add('selected');
+                selectedMethod = method.dataset.method;
+            });
+        });
+        
+        // Form submission
+        document.getElementById('depositForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amount = document.getElementById('amount').value;
+            
+            if (!selectedMethod) {
+                showAlert('error', 'Lütfen bir ödeme yöntemi seçin!');
+                return;
+            }
+            
+            if (parseFloat(amount) < 10) {
+                showAlert('error', 'Minimum yükleme tutarı 10₺ olmalıdır!');
+                return;
+            }
+            
+            const btn = document.querySelector('.btn-submit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> İşleniyor...';
+            
+            try {
+                const response = await fetch('/deposit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ amount, method: selectedMethod })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 2000);
+                } else {
+                    showAlert('error', data.message);
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> Yükleme Talebi Oluştur';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Bir hata oluştu!');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Yükleme Talebi Oluştur';
+            }
+        });
+        
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.style.display = 'flex';
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check' : 'exclamation') + '-circle"></i> ' + message;
+        }
+    </script>
+</body>
+</html>

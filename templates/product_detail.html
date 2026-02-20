@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title }} - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-detail {
+            padding: 4rem 0;
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .detail-image {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .detail-image img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .detail-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            width: fit-content;
+        }
+        
+        .detail-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .detail-price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .detail-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .spec-item {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .spec-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .detail-description {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            line-height: 1.8;
+        }
+        
+        .buy-section {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-title {
+                font-size: 1.8rem;
+            }
+            
+            .detail-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="brand-text">S2G GAME</span>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Ana Sayfa</a>
+                <a href="/products" class="nav-link">Ürünler</a>
+                <a href="#" class="nav-link">Hakkımızda</a>
+                <a href="#" class="nav-link">İletişim</a>
+            </div>
+            <div class="nav-actions">
+                {% if session.get('username') %}
+                    <span class="user-info">Hoş geldin, {{ session.get('username') }}</span>
+                    <a href="/logout" class="btn btn-outline btn-sm">Çıkış</a>
+                {% else %}
+                    <a href="/login" class="btn btn-outline btn-sm">Giriş Yap</a>
+                    <a href="/register" class="btn btn-primary btn-sm">Kayıt Ol</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail -->
+    <section class="product-detail">
+        <div class="container">
+            <div class="detail-grid">
+                <div class="detail-image">
+                    <img src="{{ product.image_url or 'https://via.placeholder.com/600x400/7b2cbf/ffffff?text=' + product.game }}" alt="{{ product.title }}">
+                </div>
+                
+                <div class="detail-info">
+                    <span class="detail-badge">{{ product.game }}</span>
+                    <h1 class="detail-title">{{ product.title }}</h1>
+                    <div class="detail-price">{{ product.price }} ₺</div>
+                    
+                    <div class="detail-specs">
+                        <div class="spec-item">
+                            <div class="spec-label"><i class="fas fa-trophy"></i> Rank</div>
+                            <div class="spec-value">{{ product.rank or 'Belirtilmemiş' }}</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label"><i class="fas fa-globe"></i> Bölge</div>
+                            <div class="spec-value">{{ product.region or 'TR' }}</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label"><i class="fas fa-box"></i> Stok</div>
+                            <div class="spec-value">{% if product.is_sold %}Satıldı{% else %}Mevcut{% endif %}</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label"><i class="fas fa-calendar"></i> Eklenme</div>
+                            <div class="spec-value">{{ product.created_at.strftime('%d.%m.%Y') }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="buy-section">
+                        {% if session.get('user_id') %}
+                            {% if product.is_sold %}
+                                <button class="btn btn-outline btn-block" disabled>
+                                    <i class="fas fa-times-circle"></i> Ürün Satıldı
+                                </button>
+                            {% else %}
+                                <button class="btn btn-primary btn-block btn-lg" onclick="buyProduct()">
+                                    <i class="fas fa-shopping-cart"></i> Hemen Satın Al
+                                </button>
+                            {% endif %}
+                        {% else %}
+                            <a href="/login" class="btn btn-primary btn-block btn-lg">
+                                <i class="fas fa-sign-in-alt"></i> Satın Almak İçin Giriş Yap
+                            </a>
+                        {% endif %}
+                        
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem;">
+                            <i class="fas fa-shield-alt"></i> Güvenli Ödeme
+                            <br>
+                            <i class="fas fa-clock"></i> Anında Teslimat
+                            <br>
+                            <i class="fas fa-headset"></i> 7/24 Destek
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-description" style="margin-top: 3rem;">
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> Ürün Açıklaması</h3>
+                <p>{{ product.description }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>S2G Game</h4>
+                    <p style="color: var(--text-muted);">Güvenli ve hızlı oyun hesabı alışverişi</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Hızlı Linkler</h4>
+                    <a href="/">Ana Sayfa</a>
+                    <a href="/products">Ürünler</a>
+                    <a href="#">Hakkımızda</a>
+                    <a href="#">İletişim</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Destek</h4>
+                    <a href="#">SSS</a>
+                    <a href="#">Kullanım Koşulları</a>
+                    <a href="#">Gizlilik Politikası</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Sosyal Medya</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 S2G Game. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function buyProduct() {
+            if (confirm('Bu ürünü satın almak istediğinize emin misiniz?')) {
+                fetch('/buy/{{ product.id }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Satın alma başarılı! Ürün bilgileri email adresinize gönderildi.');
+                        window.location.reload();
+                    } else {
+                        alert('Hata: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Bir hata oluştu!');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

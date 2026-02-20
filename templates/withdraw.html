@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakiye Çek - S2G Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-bg"></div>
+        
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1 class="auth-title">
+                    <span class="gradient-text">BAKİYE ÇEK</span>
+                </h1>
+                <p class="auth-subtitle">Mevcut Bakiye: <strong>{{ user.balance }}₺</strong></p>
+            </div>
+            
+            {% if not user.is_verified %}
+            <div class="alert alert-warning" style="display: block; margin-bottom: 1.5rem;">
+                <i class="fas fa-exclamation-triangle"></i> Bakiye çekebilmek için kimlik doğrulaması yapmalısınız!
+                <a href="/verify" style="color: var(--warning); text-decoration: underline;">Şimdi Doğrula</a>
+            </div>
+            {% endif %}
+            
+            <form class="auth-form" id="withdrawForm" {% if not user.is_verified %}disabled{% endif %}>
+                <div class="form-group">
+                    <label for="amount">
+                        <i class="fas fa-lira-sign"></i> Çekilecek Tutar
+                    </label>
+                    <input type="number" id="amount" name="amount" required placeholder="0.00" step="0.01" min="50" max="{{ user.balance }}" {% if not user.is_verified %}disabled{% endif %}>
+                    <small style="color: #888;">Minimum: 50₺ | Maksimum: {{ user.balance }}₺</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="method">
+                        <i class="fas fa-credit-card"></i> Çekim Yöntemi
+                    </label>
+                    <select id="method" name="method" required {% if not user.is_verified %}disabled{% endif %}>
+                        <option value="">Seçiniz</option>
+                        <option value="Papara">Papara</option>
+                        <option value="Banka Havalesi">Banka Havalesi</option>
+                        <option value="Kripto">Kripto Para</option>
+                    </select>
+                </div>
+                
+                <div class="alert" id="alert" style="display: none;"></div>
+                
+                <button type="submit" class="btn btn-primary btn-block" {% if not user.is_verified %}disabled{% endif %}>
+                    <i class="fas fa-check"></i> Çekim Talebi Oluştur
+                </button>
+                
+                <div class="auth-footer">
+                    <p><a href="/profile" class="auth-link">← Profilime Dön</a></p>
+                </div>
+            </form>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: rgba(255, 0, 110, 0.1); border-radius: 12px; border: 1px solid var(--accent);">
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> Önemli Bilgiler</h3>
+                <ul style="color: #aaa; line-height: 1.8;">
+                    <li>Minimum çekim tutarı 50₺'dir</li>
+                    <li>Çekim talepleri 24 saat içinde işleme alınır</li>
+                    <li>Kimlik doğrulaması zorunludur</li>
+                    <li>Papara ile en hızlı çekim yapabilirsiniz</li>
+                </ul>
+            </div>
+        </div>
+        
+        <a href="/profile" class="back-home">
+            <i class="fas fa-arrow-left"></i> Profilime Dön
+        </a>
+    </div>
+    
+    <script>
+        document.getElementById('withdrawForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const amount = document.getElementById('amount').value;
+            const method = document.getElementById('method').value;
+            
+            if (parseFloat(amount) < 50) {
+                showAlert('error', 'Minimum çekim tutarı 50₺ olmalıdır!');
+                return;
+            }
+            
+            if (parseFloat(amount) > {{ user.balance }}) {
+                showAlert('error', 'Yetersiz bakiye!');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/withdraw', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ amount, method })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        window.location.href = '/profile';
+                    }, 2000);
+                } else {
+                    showAlert('error', data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Bir hata oluştu!');
+            }
+        });
+        
+        function showAlert(type, message) {
+            const alert = document.getElementById('alert');
+            alert.style.display = 'block';
+            alert.className = 'alert alert-' + type;
+            alert.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check' : 'exclamation') + '-circle"></i> ' + message;
+        }
+    </script>
+</body>
+</html>

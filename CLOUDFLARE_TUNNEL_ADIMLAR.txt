@@ -1,0 +1,162 @@
+🌐 CLOUDFLARE TUNNEL KURULUM ADIMLARI
+========================================================
+
+✅ TAMAMLANAN: Nameserver değiştirildi
+
+📋 SONRAKİ ADIMLAR:
+
+ADIM 1: CLOUDFLARED İNDİR
+--------------------------
+1. Şu adresi tarayıcıda aç:
+   https://github.com/cloudflare/cloudflared/releases/latest
+
+2. Windows için indir:
+   cloudflared-windows-amd64.exe
+
+3. İndirilen dosyayı s2g-game klasörüne kopyala
+
+4. Dosyayı "cloudflared.exe" olarak yeniden adlandır
+
+ADIM 2: CLOUDFLARE'E GİRİŞ YAP
+------------------------------
+Komut:
+cloudflared.exe tunnel login
+
+Ne olacak:
+- Tarayıcı açılacak
+- Cloudflare'e giriş yapacaksınız
+- Domain'inizi seçeceksiniz
+- "Authorized" mesajı göreceksiniz
+
+ADIM 3: TUNNEL OLUŞTUR
+-----------------------
+Komut:
+cloudflared.exe tunnel create s2g-game
+
+Ne olacak:
+- Tunnel ID alacaksınız (örn: abc123-def456-ghi789)
+- Credentials dosyası oluşacak
+- Bu ID'yi not edin!
+
+ADIM 4: CONFIG DOSYASI OLUŞTUR
+-------------------------------
+1. Şu klasörü aç:
+   C:\Users\[KULLANICI_ADINIZ]\.cloudflared\
+
+2. "config.yml" dosyası oluştur
+
+3. İçine şunu yaz (TUNNEL_ID'yi değiştir):
+
+tunnel: TUNNEL_ID_BURAYA
+credentials-file: C:\Users\[KULLANICI_ADINIZ]\.cloudflared\TUNNEL_ID.json
+
+ingress:
+  - hostname: yourdomain.com
+    service: http://localhost:5000
+  - hostname: www.yourdomain.com
+    service: http://localhost:5000
+  - service: http_status:404
+
+ADIM 5: DNS ROUTE EKLE
+-----------------------
+Komut (domain'inizi yazın):
+cloudflared.exe tunnel route dns s2g-game yourdomain.com
+cloudflared.exe tunnel route dns s2g-game www.yourdomain.com
+
+Ne olacak:
+- Cloudflare DNS'e otomatik kayıt eklenecek
+- CNAME record'lar oluşacak
+
+ADIM 6: SUNUCUYU BAŞLAT
+------------------------
+İki pencere açın:
+
+Pencere 1 (S2G Game):
+START.bat
+
+Pencere 2 (Cloudflare Tunnel):
+cloudflared.exe tunnel run s2g-game
+
+ADIM 7: TEST ET
+----------------
+Tarayıcıda aç:
+https://yourdomain.com
+
+✅ Site otomatik SSL ile çalışacak!
+
+========================================================
+
+🔧 HIZLI KURULUM KOMUTU:
+
+Tüm adımları tek tek yapmak yerine, şu komutları sırayla çalıştır:
+
+1. cloudflared.exe tunnel login
+2. cloudflared.exe tunnel create s2g-game
+3. notepad %USERPROFILE%\.cloudflared\config.yml
+   (Config'i yapıştır ve kaydet)
+4. cloudflared.exe tunnel route dns s2g-game yourdomain.com
+5. cloudflared.exe tunnel route dns s2g-game www.yourdomain.com
+6. START.bat (bir pencerede)
+7. cloudflared.exe tunnel run s2g-game (başka pencerede)
+
+========================================================
+
+📝 CONFIG.YML ŞABLON:
+
+tunnel: ABC123-DEF456-GHI789
+credentials-file: C:\Users\YourUsername\.cloudflared\ABC123-DEF456-GHI789.json
+
+ingress:
+  - hostname: example.com
+    service: http://localhost:5000
+  - hostname: www.example.com
+    service: http://localhost:5000
+  - service: http_status:404
+
+ÖNEMLİ:
+- ABC123-DEF456-GHI789 yerine kendi tunnel ID'nizi yazın
+- YourUsername yerine Windows kullanıcı adınızı yazın
+- example.com yerine kendi domain'inizi yazın
+
+========================================================
+
+🐛 SORUN GİDERME:
+
+CLOUDFLARED BULUNAMADI:
+- cloudflared.exe dosyasını s2g-game klasörüne kopyalayın
+- Veya tam yolu kullanın: C:\path\to\cloudflared.exe
+
+TUNNEL OLUŞTURULAMADI:
+- İnternet bağlantınızı kontrol edin
+- Cloudflare'e giriş yaptığınızdan emin olun
+- Domain'in Cloudflare'de olduğundan emin olun
+
+DNS ROUTE HATASI:
+- Domain'in nameserver'larının Cloudflare olduğundan emin olun
+- 5-30 dakika bekleyin (DNS propagation)
+
+SİTE AÇILMIYOR:
+- Her iki pencere de çalışıyor mu kontrol edin
+- START.bat çalışıyor mu?
+- cloudflared tunnel run çalışıyor mu?
+- Logları kontrol edin
+
+========================================================
+
+✅ BAŞARILI KURULUM SONRASI:
+
+Site: https://yourdomain.com
+- ✅ Otomatik HTTPS
+- ✅ DDoS koruması
+- ✅ Hızlı ve güvenli
+- ✅ Port forwarding gerekmez
+
+Admin Panel: https://yourdomain.com/admin
+- Kullanıcı: admin
+- Şifre: admin123 (Değiştirin!)
+
+========================================================
+
+🦅 Mohawk Development
+
+Başarılı kurulum! 🎉
