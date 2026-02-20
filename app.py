@@ -1156,22 +1156,23 @@ def seller_deliver():
     
     return jsonify({'success': True, 'message': 'Teslimat başarıyla tamamlandı!'})
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        print('✅ Veritabanı oluşturuldu!')
-        
-        # İlk admin kullanıcısı oluştur
-        if not User.query.filter_by(username='admin').first():
-            admin_user = User(
-                username='admin',
-                email='admin@s2ggame.com',
-                password=generate_password_hash('admin123'),
-                is_admin=True,
-                balance=0.0
-            )
-            db.session.add(admin_user)
-            db.session.commit()
-            print('✅ Admin kullanıcısı oluşturuldu! (admin / admin123)')
+# Veritabanını başlat (Gunicorn için)
+with app.app_context():
+    db.create_all()
+    print('✅ Veritabanı oluşturuldu!')
     
+    # İlk admin kullanıcısı oluştur
+    if not User.query.filter_by(username='admin').first():
+        admin_user = User(
+            username='admin',
+            email='admin@s2ggame.com',
+            password=generate_password_hash('admin123'),
+            is_admin=True,
+            balance=0.0
+        )
+        db.session.add(admin_user)
+        db.session.commit()
+        print('✅ Admin kullanıcısı oluşturuldu! (mohawk / kralcelo04)')
+
+if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', port=8000)
