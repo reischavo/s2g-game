@@ -193,6 +193,13 @@ def register():
         
         return jsonify({'success': True, 'message': 'Kayıt başarılı!'})
     
+    # Mobil cihaz kontrolü
+    user_agent = request.headers.get('User-Agent', '').lower()
+    is_mobile = any(device in user_agent for device in ['mobile', 'android', 'iphone', 'ipad', 'ipod'])
+    
+    if is_mobile:
+        return render_template('register_mobile.html')
+    
     return render_template('register_modern.html')
 
 # Giriş
@@ -218,6 +225,13 @@ def login():
             return jsonify({'success': True, 'message': 'Giriş başarılı!'})
         
         return jsonify({'success': False, 'message': 'Kullanıcı adı veya şifre hatalı!'})
+    
+    # Mobil cihaz kontrolü
+    user_agent = request.headers.get('User-Agent', '').lower()
+    is_mobile = any(device in user_agent for device in ['mobile', 'android', 'iphone', 'ipad', 'ipod'])
+    
+    if is_mobile:
+        return render_template('login_mobile.html')
     
     return render_template('login_modern.html')
 
@@ -1172,7 +1186,7 @@ with app.app_context():
         )
         db.session.add(admin_user)
         db.session.commit()
-        print('✅ Admin kullanıcısı oluşturuldu! (mohawk / kralcelo04)')
+        print('✅ Admin kullanıcısı oluşturuldu! (admin / admin123)')
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, host='0.0.0.0', port=8000)
