@@ -193,14 +193,7 @@ def register():
         
         return jsonify({'success': True, 'message': 'Kayıt başarılı!'})
     
-    # Mobil cihaz kontrolü
-    user_agent = request.headers.get('User-Agent', '').lower()
-    is_mobile = any(device in user_agent for device in ['mobile', 'android', 'iphone', 'ipad', 'ipod'])
-    
-    if is_mobile:
-        return render_template('register_mobile.html')
-    
-    return render_template('register_modern.html')
+    return render_template('register.html')
 
 # Giriş
 @app.route('/login', methods=['GET', 'POST'])
@@ -226,14 +219,7 @@ def login():
         
         return jsonify({'success': False, 'message': 'Kullanıcı adı veya şifre hatalı!'})
     
-    # Mobil cihaz kontrolü
-    user_agent = request.headers.get('User-Agent', '').lower()
-    is_mobile = any(device in user_agent for device in ['mobile', 'android', 'iphone', 'ipad', 'ipod'])
-    
-    if is_mobile:
-        return render_template('login_mobile.html')
-    
-    return render_template('login_modern.html')
+    return render_template('login.html')
 
 # Çıkış
 @app.route('/logout')
