@@ -310,9 +310,20 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    /* Mobilde sadece gerekli alanları göster */
-    .desktop-only {
+    /* Mobilde sadece gerekli alanları göster - ZORLA GİZLE */
+    .desktop-only,
+    .social-login,
+    .auth-divider,
+    .btn-social,
+    .btn-discord,
+    .btn-google {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .auth-container {
@@ -389,10 +400,16 @@
         font-size: 0.85rem;
     }
     
-    /* Mobilde sosyal login'i gizle */
+    /* Mobilde sosyal login'i gizle - ZORLA */
     .auth-divider,
-    .social-login {
-        display: none;
+    .social-login,
+    .btn-social,
+    .btn-discord,
+    .btn-google {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
     }
     
     .auth-footer {

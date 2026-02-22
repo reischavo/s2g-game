@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kayıt Ol - S2G Game</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}?v=2">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}?v=4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -88,41 +88,58 @@
     </div>
     
     <script>
+        // Mobilde gereksiz alanları tamamen kaldır
+        if (window.innerWidth <= 768) {
+            document.addEventListener('DOMContentLoaded', () => {
+                const desktopElements = document.querySelectorAll('.desktop-only, .social-login, .auth-divider');
+                desktopElements.forEach(el => {
+                    if (el) el.remove();
+                });
+            });
+        }
+        
         // Password strength checker
-        document.getElementById('password').addEventListener('input', (e) => {
-            const password = e.target.value;
-            const strengthBar = document.getElementById('passwordStrength');
-            
-            let strength = 0;
-            if (password.length >= 6) strength++;
-            if (password.length >= 10) strength++;
-            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-            if (/\d/.test(password)) strength++;
-            if (/[^a-zA-Z\d]/.test(password)) strength++;
-            
-            const strengthText = ['Çok Zayıf', 'Zayıf', 'Orta', 'Güçlü', 'Çok Güçlü'];
-            const strengthColor = ['#ff006e', '#fb5607', '#ffbe0b', '#06ffa5', '#00ff88'];
-            
-            strengthBar.textContent = strengthText[strength - 1] || '';
-            strengthBar.style.color = strengthColor[strength - 1] || '';
-        });
+        const passwordInput = document.getElementById('password');
+        if (passwordInput) {
+            passwordInput.addEventListener('input', (e) => {
+                const password = e.target.value;
+                const strengthBar = document.getElementById('passwordStrength');
+                
+                if (!strengthBar) return;
+                
+                let strength = 0;
+                if (password.length >= 6) strength++;
+                if (password.length >= 10) strength++;
+                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+                if (/\d/.test(password)) strength++;
+                if (/[^a-zA-Z\d]/.test(password)) strength++;
+                
+                const strengthText = ['Çok Zayıf', 'Zayıf', 'Orta', 'Güçlü', 'Çok Güçlü'];
+                const strengthColor = ['#ff006e', '#fb5607', '#ffbe0b', '#06ffa5', '#00ff88'];
+                
+                strengthBar.textContent = strengthText[strength - 1] || '';
+                strengthBar.style.color = strengthColor[strength - 1] || '';
+            });
+        }
         
         // Register form
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            let username = document.getElementById('username').value;
+            const usernameInput = document.getElementById('username');
+            let username = usernameInput ? usernameInput.value : '';
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const passwordConfirm = document.getElementById('password_confirm') ? document.getElementById('password_confirm').value : password;
+            const passwordConfirmInput = document.getElementById('password_confirm');
+            const passwordConfirm = passwordConfirmInput ? passwordConfirmInput.value : password;
             
-            // Mobilde kullanıcı adı yoksa email'den oluştur
+            // Mobilde veya kullanıcı adı yoksa email'den oluştur
             if (!username || username.trim() === '') {
                 username = email.split('@')[0];
             }
             
-            // Masaüstünde şifre kontrolü
-            if (passwordConfirm && password !== passwordConfirm) {
+            // Masaüstünde şifre kontrolü (eğer alan varsa)
+            if (passwordConfirmInput && password !== passwordConfirm) {
                 const alert = document.getElementById('alert');
                 alert.style.display = 'block';
                 alert.className = 'alert alert-error';
