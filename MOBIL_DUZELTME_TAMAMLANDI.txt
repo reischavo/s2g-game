@@ -1,0 +1,23 @@
+MOBİL KAYIT FORMU DÜZELTMELERİ TAMAMLANDI
+==========================================
+
+Tarih: 22 Şubat 2026
+
+YAPILAN DEĞİŞİKLİKLER:
+- Mobil kayıt formu ultra kompakt yapıldı
+- Tüm padding ve gap'ler minimize edildi
+- Sosyal login butonları mobilde gizlendi
+- Kayıt ol butonu artık kaydırmadan görünüyor
+- CSS cache sorunu için version parametresi eklendi (?v=2)
+
+DEĞİŞEN DOSYALAR:
+- static/css/auth.css (mobil responsive düzeltmeleri)
+- templates/register.html (CSS version parametresi)
+- templates/login.html (CSS version parametresi)
+
+SONUÇ:
+✅ Mobil kayıt formu artık tam ekrana sığıyor
+✅ Buton kaydırmadan görünüyor
+✅ Cache sorunu çözüldü
+
+NOT: Deploy sonrası tarayıcı cache'ini temizle veya gizli sekmede test et.
