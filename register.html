@@ -88,16 +88,6 @@
     </div>
     
     <script>
-        // Mobilde gereksiz alanları tamamen kaldır
-        if (window.innerWidth <= 768) {
-            document.addEventListener('DOMContentLoaded', () => {
-                const desktopElements = document.querySelectorAll('.desktop-only, .social-login, .auth-divider');
-                desktopElements.forEach(el => {
-                    if (el) el.remove();
-                });
-            });
-        }
-        
         // Password strength checker
         const passwordInput = document.getElementById('password');
         if (passwordInput) {
@@ -127,24 +117,28 @@
             e.preventDefault();
             
             const usernameInput = document.getElementById('username');
-            let username = usernameInput ? usernameInput.value : '';
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const passwordConfirmInput = document.getElementById('password_confirm');
-            const passwordConfirm = passwordConfirmInput ? passwordConfirmInput.value : password;
             
-            // Mobilde veya kullanıcı adı yoksa email'den oluştur
-            if (!username || username.trim() === '') {
+            // Kullanıcı adı - eğer alan varsa al, yoksa email'den oluştur
+            let username = '';
+            if (usernameInput && usernameInput.value && usernameInput.value.trim() !== '') {
+                username = usernameInput.value.trim();
+            } else {
                 username = email.split('@')[0];
             }
             
-            // Masaüstünde şifre kontrolü (eğer alan varsa)
-            if (passwordConfirmInput && password !== passwordConfirm) {
-                const alert = document.getElementById('alert');
-                alert.style.display = 'block';
-                alert.className = 'alert alert-error';
-                alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Şifreler eşleşmiyor!';
-                return;
+            // Şifre tekrar kontrolü - eğer alan varsa kontrol et
+            if (passwordConfirmInput) {
+                const passwordConfirm = passwordConfirmInput.value;
+                if (password !== passwordConfirm) {
+                    const alert = document.getElementById('alert');
+                    alert.style.display = 'block';
+                    alert.className = 'alert alert-error';
+                    alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Şifreler eşleşmiyor!';
+                    return;
+                }
             }
             
             try {

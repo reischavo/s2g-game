@@ -74,16 +74,6 @@
     </div>
     
     <script>
-        // Mobilde gereksiz alanları tamamen kaldır
-        if (window.innerWidth <= 768) {
-            document.addEventListener('DOMContentLoaded', () => {
-                const desktopElements = document.querySelectorAll('.social-login, .auth-divider, .form-options');
-                desktopElements.forEach(el => {
-                    if (el) el.remove();
-                });
-            });
-        }
-        
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
