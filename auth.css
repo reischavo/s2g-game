@@ -310,6 +310,11 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    /* Mobilde sadece gerekli alanları göster */
+    .desktop-only {
+        display: none !important;
+    }
+    
     .auth-container {
         padding: 0.5rem;
         align-items: flex-start;
