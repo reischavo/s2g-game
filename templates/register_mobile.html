@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kayıt Ol - S2G Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .mobile-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .mobile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .mobile-title {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #7b2cbf, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mobile-subtitle {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        
+        .mobile-form {
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(123, 44, 191, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #ffffff;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group label i {
+            color: #7b2cbf;
+            margin-right: 0.5rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            background: rgba(10, 10, 15, 0.8);
+            border: 2px solid rgba(123, 44, 191, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: #7b2cbf;
+            box-shadow: 0 0 15px rgba(123, 44, 191, 0.3);
+        }
+        
+        .form-group input::placeholder {
+            color: #666;
+        }
+        
+        .btn-register {
+            width: 100%;
+            background: linear-gradient(135deg, #7b2cbf, #9d4edd);
+            border: none;
+            border-radius: 8px;
+            padding: 1rem;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-register:active {
+            transform: scale(0.98);
+        }
+        
+        .mobile-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(123, 44, 191, 0.2);
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+        
+        .mobile-footer a {
+            color: #7b2cbf;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .alert-success {
+            background: rgba(6, 255, 165, 0.15);
+            border: 1px solid rgba(6, 255, 165, 0.3);
+            color: #06ffa5;
+        }
+        
+        .alert-error {
+            background: rgba(255, 0, 110, 0.15);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            color: #ff006e;
+        }
+        
+        .back-home {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(26, 26, 46, 0.9);
+            border: 1px solid rgba(123, 44, 191, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-home">
+        <i class="fas fa-arrow-left"></i> Ana Sayfa
+    </a>
+    
+    <div class="mobile-container">
+        <div class="mobile-header">
+            <h1 class="mobile-title">KAYIT OL</h1>
+            <p class="mobile-subtitle">S2G Game'e katıl</p>
+        </div>
+        
+        <form class="mobile-form" id="registerForm">
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i> Email
+                </label>
+                <input type="email" id="email" name="email" required placeholder="Email adresini gir">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-lock"></i> Şifre
+                </label>
+                <input type="password" id="password" name="password" required placeholder="Şifre oluştur" minlength="6">
+            </div>
+            
+            <button type="submit" class="btn-register">
+                <i class="fas fa-user-plus"></i> Kayıt Ol
+            </button>
+            
+            <div class="alert" id="alert"></div>
+            
+            <div class="mobile-footer">
+                Zaten hesabın var mı? <a href="/login">Giriş Yap</a>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const username = email.split('@')[0]; // Email'den kullanıcı adı oluştur
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                const alert = document.getElementById('alert');
+                alert.style.display = 'block';
+                
+                if (data.success) {
+                    alert.className = 'alert alert-success';
+                    alert.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 1500);
+                } else {
+                    alert.className = 'alert alert-error';
+                    alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + data.message;
+                }
+            } catch (error) {
+                const alert = document.getElementById('alert');
+                alert.style.display = 'block';
+                alert.className = 'alert alert-error';
+                alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Bir hata oluştu!';
+            }
+        });
+    </script>
+</body>
+</html>

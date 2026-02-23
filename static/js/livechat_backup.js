@@ -78,15 +78,6 @@
                         <p style="margin: 0; font-size: 1.1rem; color: #fff; font-weight: 600;">Merhaba!</p>
                         <p style="margin: 1rem 0 0 0; font-size: 0.95rem; color: #aaa; line-height: 1.6;">Size nasıl yardımcı olabilirim?</p>
                     </div>
-                    
-                    <!-- Typing Indicator -->
-                    <div id="typing-indicator" style="display: none; margin-bottom: 1rem; padding: 0.75rem 1rem; background: rgba(26, 26, 46, 0.9); border: 1px solid rgba(123, 44, 191, 0.4); border-radius: 20px 20px 20px 4px; max-width: 75px; animation: slideUp 0.3s ease-out;">
-                        <div style="display: flex; gap: 0.3rem; align-items: center;">
-                            <span class="typing-dot" style="width: 8px; height: 8px; background: #9d4edd; border-radius: 50%; animation: typingBounce 1.4s infinite;"></span>
-                            <span class="typing-dot" style="width: 8px; height: 8px; background: #9d4edd; border-radius: 50%; animation: typingBounce 1.4s infinite 0.2s;"></span>
-                            <span class="typing-dot" style="width: 8px; height: 8px; background: #9d4edd; border-radius: 50%; animation: typingBounce 1.4s infinite 0.4s;"></span>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- Input -->
@@ -126,11 +117,6 @@
             @keyframes blink {
                 0%, 100% { opacity: 1; }
                 50% { opacity: 0.3; }
-            }
-            
-            @keyframes typingBounce {
-                0%, 60%, 100% { transform: translateY(0); }
-                30% { transform: translateY(-10px); }
             }
             
             #chat-messages::-webkit-scrollbar {
@@ -209,28 +195,10 @@
             console.log('📨 Admin reply received:', data);
             addMessage(data.message, 'admin', representativeName);
             
-            // Yazıyor göstergesini kaldır
-            hideTypingIndicator();
-            
-            // Ses bildirimi çal
-            playNotificationSound();
-            
             // Chat kapalıysa bildirim göster
             if (chatWindow.style.display === 'none') {
                 showUnreadBadge();
-                showBrowserNotification('Yeni Mesaj', data.message);
             }
-        });
-        
-        // Admin yazıyor göstergesi
-        socket.on('admin_typing', () => {
-            console.log('✍️ Admin is typing...');
-            showTypingIndicator();
-        });
-        
-        socket.on('admin_stop_typing', () => {
-            console.log('⏸️ Admin stopped typing');
-            hideTypingIndicator();
         });
         
         // Önceki mesajları yükle
